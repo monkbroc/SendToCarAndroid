@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Envoyer à un véhicule</string>
+    <string name="startGoogleMaps">Démarer Google Maps</string>
+    <string name="errorStartGoogleMaps">Google Maps ne peut pas démarer</string>
+    <string name="vehicle">Véhicule</string>
+    <string name="make">Constructeur</string>
+    <string name="defaultMake">Sélectionnez</string>
+    <string name="account">Compte</string>
+    <string name="destination">Destination</string>
+    <string name="destinationName">Nom</string>
+    <string name="address">Adresse</string>
+    <string name="destinationTag">Tag</string>
+    <string name="useAsDefault">Utiliser par défaut</string>
+    <string name="send">Envoyer</string>
+    <string name="cancel">Annuler</string>
+
+    <string-array name="choose_array">
+        <item>Sélectionnez</item>
+    </string-array>
+
+    <string name="errorTitle">Erreur</string>
+    <string name="ok">OK</string>
+    <string name="showHelp">Voir l\'aide</string>
+    <string name="errorIntent">L\'application n\'a pas été démarée à partir du menu Partager de Google Maps. Lisez l\'aide pour plus de détails.</string>
+    <string name="loadingAddress">Chargement de l\'adresse</string>
+    <string name="errorDownload">L\'adresse ne peut pas être chargée. Vérifiez votre connection internet et réessayez</string>
+    <string name="errorNotGoogleMaps">Le lien partagé n\'est pas un lien Google Maps</string>
+    <string name="errorNoUrl">Il n\'y a pas d\'adresse URL dans le texte partagé</string>
+    <string name="errorNotAvailable">La fonction Envoyer à un véhicule de Google Maps n\'est pas disponible dans votre pays</string>
+    <string name="choose">Sélectionnez</string>
+    <string name="errorCountry">L\'adresse que vous avez partagé ne peut pas être utilisée avec Envoyer à un véhicule. Essayez une adresse dans un autre pays</string>
+    <string name="validationMake">Sélectionnez un constructeur</string>
+    <string name="validationAccount">Entrez un numéro de compte</string>
+    <string name="validationDestination">Entrez le nom de la destination</string>
+    <string name="validationTag">Entrez un tag</string>
+    <string name="sendingToCar">Envoi au véhicule</string>
+    <string name="sendingToGPS">Envoi au GPS</string>
+    <string name="errorSendToCar">La destination n\'a pas pu être envoyée. Réessayez plus tard</string>
+    <string name="successCar">La destination a été envoyée au véhicule</string>
+    <string name="successGPS">La destination a été envoyée au GPS</string>
+    <string name="statusInvalidAccount">Numéro de compte non valide. Vérifiez l\'information et réessayez</string>
+    <string name="statusInvalidTag">Tag non valide. Renomez le et réessayez</string>
+    <string name="statusTagExists">Un tag avec ce nom existe déjà. Renomez le et réessayez</string>
+    <string name="statusDestinationNotSent">Cette destination ne peut être envoyée à votre véhicule. Essayez une destination différente</string>
+    <string name="logViewer">Send To Car Log</string>
+    <string name="menuHelp">Aide</string>
+
+</resources>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="buttonBarBg">#666666</color>
+    <color name="headerBarBg">#333333</color>
+    <color name="headerBarText">#dddddd</color>
+
+</resources>

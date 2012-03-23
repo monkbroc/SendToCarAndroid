@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="headerBar" parent="android:Widget.TextView">
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@color/headerBarBg</item>
+        <item name="android:textColor">@color/headerBarText</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:layout_marginBottom">3dp</item>
+    </style>
+
+    <style name="label">
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+        <item name="android:paddingTop">4dp</item>
+    </style>
+
+    <style name="viewGroup">
+        <item name="android:paddingLeft">6dp</item>
+    </style>
+
+</resources>

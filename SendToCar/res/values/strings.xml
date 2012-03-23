@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Send To Car</string>
+    <string name="startGoogleMaps">Start Google Maps</string>
+    <string name="errorStartGoogleMaps">Cannot start Google Maps</string>
+    <string name="vehicle">Vehicle</string>
+    <string name="make">Make</string>
+    <string name="defaultMake">Choose one</string>
+    <string name="account">Account</string>
+    <string name="destination">Destination</string>
+    <string name="destinationName">Name</string>
+    <string name="address">Address</string>
+    <string name="destinationTag">Tag</string>
+    <string name="useAsDefault">Use as default</string>
+    <string name="send">Send</string>
+    <string name="cancel">Cancel</string>
+
+    <string-array name="choose_array">
+        <item>Choose one</item>
+    </string-array>
+
+    <string name="errorTitle">Error</string>
+    <string name="ok">OK</string>
+    <string name="showHelp">Show help</string>
+    <string name="errorIntent">App not started from the Google Maps share menu. See help for details.</string>
+    <string name="loadingAddress">Loading address</string>
+    <string name="errorDownload">Could not download address. Check your internet connection and try again</string>
+    <string name="errorNotGoogleMaps">The shared link was not a valid Google Maps link</string>
+    <string name="errorNoUrl">There was no valid URL in the shared link</string>
+    <string name="errorNotAvailable">The Google Maps Send To Car feature is not available in your country</string>
+    <string name="choose">Choose one</string>
+    <string name="errorCountry">The address you selected cannot be used with Send To Car. Try an address in a different country</string>
+    <string name="validationMake">Please select a make</string>
+    <string name="validationAccount">Please provide your account</string>
+    <string name="validationDestination">Please enter a destination name</string>
+    <string name="validationTag">Please enter a tag name</string>
+    <string name="sendingToCar">Sending to car</string>
+    <string name="sendingToGPS">Sending to GPS</string>
+    <string name="errorSendToCar">Could not send the destination. Try again later</string>
+    <string name="successCar">Destination successfully sent to car</string>
+    <string name="successGPS">Destination successfully sent to GPS</string>
+    <string name="statusInvalidAccount">Invalid account. Check that you entered it correctly and try again</string>
+    <string name="statusInvalidTag">Invalid Destination Tag. Rename it and try again</string>
+    <string name="statusTagExists">A Destination Tag with this name already exists. Rename it and try again</string>
+    <string name="statusDestinationNotSent">This destination cannot be sent to your car. Try a different destination</string>
+    <string name="logViewer">Send To Car Log</string><string name="menuHelp">Help</string>
+</resources>
