@@ -34,13 +34,13 @@ public class LogViewerActivity extends Activity {
 	}
 
 	private void clearLog() {
-		DebugLog.clearLog(this);
+		DebugLogFile.clearLog(this);
 		refreshLog();
 	}
 
 	private void refreshLog() {
 
-		String log = DebugLog.readLog(this);
+		String log = DebugLogFile.readLog(this);
 		if(log == null)
 		{
 			log = "<h1>No log</h1>";

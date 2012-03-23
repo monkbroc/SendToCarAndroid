@@ -89,7 +89,8 @@ public class SendToCarActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sendtocar);
 		
-		log = new DebugLog(this);
+		//log = new DebugLogFile(this);
+		log = new DebugLogDummy();
 		
 		tagVisibilityAndText(false, "");
 		
