@@ -1,5 +1,6 @@
 
 /* TODO:
+ * - Use a dummy activity for the SEND Intent and use that activity to start SendToCarActivity with CLEAR_TOP
  * - Add SingleTop mode and (maybe) change of intent bug when Sharing through Map, then
  *   clicking Home and sharing another location (same Activity reopens with old Intent)
  * - Expand help: troubleshooting, market link, credits, GPL
