@@ -42,6 +42,7 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -63,6 +64,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -101,7 +103,7 @@ public class SendToCarActivity extends Activity {
 		
 		registerButtons();
 	}
-		
+
 	private void tagVisibilityAndText(boolean visible, String text) {
 		TextView tagLabel = (TextView) findViewById(R.id.tagLabel);
 		tagLabel.setVisibility(visible ? View.VISIBLE : View.GONE);
@@ -133,9 +135,8 @@ public class SendToCarActivity extends Activity {
 		      finish();
 		    }
 		  });
-
-		
 	}
+
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {

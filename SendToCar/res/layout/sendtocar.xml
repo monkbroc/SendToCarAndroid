@@ -2,19 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:baselineAligned="true"
-    android:orientation="vertical" >
-
-    <LinearLayout
+    android:orientation="vertical" ><LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="fill_parent"
         android:layout_gravity="center"
         android:maxWidth="540dp"
         android:minWidth="540dp"
         android:orientation="vertical" >
-
-        <!-- xmlns:app="http://schemas.android.com/apk/res/com.jvanier.android.sendtocar" -->
-        <!-- style="@style/ThemeSelector" -->
 
         <ScrollView
             android:id="@+id/scrollView1"
@@ -134,31 +128,26 @@
         </ScrollView>
 
         <LinearLayout
-            android:id="@+id/linearLayout1"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@color/buttonBarBg" >
+            android:background="@android:drawable/bottom_bar" >
 
             <Button
                 android:id="@+id/sendButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
-                android:layout_marginLeft="2dp"
-                android:layout_marginRight="0dp"
-                android:layout_marginTop="2dp"
+                android:layout_margin="5.0dip"
                 android:layout_weight="0.5"
+                android:drawablePadding="3.0dip"
                 android:text="@string/send" />
 
             <Button
                 android:id="@+id/cancelButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="2dp"
-                android:layout_marginLeft="0dp"
-                android:layout_marginRight="2dp"
-                android:layout_marginTop="2dp"
+                android:layout_margin="5.0dip"
                 android:layout_weight="0.5"
+                android:drawablePadding="3.0dip"
                 android:text="@string/cancel" />
         </LinearLayout>
     </LinearLayout>

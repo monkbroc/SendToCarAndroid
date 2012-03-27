@@ -44,5 +44,16 @@
     <string name="statusInvalidTag">Invalid Destination Tag. Rename it and try again</string>
     <string name="statusTagExists">A Destination Tag with this name already exists. Rename it and try again</string>
     <string name="statusDestinationNotSent">This destination cannot be sent to your car. Try a different destination</string>
-    <string name="logViewer">Send To Car Log</string><string name="menuHelp">Help</string>
+    <string name="logViewer">Send To Car Log</string>
+    <string name="menuHelp">Help</string>
+    <string name="infoStart">Start Google Maps and click on a place</string>
+    <string name="infoNext">Next</string>
+    <string name="infoPrev">Previous</string>
+    <string name="infoHowTo">How to Use</string>
+    <string name="infoFinish">Finish</string>
+    <string name="infoShare">Scroll down and click "Share"</string>
+    <string name="infoSend">Select "Send To Car"</string>
+    <string name="infoEnter">Select your car and hit "Send"</string>
+    <string name="tutorial">Tutorial</string>
+
 </resources>
