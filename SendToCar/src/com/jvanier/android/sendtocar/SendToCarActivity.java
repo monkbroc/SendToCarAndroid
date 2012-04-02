@@ -13,6 +13,7 @@ package com.jvanier.android.sendtocar;
 import java.io.InterruptedIOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
@@ -24,7 +25,9 @@ import java.util.regex.Pattern;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
+import org.apache.http.ProtocolException;
 import org.apache.http.client.CookieStore;
+import org.apache.http.client.RedirectHandler;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.protocol.ClientContext;
@@ -32,6 +35,7 @@ import org.apache.http.cookie.Cookie;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.DefaultRedirectHandler;
 import org.apache.http.protocol.BasicHttpContext;
 import org.apache.http.protocol.ExecutionContext;
 import org.apache.http.protocol.HttpContext;
@@ -42,7 +46,6 @@ import org.json.JSONObject;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -64,7 +67,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -122,6 +124,10 @@ public class SendToCarActivity extends Activity {
 		httpContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
 
 		client = new DefaultHttpClient();
+
+		RedirectHandler jsonMapRedirectHandler = new JSONMapRedirectHandler();
+		client.setRedirectHandler(jsonMapRedirectHandler);
+
 	}
 	
 	private void registerButtons() {
@@ -391,20 +397,19 @@ public class SendToCarActivity extends Activity {
 		}
 
 		private void parseAddressData(String mapHtml) throws BackgroundTaskAbort {
-			// match a URL, but try not to grab the punctuation at the end
-			Pattern dataPatt = Pattern.compile("window\\.gHomeVPage=(.*);\\}\\)\\(\\);gHomeVPage\\.panel");
-			Matcher matcher = dataPatt.matcher(mapHtml);
+			// find the JSON section called "markers"
+			String startStr = "{sxcar:true,markers:";
+			int startPos = mapHtml.indexOf(startStr);
 			
-			if(matcher.find())
-			{
+			if(startPos >= 0) {
+				String match = mapHtml.substring(startPos + startStr.length());
+				
 				// replace ASCII character escapes \xAB with Unicode escapes \u00AB since those are converted
 				// automatically by the JSONObject parser to UTF-8 characters
-				String rawData = matcher.group(1).replaceAll("\\\\x", "\\\\u00");
+				String rawData = match.replaceAll("\\\\x", "\\\\u00");
 								
 				try {
-					JSONObject parsedData = new JSONObject(rawData);
-					
-					JSONArray markers = parsedData.getJSONObject("overlays").getJSONArray("markers");
+					JSONArray markers = new JSONArray(rawData);
 					if(markers.length() >= 1)
 					{
 						JSONObject mapData = markers.getJSONObject(0);
@@ -472,6 +477,12 @@ public class SendToCarActivity extends Activity {
 					address = null;
 					throw new BackgroundTaskAbort(R.string.errorDownload); 
 				}
+			}
+			else
+			{
+				log.d("<span style=\"color: red;\">Cannot find address JSON</span>");
+				address = null;
+				throw new BackgroundTaskAbort(R.string.errorDownload); 
 			}
 		}
 
@@ -1053,5 +1064,31 @@ public class SendToCarActivity extends Activity {
 
 	public String htmlSnippet(String s) {
 		return TextUtils.htmlEncode(s.substring(0, Math.min(s.length(), 1000)));
+	}
+	
+	
+	public class JSONMapRedirectHandler extends DefaultRedirectHandler {
+
+		@Override
+		public URI getLocationURI(HttpResponse response, HttpContext context)
+				throws ProtocolException {
+			URI defaultRedir = super.getLocationURI(response, context);
+			String query = defaultRedir.getQuery();
+			if(query != null)
+			{
+				query = query + "&output=json";
+			}
+			
+			try
+			{
+				URI redir = new URI(defaultRedir.getScheme(), defaultRedir.getAuthority(),
+						defaultRedir.getPath(), query, defaultRedir.getFragment());
+				return redir;
+			}
+			catch(URISyntaxException e)
+			{
+				return defaultRedir;
+			}
+		}
 	}
 }
