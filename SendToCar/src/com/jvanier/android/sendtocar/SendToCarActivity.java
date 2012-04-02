@@ -397,6 +397,14 @@ public class SendToCarActivity extends Activity {
 		}
 
 		private void parseAddressData(String mapHtml) throws BackgroundTaskAbort {
+			// check if addresses in this country are supported
+			if(mapHtml.indexOf("{sxcar:false,markers:") != -1)
+			{
+				log.d("<span style=\"color: red;\">Addresses not supported in this country</span>");
+				address = null;
+				throw new BackgroundTaskAbort(R.string.errorNotAvailable); 
+			}
+
 			// find the JSON section called "markers"
 			String startStr = "{sxcar:true,markers:";
 			int startPos = mapHtml.indexOf(startStr);

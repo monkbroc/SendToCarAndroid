@@ -28,7 +28,7 @@
     <string name="errorDownload">Could not download address. Check your internet connection and try again</string>
     <string name="errorNotGoogleMaps">The shared link was not a valid Google Maps link</string>
     <string name="errorNoUrl">There was no valid URL in the shared link</string>
-    <string name="errorNotAvailable">The Google Maps Send To Car feature is not available in your country</string>
+    <string name="errorNotAvailable">The Google Maps Send To Car feature is not available in this country</string>
     <string name="choose">Choose one</string>
     <string name="errorCountry">The address you selected cannot be used with Send To Car. Try an address in a different country</string>
     <string name="validationMake">Please select a make</string>

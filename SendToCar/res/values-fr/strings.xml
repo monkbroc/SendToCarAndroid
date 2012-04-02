@@ -28,7 +28,7 @@
     <string name="errorDownload">L\'adresse ne peut pas être chargée. Vérifiez votre connection internet et réessayez</string>
     <string name="errorNotGoogleMaps">Le lien partagé n\'est pas un lien Google Maps</string>
     <string name="errorNoUrl">Il n\'y a pas d\'adresse URL dans le texte partagé</string>
-    <string name="errorNotAvailable">La fonction Envoyer à un véhicule de Google Maps n\'est pas disponible dans votre pays</string>
+    <string name="errorNotAvailable">La fonction Envoyer à un véhicule de Google Maps n\'est pas disponible dans ce pays</string>
     <string name="choose">Sélectionnez</string>
     <string name="errorCountry">L\'adresse que vous avez partagé ne peut pas être utilisée avec Envoyer à un véhicule. Essayez une adresse dans un autre pays</string>
     <string name="validationMake">Sélectionnez un constructeur</string>
