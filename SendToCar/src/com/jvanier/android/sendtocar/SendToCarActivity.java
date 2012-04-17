@@ -1,9 +1,10 @@
 
 /* TODO:
+ * - Use android:excludeFromRecents="true" for the send activity, set affinity for send and main activity to 2 different strings
  * - Use a dummy activity for the SEND Intent and use that activity to start SendToCarActivity with CLEAR_TOP
+ *   => not possible until Android 3.0
  * - Add SingleTop mode and (maybe) change of intent bug when Sharing through Map, then
  *   clicking Home and sharing another location (same Activity reopens with old Intent)
- * - Expand help: troubleshooting, market link, credits, GPL
  * - Test all error cases
  * - Test in other locales/languages/countries/vehicle makes
  */
@@ -191,7 +192,14 @@ public class SendToCarActivity extends Activity {
         AlertDialog.Builder alertbox = new AlertDialog.Builder(this);
         alertbox.setTitle(R.string.errorTitle);
         alertbox.setMessage(messageId);
+        alertbox.setOnCancelListener(new OnCancelListener() {
+        	@Override
+        	public void onCancel(DialogInterface dialog) {
+        		finish();
+        	}
+        });
         alertbox.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+        	@Override
             public void onClick(DialogInterface arg0, int arg1) {
             	finish();
             }
@@ -199,6 +207,7 @@ public class SendToCarActivity extends Activity {
 
         // set a negative/no button and create a listener
         alertbox.setNegativeButton(R.string.showHelp, new DialogInterface.OnClickListener() {
+        	@Override
             public void onClick(DialogInterface arg0, int arg1) {
             	finish();
             	startActivity(new Intent(SendToCarActivity.this, InformationActivity.class));
@@ -211,7 +220,7 @@ public class SendToCarActivity extends Activity {
 
 	private String findURL(String string) {
 		// match a URL, but try not to grab the punctuation at the end
-		Pattern urlPatt = Pattern.compile("(?i)\\bhttps?://[a-z0-9.\\-,@?^=%&:/~+#]*[a-z0-9\\-@^=%&:/~+#]");
+		Pattern urlPatt = Pattern.compile("(?i)\\bhttps?://[a-z0-9_.\\-,@?^=%&:/~+#]*[a-z0-9_\\-@^=%&:/~+#]");
 		Matcher matcher = urlPatt.matcher(string);
 			
 		if(matcher.find())
@@ -765,6 +774,9 @@ public class SendToCarActivity extends Activity {
 				Context context = getApplicationContext();
 				Toast toast = Toast.makeText(context, e.errorId, Toast.LENGTH_LONG);
 				toast.show();
+			} catch(ClassCastException e) {
+				/* Cast (CarProvider)spinner.getSelectedItem() failed because populateMakes was never called.
+				 * This is unusually and can be ignored. The user will press back and try again */
 			}
 		}
 	}
