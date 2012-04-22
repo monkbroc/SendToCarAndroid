@@ -11,12 +11,16 @@
 
 package com.jvanier.android.sendtocar;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InterruptedIOException;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -235,10 +239,17 @@ public class SendToCarActivity extends Activity {
 	
 	private class BackgroundTaskAbort extends Exception {
 		public int errorId;
+		public boolean errorOnStar;
 		
 		public BackgroundTaskAbort(int errorId)
 		{
 			this.errorId = errorId;
+			this.errorOnStar = false;
+		}
+		public BackgroundTaskAbort(int errorId, boolean errorOnStar)
+		{
+			this.errorId = errorId;
+			this.errorOnStar = errorOnStar;
 		}
 
 	}
@@ -295,6 +306,7 @@ public class SendToCarActivity extends Activity {
 
 		private BackgroundTaskAbort exception;
 		private HttpGet httpGet;
+		private boolean approximateAddress;
 		
 		public DownloadAddressTask()
 		{
@@ -406,17 +418,17 @@ public class SendToCarActivity extends Activity {
 		}
 
 		private void parseAddressData(String mapHtml) throws BackgroundTaskAbort {
-			// check if addresses in this country are supported
-			if(mapHtml.indexOf("{sxcar:false,markers:") != -1)
-			{
-				log.d("<span style=\"color: red;\">Addresses not supported in this country</span>");
-				address = null;
-				throw new BackgroundTaskAbort(R.string.errorNotAvailable); 
-			}
+			approximateAddress = false;
 
 			// find the JSON section called "markers"
 			String startStr = "{sxcar:true,markers:";
 			int startPos = mapHtml.indexOf(startStr);
+			if(startPos == -1)
+			{
+				// if addresses in this country are not supported, do a geocode lookup for an approximate address
+				startStr = "{sxcar:false,markers:";
+				startPos = mapHtml.indexOf(startStr);
+			}
 			
 			if(startPos >= 0) {
 				String match = mapHtml.substring(startPos + startStr.length());
@@ -431,29 +443,17 @@ public class SendToCarActivity extends Activity {
 					{
 						JSONObject mapData = markers.getJSONObject(0);
 
-						if(!mapData.has("sxst"))
-						{
-							throw new BackgroundTaskAbort(R.string.errorCountry); 
-						}
-
 						address = new Address();
-						address.title = mapData.optString("sxti", "");
-						address.street = mapData.optString("sxst", "");
-						address.number = mapData.optString("sxsn", "");
-						address.city = mapData.optString("sxct", "");
-						address.province = mapData.optString("sxpr", "");
-						address.postalCode = mapData.optString("sxpo", "");
-						address.country = mapData.optString("sxcn", "");
-						address.international_phone = mapData.optString("sxph", "");
+						address.title = decodeHtml(mapData.optString("sxti", ""));
+						address.street = decodeHtml(mapData.optString("sxst", ""));
+						address.number = decodeHtml(mapData.optString("sxsn", ""));
+						address.city = decodeHtml(mapData.optString("sxct", ""));
+						address.province = decodeHtml(mapData.optString("sxpr", ""));
+						address.postalCode = decodeHtml(mapData.optString("sxpo", ""));
+						address.country = decodeHtml(mapData.optString("sxcn", ""));
+						address.international_phone = decodeHtml(mapData.optString("sxph", ""));
 						address.phone = "";
 						
-						if(mapData.has("latlng"))
-						{
-							JSONObject latlng = mapData.getJSONObject("latlng");
-							address.latitude = latlng.optString("lat");
-							address.longitude = latlng.optString("lng");
-						}
-
 						if(mapData.has("infoWindow"))
 						{
 							JSONObject info = mapData.getJSONObject("infoWindow");
@@ -469,7 +469,7 @@ public class SendToCarActivity extends Activity {
 									}
 									sb.append(lines.getString(i));
 								}
-								address.displayAddress = sb.toString();
+								address.displayAddress = decodeHtml(sb.toString());
 								if(address.title.length() == 0)
 								{
 									// use first line of address as title
@@ -482,9 +482,26 @@ public class SendToCarActivity extends Activity {
 								JSONArray phones = info.getJSONArray("phones");
 								if(phones.length() > 0)
 								{
-									address.phone = phones.getString(0).replaceAll("\\D", "");
+									address.phone = decodeHtml(phones.getString(0).replaceAll("\\D", ""));
 								}
 							}
+						}
+						
+						if(mapData.has("latlng"))
+						{
+							JSONObject latlng = mapData.getJSONObject("latlng");
+							address.latitude = latlng.optString("lat");
+							address.longitude = latlng.optString("lng");
+							
+							/* Get reverse geocoded address from Google Maps API if the address is completely empty */
+							if(address.number.length() == 0 &&
+									address.city.length() == 0 &&
+									address.province.length() == 0 &&
+									address.country.length() == 0) {
+								approximateAddress = true;
+								DownloadGeocodedAddress(address);
+							}
+								
 						}
 					}
 					
@@ -500,6 +517,86 @@ public class SendToCarActivity extends Activity {
 				log.d("<span style=\"color: red;\">Cannot find address JSON</span>");
 				address = null;
 				throw new BackgroundTaskAbort(R.string.errorDownload); 
+			}
+		}
+
+		private void DownloadGeocodedAddress(Address address) throws BackgroundTaskAbort {
+			
+			HashMap<String, String> mapping = new HashMap<String, String>();
+			mapping.put("street_number", "number");
+			mapping.put("route", "street");
+			mapping.put("locality", "city");
+			mapping.put("postal_code", "postalCode");
+			mapping.put("administrative_area_level_1", "province");
+			mapping.put("country", "country");
+
+			String geoURI = "http://maps.googleapis.com/maps/api/geocode/json?latlng=" +
+					address.latitude + "," + address.longitude + "&sensor=false"; 
+
+			String geoHtml = "";
+			try
+			{
+				log.d("Geocoding  " + geoURI);
+
+				httpGet.setURI(new URI(geoURI));
+				HttpResponse response = client.execute(httpGet, httpContext);
+
+				log.d("Geocoding address. Status: " + response.getStatusLine().getStatusCode());
+
+				if(response.getStatusLine().getStatusCode() != HttpURLConnection.HTTP_OK)
+				{
+					return;
+				}
+
+				geoHtml = EntityUtils.toString(response.getEntity());
+
+				log.d("Response: <pre>" + htmlSnippet(geoHtml) + "</pre>");
+
+
+			} catch(Exception e) {
+				log.d("<span style=\"color: red;\">Exception while geocoding address: " + e.toString() + "</span>");
+			}
+			
+			try {
+				String oldNumber = "";
+				String newNumber = "";
+				
+				JSONObject geoJSON = new JSONObject(geoHtml);
+				JSONArray results = geoJSON.getJSONArray("results");
+				if(results.length() > 0) {
+					JSONArray components = results.getJSONObject(0).getJSONArray("address_components");
+					
+					for(int i = 0; i < components.length(); i++) {
+						JSONObject component = components.getJSONObject(i);
+						JSONArray types = component.getJSONArray("types");
+						
+						for(int j = 0; j < types.length(); j++) {
+							String t = types.getString(j);
+							String field = mapping.get(t);
+							if(field != null) {
+								String value = decodeHtml(component.getString("long_name"));
+								/* special case for street number: remove part after dash */
+								if(field.equals("number")) {
+									oldNumber = value;
+									value = value.replaceFirst("-.*", "");
+									newNumber = value;
+								}
+								address.getClass().getDeclaredField(field).set(address, value);
+							}
+						}
+						
+					}
+					
+					String display = decodeHtml(results.getJSONObject(0).optString("formatted_address", address.displayAddress));
+					address.displayAddress = display.replaceFirst(oldNumber, newNumber);
+				}
+				
+			} catch(JSONException e) {
+				log.d("<span style=\"color: red;\">Exception while parsing geocoding JSON: " + e.toString() + "</span>");
+			} catch(IllegalAccessException e) {
+				log.d("<span style=\"color: red;\">Exception while updating address: " + e.toString() + "</span>");
+			} catch(NoSuchFieldException e) {
+				log.d("<span style=\"color: red;\">Exception while updating address: " + e.toString() + "</span>");
 			}
 		}
 
@@ -604,6 +701,12 @@ public class SendToCarActivity extends Activity {
 				else
 				{
 					updateUI();
+					
+					if(approximateAddress) {
+						Context context = getApplicationContext();
+						Toast toast = Toast.makeText(context, R.string.approximateAddress, Toast.LENGTH_LONG);
+						toast.show();
+					}
 				}
 			}
 		}
@@ -613,9 +716,9 @@ public class SendToCarActivity extends Activity {
 		populateMakes();
 		selectMakeFromPreferences();
 		populateAddress();
+		
 	}
 	
-
 
 	private void populateMakes()
 	{
@@ -1020,6 +1123,7 @@ public class SendToCarActivity extends Activity {
 				
 				int errorCode = response.getInt("stcc_status");
 				int errorMsg;
+				boolean errorOnStar = false;
 				
 				switch(errorCode) {
 				case 430:
@@ -1028,6 +1132,7 @@ public class SendToCarActivity extends Activity {
 					break;
 					
 				case 450:
+					errorOnStar = true;
 					errorMsg = R.string.statusInvalidTag;
 					break;
 				case 460:
@@ -1046,7 +1151,7 @@ public class SendToCarActivity extends Activity {
 				
 				log.d("<span style=\"color: red;\">Error code: " + errorCode + ", String: " + getString(errorMsg) + "</span>");
 				
-				throw new BackgroundTaskAbort(errorMsg);
+				throw new BackgroundTaskAbort(errorMsg, errorOnStar);
 			} catch(JSONException e) {
 				log.d("<span style=\"color: red;\">Exception while parsing resposne JSON: " + e.toString() + "</span>");
 				throw new BackgroundTaskAbort(R.string.errorSendToCar); 
@@ -1063,16 +1168,46 @@ public class SendToCarActivity extends Activity {
 			if(!isCancelled()) {
 				if(exception != null)
 				{
-					Context context = getApplicationContext();
-					Toast toast = Toast.makeText(context, exception.errorId, Toast.LENGTH_LONG);
-					toast.show();
+					if(exception.errorOnStar) {
+						AlertDialog.Builder alertbox = new AlertDialog.Builder(SendToCarActivity.this);
+						alertbox.setTitle(R.string.errorTitle);
+						alertbox.setMessage(R.string.statusOnStarMaxDestinations);
+						alertbox.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface arg0, int arg1) {
+							}
+						});
+
+						alertbox.setNeutralButton(R.string.showOnStarWebsite, new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface arg0, int arg1) {
+								Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.onstar.com/web/portal/odm"));
+								startActivity(browserIntent);
+							}
+						});
+
+						// set a negative/no button and create a listener
+						alertbox.setNegativeButton(R.string.showHelp, new DialogInterface.OnClickListener() {
+							@Override
+							public void onClick(DialogInterface arg0, int arg1) {
+								startActivity(new Intent(SendToCarActivity.this, InformationActivity.class));
+							}
+						});
+
+						// display box
+						alertbox.show();
+					} else {
+						Context context = getApplicationContext();
+						Toast toast = Toast.makeText(context, exception.errorId, Toast.LENGTH_LONG);
+						toast.show();
+					}
 
 					// Don't close activity if upload fails in case the user wants to retry
 				}
 				else
 				{
-					Context context = getApplicationContext();
 					int msgId = (car.type == 2) ?  R.string.successGPS : R.string.successCar;
+					Context context = getApplicationContext();
 					Toast toast = Toast.makeText(context, msgId, Toast.LENGTH_LONG);
 					toast.show();
 
@@ -1085,7 +1220,72 @@ public class SendToCarActivity extends Activity {
 	public String htmlSnippet(String s) {
 		return TextUtils.htmlEncode(s.substring(0, Math.min(s.length(), 1000)));
 	}
-	
+
+	public String  decodeHtml(String s) {
+		/* Adapted from the android.net.Uri.decode() function */
+
+		/*
+	    Compared to java.net.URLEncoderDecoder.decode(), this method decodes a
+	    chunk at a time instead of one character at a time, and it doesn't
+	    throw exceptions. It also only allocates memory when necessary--if
+	    there's nothing to decode, this method won't do much.
+	    */
+	    if (s == null) {
+	        return null;
+	    }
+	    // Lazily-initialized buffers.
+	    StringBuilder decoded = null;
+	    Pattern escape = Pattern.compile("&#([0-9]+);");
+	    
+	    int oldLength = s.length();
+	    // This loop alternates between copying over normal characters and
+	    // decoding in chunks. This results in fewer method calls and
+	    // allocations than decoding one character at a time.
+	    int current = 0;
+	    Matcher matcher = escape.matcher(s);
+
+	    while (matcher.find()) {
+	        // Copy over normal characters until match
+	    	int nextEscape = matcher.start();
+
+	        // Prepare buffers.
+	        if (decoded == null) {
+	            // Looks like we're going to need the buffers...
+	            // We know the new string will be shorter. Using the old length
+	            // may overshoot a bit, but it will save us from resizing the
+	            // buffer.
+	            decoded = new StringBuilder(oldLength);
+	        }
+	        
+	        // Append characters leading up to the escape.
+	        if (nextEscape > current) {
+	            decoded.append(s, current, nextEscape);
+	        } else {
+	            // assert current == nextEscape
+	        }
+            current = matcher.end();
+	        
+	        // Decode and append escape sequence. Escape sequences look like
+	        // "&#N;" where &# and ; are literal and N is a decimal number (several digits)
+	        try {
+	        	// Combine the hex digits into one byte and write.
+	        	char c = (char) Integer.parseInt(matcher.group(1));
+	        	decoded.append(c);
+	        } catch (NumberFormatException e) {
+	            throw new AssertionError(e);
+	        }
+	    }
+
+        if (decoded == null) {
+            // We didn't actually decode anything.
+            return s;
+        } else {
+            // Append the remainder and return the decoded string.
+            decoded.append(s, current, oldLength);
+            return decoded.toString();
+        }
+	}
+
 	
 	public class JSONMapRedirectHandler extends DefaultRedirectHandler {
 
