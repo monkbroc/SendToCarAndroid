@@ -2,154 +2,147 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:orientation="vertical" ><LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center"
-        android:maxWidth="540dp"
-        android:minWidth="540dp"
-        android:orientation="vertical" >
+    android:orientation="vertical" >
 
-        <ScrollView
-            android:id="@+id/scrollView1"
+    <ScrollView
+        android:id="@+id/scrollView1"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+
+        <LinearLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" >
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
+
+            <TextView
+                android:id="@+id/textView3"
+                style="@style/headerBar"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/vehicle" />
 
             <LinearLayout
-                android:id="@+id/linearLayout2"
+                android:id="@+id/linearLayout3"
+                style="@style/viewGroup"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical" >
 
                 <TextView
-                    android:id="@+id/textView3"
-                    style="@style/headerBar"
+                    style="@style/label"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/vehicle" />
+                    android:text="@string/make" />
 
-                <LinearLayout
-                    android:id="@+id/linearLayout3"
-                    style="@style/viewGroup"
+                <Spinner
+                    android:id="@+id/makeSpinner"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        style="@style/label"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/make" />
-
-                    <Spinner
-                        android:id="@+id/makeSpinner"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:entries="@array/choose_array"
-                        android:prompt="@string/make" />
-
-                    <TextView
-                        android:id="@+id/accountLabel"
-                        style="@style/label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/account" />
-
-                    <EditText
-                        android:id="@+id/accountText"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text" />
-
-                    <CheckBox
-                        android:id="@+id/useDefaultCheck"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="right"
-                        android:text="@string/useAsDefault" />
-                </LinearLayout>
+                    android:entries="@array/choose_array"
+                    android:prompt="@string/make" />
 
                 <TextView
-                    android:id="@+id/TextView01"
-                    style="@style/headerBar"
+                    android:id="@+id/accountLabel"
+                    style="@style/label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/account" />
+
+                <EditText
+                    android:id="@+id/accountText"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/destination" />
+                    android:inputType="text" />
 
-                <LinearLayout
-                    android:id="@+id/linearLayout4"
-                    style="@style/viewGroup"
-                    android:layout_width="fill_parent"
+                <CheckBox
+                    android:id="@+id/useDefaultCheck"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical" >
-
-                    <TextView
-                        android:id="@+id/textView1"
-                        style="@style/label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/destinationName" />
-
-                    <EditText
-                        android:id="@+id/destinationText"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text" />
-
-                    <TextView
-                        android:id="@+id/tagLabel"
-                        style="@style/label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/destinationTag" />
-
-                    <EditText
-                        android:id="@+id/tagText"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text" />
-
-                    <TextView
-                        android:id="@+id/textView2"
-                        style="@style/label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/address" />
-
-                    <TextView
-                        android:id="@+id/addressText"
-                        style="@style/label"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textStyle="italic" />
-                </LinearLayout>
+                    android:layout_gravity="right"
+                    android:text="@string/useAsDefault" />
             </LinearLayout>
-        </ScrollView>
 
-        <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:drawable/bottom_bar" >
-
-            <Button
-                android:id="@+id/sendButton"
-                android:layout_width="wrap_content"
+            <TextView
+                android:id="@+id/TextView01"
+                style="@style/headerBar"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5.0dip"
-                android:layout_weight="0.5"
-                android:drawablePadding="3.0dip"
-                android:text="@string/send" />
+                android:text="@string/destination" />
 
-            <Button
-                android:id="@+id/cancelButton"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/linearLayout4"
+                style="@style/viewGroup"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="5.0dip"
-                android:layout_weight="0.5"
-                android:drawablePadding="3.0dip"
-                android:text="@string/cancel" />
+                android:orientation="vertical" >
+
+                <TextView
+                    android:id="@+id/textView1"
+                    style="@style/label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/destinationName" />
+
+                <EditText
+                    android:id="@+id/destinationText"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+
+                <TextView
+                    android:id="@+id/tagLabel"
+                    style="@style/label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/destinationTag" />
+
+                <EditText
+                    android:id="@+id/tagText"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    style="@style/label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/address" />
+
+                <TextView
+                    android:id="@+id/addressText"
+                    style="@style/label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textStyle="italic" />
+            </LinearLayout>
         </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/bottom_bar" >
+
+        <Button
+            android:id="@+id/sendButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5.0dip"
+            android:layout_weight="0.5"
+            android:drawablePadding="3.0dip"
+            android:text="@string/send" />
+
+        <Button
+            android:id="@+id/cancelButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="5.0dip"
+            android:layout_weight="0.5"
+            android:drawablePadding="3.0dip"
+            android:text="@string/cancel" />
     </LinearLayout>
 
 </LinearLayout>

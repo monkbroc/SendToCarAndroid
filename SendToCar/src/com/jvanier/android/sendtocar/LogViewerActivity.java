@@ -17,6 +17,13 @@ public class LogViewerActivity extends Activity {
 		refreshLog();
 	}
 
+	@Override
+	protected void onRestart() {
+		super.onRestart();
+		
+		refreshLog();
+	}
+
 	private void setupButtons() {
         final Button refreshButton = (Button) findViewById(R.id.refreshButton);
         refreshButton.setOnClickListener(new View.OnClickListener() {
