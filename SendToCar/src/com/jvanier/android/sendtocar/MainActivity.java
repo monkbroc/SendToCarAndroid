@@ -28,6 +28,8 @@ public class MainActivity extends Activity {
 		public void OnClick();
 	}
 
+	private DebugLog log;
+
 	private ListView mainList;
 	private ArrayList<Clicker> mainEvents;
 	private int firstRunScreen;
@@ -38,9 +40,18 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
 
+		log = ((SendToCarApp) getApplication()).getLog();
+		
         populateMainList();
 
 		firstRunDialog(false);
+		
+		loadCars();
+	}
+
+	private void loadCars() {
+		CarListLoader loader = new CarListLoader(this, log);
+		loader.readCars();
 	}
 	
 	private void populateMainList() {
@@ -76,8 +87,8 @@ public class MainActivity extends Activity {
 		HashMap<String, String> map;
 
         map = new HashMap<String, String>();
-        map.put("title", "Open Google Maps");
-        map.put("description", "Send a map destination to car");
+        map.put("title", getString(R.string.listMapTitle));
+        map.put("description", getString(R.string.listMapDescription));
         map.put("img", String.valueOf(R.drawable.ic_menu_see_map));
         mainEvents.add(new Clicker() {
 			@Override
@@ -106,18 +117,15 @@ public class MainActivity extends Activity {
 		HashMap<String, String> map;
 
         map = new HashMap<String, String>();
-        map.put("title", "Enter  address");
-        map.put("description", "Send an address manually to car");
+        map.put("title", getString(R.string.listManualTitle));
+        map.put("description", getString(R.string.listManualDescription));
         map.put("img", String.valueOf(R.drawable.ic_menu_edit));
         
         mainEvents.add(new Clicker() {
 			@Override
 			public void OnClick() {
-        		AlertDialog.Builder adb = new AlertDialog.Builder(MainActivity.this);
-        		adb.setTitle("Not implemented");
-        		adb.setMessage("TODO");
-        		adb.setPositiveButton("Ok", null);
-        		adb.show();
+        		Intent intent = new Intent(MainActivity.this, SendToCarActivity.class);
+        		startActivity(intent);
         	}
         });
         
@@ -127,8 +135,8 @@ public class MainActivity extends Activity {
 	private HashMap<String, String> setupTutorial() {
 		HashMap<String, String> map;
 		map = new HashMap<String, String>();
-        map.put("title", "Tutorial");
-        map.put("description", "Step-by-step guide to use the app");
+        map.put("title", getString(R.string.listTutorialTitle));
+        map.put("description", getString(R.string.listTutorialDescription));
         map.put("img", String.valueOf(R.drawable.ic_menu_list));
 
         mainEvents.add(new Clicker() {
@@ -144,8 +152,8 @@ public class MainActivity extends Activity {
 	private HashMap<String, String> setupHelp() {
 		HashMap<String, String> map;
 		map = new HashMap<String, String>();
-        map.put("title", "View Help");
-        map.put("description", "More information about the app");
+        map.put("title", getString(R.string.listHelpTitle));
+        map.put("description", getString(R.string.listHelpDescription));
         map.put("img", String.valueOf(R.drawable.ic_menu_help));
         
 
@@ -163,8 +171,8 @@ public class MainActivity extends Activity {
 	private HashMap<String, String> setupRate() {
 		HashMap<String, String> map;
 		map = new HashMap<String, String>();
-        map.put("title", "Rate app");
-        map.put("description", "If you like this app, please rate it!");
+        map.put("title", getString(R.string.listRateTitle));
+        map.put("description", getString(R.string.listRateDescription));
         map.put("img", String.valueOf(R.drawable.ic_menu_star));
         
 
@@ -183,8 +191,8 @@ public class MainActivity extends Activity {
 	private HashMap<String, String> setupEmail() {
 		HashMap<String, String> map;
 		map = new HashMap<String, String>();
-        map.put("title", "Contact developer");
-        map.put("description", "If you have issues with this app, you can email the developer");
+        map.put("title", getString(R.string.listEmailTitle));
+        map.put("description", getString(R.string.listEmailDescription));
         map.put("img", String.valueOf(R.drawable.ic_menu_email));
         
 

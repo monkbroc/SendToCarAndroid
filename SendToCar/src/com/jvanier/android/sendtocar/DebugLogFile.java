@@ -9,6 +9,7 @@ import java.text.DateFormat;
 import java.util.Date;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.Log;
 
 public class DebugLogFile implements DebugLog {
@@ -54,6 +55,11 @@ public class DebugLogFile implements DebugLog {
 		}
 	}
 	
+	@Override
+	public String htmlSnippet(String s) {
+		return TextUtils.htmlEncode(s.substring(0, Math.min(s.length(), 1000)));
+	}
+
 	public static String readLog(Context context) {
 		BufferedReader in = null;
 		StringBuilder sb = null;

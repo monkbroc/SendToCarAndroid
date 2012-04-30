@@ -48,6 +48,7 @@
     <string name="statusDestinationNotSent">This destination cannot be sent to your car. Try a different destination</string>
     <string name="logViewer">Send To Car Log</string>
     <string name="menuHelp">Help</string>
+    <string name="menuEdit">Edit address</string>
     <string name="infoStart">Start Google Maps and click on a place</string>
     <string name="infoNext">Next</string>
     <string name="infoPrev">Previous</string>
@@ -58,5 +59,24 @@
     <string name="infoEnter">Select your car and hit "Send"</string>
     <string name="tutorial">Tutorial</string>
     <string name="approximateAddress">Address is approximate</string>
+    <string name="manualNumber">#</string>
+    <string name="manualStreet">Street</string>
+    <string name="manualCity">City</string>
+    <string name="manualProvince">State/Province</string>
+    <string name="manualPostalCode">Zip/Postal code</string>
+    <string name="manualCountry">Country</string>
+    <string name="manualCountryHint">2-letter code like US, FR, UK</string>
+    <string name="listMapTitle">Start Google Maps</string>
+    <string name="listMapDescription">Send a map destination to car</string>
+    <string name="listManualTitle">Enter address</string>
+    <string name="listManualDescription">Send an address manually to car</string>
+    <string name="listTutorialTitle">Tutorial</string>
+    <string name="listTutorialDescription">Step-by-step guide to use the app</string>
+    <string name="listHelpTitle">View Help</string>
+    <string name="listHelpDescription">More information about the app</string>
+    <string name="listRateTitle">Rate app</string>
+    <string name="listRateDescription">If you like this app, please rate it!</string>
+    <string name="listEmailTitle">Contact developer</string>
+    <string name="listEmailDescription">If you have issues with this app, you can email the developer</string>
 
 </resources>

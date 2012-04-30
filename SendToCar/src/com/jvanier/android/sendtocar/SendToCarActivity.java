@@ -1,25 +1,23 @@
 
 /* TODO:
+ * - Figure out why the new intent is ignore when pressing home, then going back go map and choosing a new destination
+ *   so that finishOnStop can be removed.
+ * - show busy dialog while loading cars
  * - Test all error cases
  * - Test in other locales/languages/countries/vehicle makes
  */
 
 package com.jvanier.android.sendtocar;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InterruptedIOException;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -52,12 +50,10 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.util.AttributeSet;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -84,9 +80,11 @@ public class SendToCarActivity extends Activity {
 	private CookieStore cookieStore;
 	private DefaultHttpClient client;
 	
-	private ArrayList<CarProvider> carsData;
+	private boolean manualEdit;
 	private Address address;
 	private boolean ignoreFirstSpinnerChange;
+	
+	private boolean finishOnStop;
 	
 	private DebugLog log;
 
@@ -96,16 +94,24 @@ public class SendToCarActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sendtocar);
 		
-		log = new DebugLogFile(this);
-		//log = new DebugLogDummy();
+		log = ((SendToCarApp) getApplication()).getLog();
 		
 		tagVisibilityAndText(false, "");
+		manualAddressVisibility(false);
+
+		loadCars();
 		
 		setupHttp();
 
 		loadMapFromIntent(getIntent());
 		
 		registerButtons();
+
+	}
+
+	private void loadCars() {
+		CarListLoader loader = new CarListLoader(this, log);
+		loader.readCars();
 	}
 
 	@Override
@@ -113,7 +119,9 @@ public class SendToCarActivity extends Activity {
 		super.onStop();
 		// onStop() is called when pressing the Home button. The current address should be forgotten, otherwise next time the activty
 		// is started the old address is displayed (new Intent is ignored).
-		finish();
+		if(finishOnStop) {
+			finish();
+		}
 	}
 
 
@@ -128,6 +136,21 @@ public class SendToCarActivity extends Activity {
 		
 		EditText tagText = (EditText) findViewById(R.id.tagText);
 		tagText.setVisibility(visible ? View.VISIBLE : View.GONE);
+	}
+	
+
+	private void manualAddressVisibility(boolean manualEdit) {
+		this.manualEdit = manualEdit;
+		
+		View addressLabel = findViewById(R.id.addressLabel);
+		addressLabel.setVisibility(!manualEdit ? View.VISIBLE : View.GONE);
+
+		View addressText = findViewById(R.id.addressText);
+		addressText.setVisibility(!manualEdit ? View.VISIBLE : View.GONE);
+		
+		View manualAddress = findViewById(R.id.manualAddress);
+		manualAddress.setVisibility(manualEdit ? View.VISIBLE : View.GONE);
+		
 	}
 
 	private void setupHttp() {
@@ -164,9 +187,22 @@ public class SendToCarActivity extends Activity {
 	}
 	
 	@Override
+	public boolean onPrepareOptionsMenu (Menu menu) {
+	    if (manualEdit) {
+	        menu.getItem(0).setEnabled(false);
+	    }
+	    return true;
+	}
+
+	
+	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch (item.getItemId()) {
-	        case R.id.idHelp:
+        case R.id.idManual:
+        	manualAddressVisibility(true);
+        	
+        	break;
+        case R.id.idHelp:
             	startActivity(new Intent(SendToCarActivity.this, InformationActivity.class));
             	break;
 	    }
@@ -175,27 +211,28 @@ public class SendToCarActivity extends Activity {
 
 	private void loadMapFromIntent(Intent i)
 	{
-		if(i == null)
-		{
-			log.d("<span style=\"color: red;\">No intent</span>");
-		}
-		else
-		{
-			log.d("Intent. Action: " + i.getAction() + ", Text: " + i.getExtras().getCharSequence(Intent.EXTRA_TEXT).toString());
-		}
-		
-		if(i != null && i.getAction().equals(Intent.ACTION_SEND) && i.getExtras() != null)
-		{
-			String url = findURL(i.getExtras().getCharSequence(Intent.EXTRA_TEXT).toString());
+		try {
+			//log.d("Intent. Action: " + i.getAction() + ", Text: " + i.getExtras().getCharSequence(Intent.EXTRA_TEXT).toString());
+			if(i.getAction().equals(Intent.ACTION_SEND)) {
+				String url = findURL(i.getExtras().getCharSequence(Intent.EXTRA_TEXT).toString());
 			
-			log.d("URL: <a href=\""+ url + "\">url</a>");
+				log.d("URL: <a href=\""+ url + "\">url</a>");
 			
-			taskDownload = new DownloadAddressTask();
-			taskDownload.execute(new String[] { url });
-		}
-		else
-		{
-	    	showMessageBoxAndFinish(R.string.errorIntent);
+				taskDownload = new DownloadAddressTask();
+				taskDownload.execute(new String[] { url });
+				
+				finishOnStop = true;
+			}
+			else
+			{
+		    	showMessageBoxAndFinish(R.string.errorIntent);
+			}
+		} catch(NullPointerException e) {
+			// not started from Google Maps, just open the manual address mode
+			address = new Address();
+			
+			manualAddressVisibility(true);
+			updateUI();
 		}
 	}
 	
@@ -245,6 +282,10 @@ public class SendToCarActivity extends Activity {
 	}
 	
 	private class BackgroundTaskAbort extends Exception {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 7349967401205013218L;
 		public int errorId;
 		public boolean errorOnStar;
 		
@@ -262,19 +303,19 @@ public class SendToCarActivity extends Activity {
 	}
 
 	private class Address {
-		public String title;
-		public String latitude;
-		public String longitude;
-		public String street;
-		public String number;
-		public String city;
-		public String province;
-		public String postalCode;
-		public String country;
-		public String international_phone;
-		public String phone;
+		public String title = "";
+		public String latitude = "";
+		public String longitude = "";
+		public String street = "";
+		public String number = "";
+		public String city = "";
+		public String province = "";
+		public String postalCode = "";
+		public String country = "";
+		public String international_phone = "";
+		public String phone = "";
 		
-		public String displayAddress;
+		public String displayAddress = "";
 
 		public Address() {
 		}
@@ -283,31 +324,6 @@ public class SendToCarActivity extends Activity {
 			return displayAddress;
 		}
 	}
-	
-	private class CarProvider implements Comparable<CarProvider> {
-		public String id;
-		public int type;
-		public String make;
-		public String account;
-		public String destination_tag;
-		public boolean use_destination_tag;
-		public String system;
-		public boolean international_phone;
-		
-		public CarProvider() {
-		}
-		
-		public String toString() {
-			return make + ((type == 2) ? " (GPS)" : "");
-		}
-		
-	    @Override
-	    public int compareTo(CarProvider other) {
-	    	int typediff = (this.type - other.type);
-	        return (typediff == 0) ? this.make.compareTo(other.make) : typediff;
-	    }
-	}
-
 	
 	private class DownloadAddressTask extends AsyncTask<String, Void, Void> {
 
@@ -353,11 +369,6 @@ public class SendToCarActivity extends Activity {
 				parseAddressData(mapHtml);
 				if(isCancelled()) return null;
 				
-				String carsJson = downloadCars();
-				if(isCancelled()) return null;
-				parseCarsData(carsJson);
-				if(isCancelled()) return null;
-
 			} catch (BackgroundTaskAbort e) {
 				exception = e;
 			}
@@ -390,7 +401,7 @@ public class SendToCarActivity extends Activity {
 				
 				mapHtml = EntityUtils.toString(response.getEntity());
 
-				log.d("Response: <pre>" + htmlSnippet(mapHtml) + "</pre>");
+				log.d("Response: <pre>" + log.htmlSnippet(mapHtml) + "</pre>");
 				
 				/* Get the name of the Google server that sent the map after any redirects */
 				mapHost = (HttpHost)  httpContext.getAttribute( 
@@ -557,7 +568,7 @@ public class SendToCarActivity extends Activity {
 
 				geoHtml = EntityUtils.toString(response.getEntity());
 
-				log.d("Response: <pre>" + htmlSnippet(geoHtml) + "</pre>");
+				log.d("Response: <pre>" + log.htmlSnippet(geoHtml) + "</pre>");
 
 
 			} catch(Exception e) {
@@ -607,91 +618,6 @@ public class SendToCarActivity extends Activity {
 			}
 		}
 
-		private String downloadCars() throws BackgroundTaskAbort {
-			String carsJson = "";
-			try
-			{
-				String lang = Locale.getDefault().getLanguage();
-				URI carsUri = new URI(mapHost.getSchemeName(), mapHost.getHostName(), "/maps/sendtodata", "hl=" + lang, null);
-
-				log.d("Downloading " + carsUri.toString());
-				
-				httpGet.setURI(carsUri);
-				
-				HttpResponse response = client.execute(httpGet, httpContext);
-				
-				log.d("Downloaded cars. Status: " + response.getStatusLine().getStatusCode());
-
-				if(response.getStatusLine().getStatusCode() != HttpURLConnection.HTTP_OK )
-				{
-					throw new BackgroundTaskAbort(R.string.errorNotAvailable);
-				}
-				
-				carsJson = EntityUtils.toString(response.getEntity());
-				log.d("Response: <pre>" + htmlSnippet(carsJson) + "</pre>");
-				
-			} catch(Exception e) {
-				log.d("<span style=\"color: red;\">Exception while downloading cars: " + e.toString() + "</span>");
-				throw new BackgroundTaskAbort(R.string.errorDownload);
-			}
-			
-			return carsJson;
-		}
-
-		private void parseCarsData(CharSequence carsJson) throws BackgroundTaskAbort {
-	
-			try {
-				JSONObject carsRaw = new JSONObject(carsJson.toString().replaceAll("\\\\x", "\\\\u00"));
-				JSONObject providers = carsRaw.getJSONObject("providers");
-				
-				carsData = new ArrayList<CarProvider>();
-				
-				Context context = SendToCarActivity.this;
-				CarProvider fake = new CarProvider();
-				fake.make = context.getString(R.string.choose);
-				fake.type = 0;
-
-				carsData.add(fake);
-				
-				@SuppressWarnings("unchecked")
-				Iterator<String> it = (Iterator<String>)providers.keys();
-				while(it.hasNext())
-				{
-					String name = it.next();
-					JSONObject provider = providers.getJSONObject(name);
-					
-					/* Only take providers with a unique account number
-					 * Other providers require special desktop software to send the address
-					 */
-					
-					if(provider.has("account"))
-					{
-						CarProvider c = new CarProvider();
-						c.id = name;
-						c.make = provider.getString("make");
-						c.type = provider.getInt("type");
-						c.account = provider.getString("account");
-						c.system = provider.getString("system");
-						
-						c.international_phone = provider.optBoolean("international_phone", false);
-						c.use_destination_tag = provider.optBoolean("use_destination_tag", false);
-						c.destination_tag = provider.optString("destination_tag", "");
-						
-						carsData.add(c);
-					}
-					
-				}
-
-				Collections.sort(carsData);
-				
-				log.d("Cars JSON parsed OK.");
-				
-			} catch(JSONException e) {
-				log.d("<span style=\"color: red;\">Exception while parsing cars JSON: " + e.toString() + "</span>");
-				carsData = null;
-				throw new BackgroundTaskAbort(R.string.errorDownload); 
-			}
-		}
 
 		@Override
 		protected void onPostExecute(Void result) {
@@ -729,12 +655,24 @@ public class SendToCarActivity extends Activity {
 
 	private void populateMakes()
 	{
+		CarList carsData = CarListLoader.carList;
+		
+		// TODO: show busy dialog while loading cars
 		if(carsData != null)
 		{
+			ArrayList<CarProvider> carsList = new ArrayList<CarProvider>();
+			
+			CarProvider fake = new CarProvider();
+			fake.make = SendToCarActivity.this.getString(R.string.choose);
+			fake.type = 0;
+			carsList.add(fake);
+			
+			carsList.addAll(carsData.getList());
+
 			Spinner spinner = (Spinner) findViewById(R.id.makeSpinner);
 
 			ArrayAdapter<CarProvider> adapter = new ArrayAdapter<CarProvider>(this,
-					android.R.layout.simple_spinner_item, carsData.toArray(new CarProvider[0]));
+					android.R.layout.simple_spinner_item, carsList.toArray(new CarProvider[carsList.size()]));
 
 			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			spinner.setAdapter(adapter);
@@ -790,6 +728,7 @@ public class SendToCarActivity extends Activity {
 
 	   if(make.length() > 0 && account.length() > 0) {
 		   Spinner spinner = (Spinner) findViewById(R.id.makeSpinner);
+		   @SuppressWarnings("unchecked")
 		   ArrayAdapter<CarProvider> adapter = (ArrayAdapter<CarProvider>) spinner.getAdapter();
 		   int pos;
 		   for(pos = 0; pos < adapter.getCount(); pos++)
@@ -818,19 +757,33 @@ public class SendToCarActivity extends Activity {
 	protected void populateAddress() {
 		if(address != null)
 		{
-			EditText destinationText = (EditText) findViewById(R.id.destinationText);
-			EditText tagText = (EditText) findViewById(R.id.tagText);
-			TextView addressText = (TextView) findViewById(R.id.addressText);
+			HashMap<Integer, String> ids = new HashMap<Integer, String>();
+			
+			ids.put(R.id.destinationText, address.title);
+			ids.put(R.id.tagText, address.title);
+			ids.put(R.id.addressText, address.displayAddress);
 
-			destinationText.setText(address.title);
-			tagText.setText(address.title);
-			addressText.setText(address.displayAddress);
-		}
+			ids.put(R.id.manualNumberText, address.number);
+            ids.put(R.id.manualStreetText, address.street);
+            ids.put(R.id.manualCityText, address.city);
+            ids.put(R.id.manualProvinceText, address.province);
+            ids.put(R.id.manualPostalCodeText, address.postalCode);
+            ids.put(R.id.manualCountryText, address.country);
+            
+            for(Integer id : ids.keySet()) {
+            	TextView v = (TextView) findViewById(id);
+            	v.setText(ids.get(id));
+            }
+        }
 	}
 
 	private class OnSendButtonClick extends Object implements OnClickListener {
 
 		private class ValidationException extends Exception {
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = -5210917939912172597L;
 			public int errorId;
 			
 			public ValidationException(int errorId)
@@ -872,6 +825,10 @@ public class SendToCarActivity extends Activity {
 				}
 				saveMakeToPreferences();
 				
+				if(manualEdit) {
+					updateAdressFromFields();
+				}
+				
 				taskSend = new SendToCarTask();
 				taskSend.setProvider(car);
 				taskSend.setAccount(account);
@@ -889,6 +846,37 @@ public class SendToCarActivity extends Activity {
 				 * This is unusually and can be ignored. The user will press back and try again */
 			}
 		}
+	}
+	
+	private void updateAdressFromFields() {
+		if(address != null)
+		{
+			HashMap<Integer, String> ids = new HashMap<Integer, String>();
+			
+			ids.put(R.id.manualNumberText, "number");
+            ids.put(R.id.manualStreetText, "street");
+            ids.put(R.id.manualCityText, "city");
+            ids.put(R.id.manualProvinceText, "province");
+            ids.put(R.id.manualPostalCodeText, "postalCode");
+            ids.put(R.id.manualCountryText, "country");
+            
+            for(Integer id : ids.keySet()) {
+            	try {
+	            	TextView v = (TextView) findViewById(id);
+	            	String field = ids.get(id);
+	            	String value = v.getText().toString();
+					address.getClass().getDeclaredField(field).set(address, value);
+            	} catch(NoSuchFieldException e) {
+            		// ignore
+            	} catch(IllegalAccessException e) {
+            		// ignore
+            	}
+            }
+            
+            /* erase latitude and longitude in case they were set since the user may have moved the point */
+            address.latitude = "1.0000";
+            address.longitude = "1.0000";
+        }
 	}
 
 	private void saveMakeToPreferences() {
@@ -1001,7 +989,7 @@ public class SendToCarActivity extends Activity {
 				postData.add(account);
 
 				postData.add("source");
-				postData.add(mapHost.getHostName());
+				postData.add(car.host);
 
 				postData.add("atx");
 				postData.add(car.id);
@@ -1054,6 +1042,26 @@ public class SendToCarActivity extends Activity {
 			String cookie_id = null;
 
 			List<Cookie> cookies = cookieStore.getCookies();
+			
+			if(cookies.size() == 0) {
+				/* try to load the main Google Maps page to get a cookie */
+				if(car != null) {
+					try {
+						URI mainPage = new URI("http", car.host, "/", "output=json", null);
+						log.d("Downloading main Google Maps page to fill the cookie jar: " + mainPage.toString());
+
+						HttpGet httpGet = new HttpGet();
+						httpGet.setURI(mainPage);
+
+						HttpResponse response = client.execute(httpGet, httpContext);
+
+						log.d("Downloaded cookie. Status: " + response.getStatusLine().getStatusCode());
+					} catch (Exception e) {
+						// ignore
+					}
+				}
+			}
+			
 			Iterator<Cookie> it = cookies.iterator();
 			while(it.hasNext()) {
 				Cookie c = it.next();
@@ -1078,7 +1086,7 @@ public class SendToCarActivity extends Activity {
 			String sendToCarHtml = "";
 			try
 			{
-				URI postUri = new URI(mapHost.getSchemeName(), mapHost.getHostName(), "/maps/sendto", "authuser=0&stx=c", null);
+				URI postUri = new URI("http", car.host, "/maps/sendto", "authuser=0&stx=c", null);
 				
 				log.d("Uploading to " + postUri.toString());
 
@@ -1100,7 +1108,7 @@ public class SendToCarActivity extends Activity {
 				}
 				
 				sendToCarHtml = EntityUtils.toString(response.getEntity());
-				log.d("Response: <pre>" + htmlSnippet(sendToCarHtml) + "</pre>");
+				log.d("Response: <pre>" + log.htmlSnippet(sendToCarHtml) + "</pre>");
 			} catch(InterruptedIOException e) {
 				log.d("Upload to car aborted");
 				return null;
@@ -1222,10 +1230,6 @@ public class SendToCarActivity extends Activity {
 				}
 			}
 		}
-	}
-
-	public String htmlSnippet(String s) {
-		return TextUtils.htmlEncode(s.substring(0, Math.min(s.length(), 1000)));
 	}
 
 	public String  decodeHtml(String s) {

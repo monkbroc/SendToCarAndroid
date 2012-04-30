@@ -12,4 +12,9 @@ public class DebugLogDummy implements DebugLog {
 		
 	}
 
+	@Override
+	public String htmlSnippet(String s) {
+		return "";
+	}
+
 }

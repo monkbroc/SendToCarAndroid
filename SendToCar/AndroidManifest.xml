@@ -11,6 +11,7 @@
         android:targetSdkVersion="14" />
 
     <application
+        android:name="SendToCarApp"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name" >
         <activity

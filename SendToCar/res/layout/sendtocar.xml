@@ -96,16 +96,18 @@
                     style="@style/label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/destinationTag" />
+                    android:text="@string/destinationTag"
+                    android:visibility="gone" />
 
                 <EditText
                     android:id="@+id/tagText"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="text" />
+                    android:inputType="text"
+                    android:visibility="gone" />
 
                 <TextView
-                    android:id="@+id/textView2"
+                    android:id="@+id/addressLabel"
                     style="@style/label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -117,6 +119,106 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textStyle="italic" />
+
+                <LinearLayout
+                    android:id="@+id/manualAddress"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone" >
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" >
+
+                        <TextView
+                            android:id="@+id/manualNumberLabel"
+                            style="@style/label"
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:paddingRight="6dp"
+                            android:text="@string/manualNumber" />
+
+                        <TextView
+                            android:id="@+id/manualStreetLabel"
+                            style="@style/label"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/manualStreet" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content" >
+
+                        <EditText
+                            android:id="@+id/manualNumberText"
+                            android:layout_width="80dp"
+                            android:layout_height="wrap_content"
+                            android:inputType="numberDecimal"
+                            android:paddingRight="6dp" />
+
+                        <EditText
+                            android:id="@+id/manualStreetText"
+                            android:layout_width="fill_parent"
+                            android:layout_height="wrap_content"
+                            android:inputType="text"
+                            android:paddingRight="6dp" />
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/manualCityLabel"
+                        style="@style/label"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/manualCity" />
+
+                    <EditText
+                        android:id="@+id/manualCityText"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+
+                    <TextView
+                        android:id="@+id/manualProvinceLabel"
+                        style="@style/label"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/manualProvince" />
+
+                    <EditText
+                        android:id="@+id/manualProvinceText"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+
+                    <TextView
+                        android:id="@+id/manualPostalCodeLabel"
+                        style="@style/label"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/manualPostalCode" />
+
+                    <EditText
+                        android:id="@+id/manualPostalCodeText"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:inputType="text" />
+
+                    <TextView
+                        android:id="@+id/manualCountryLabel"
+                        style="@style/label"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/manualCountry" />
+
+                    <EditText
+                        android:id="@+id/manualCountryText"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/manualCountryHint"
+                        android:inputType="text" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
