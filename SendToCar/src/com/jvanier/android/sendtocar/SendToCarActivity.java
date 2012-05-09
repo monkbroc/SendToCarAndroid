@@ -10,7 +10,10 @@
 
 package com.jvanier.android.sendtocar;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InterruptedIOException;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -1321,7 +1324,6 @@ public class SendToCarActivity extends Activity {
         }
 	}
 
-	
 	public class JSONMapRedirectHandler extends DefaultRedirectHandler {
 
 		@Override
