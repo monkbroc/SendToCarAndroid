@@ -40,7 +40,6 @@
                     android:id="@+id/makeSpinner"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:entries="@array/choose_array"
                     android:prompt="@string/make" />
 
                 <TextView
@@ -218,12 +217,42 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/manualCountryHint"
                         android:inputType="text" />
+
+                    <TextView
+                        android:id="@+id/manualPhoneLabel"
+                        style="@style/label"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/manualPhone" />
+
+                    <EditText
+                        android:id="@+id/manualPhoneText"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/optional"
+                        android:inputType="text" />
                 </LinearLayout>
+
+                <TextView
+                    android:id="@+id/notesLabel"
+                    style="@style/label"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/notes" />
+
+                <EditText
+                    android:id="@+id/notesText"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/optional"
+                    android:inputType="textMultiLine"
+                    android:lines="3" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
     <LinearLayout
+        style="@android:style/ButtonBar"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:background="@android:drawable/bottom_bar" >

@@ -2,11 +2,9 @@
 <resources>
 
     <string name="app_name">Envoyer à un véhicule</string>
-    <string name="startGoogleMaps">Démarer Google Maps</string>
     <string name="errorStartGoogleMaps">Google Maps ne peut pas démarer</string>
     <string name="vehicle">Véhicule</string>
     <string name="make">Constructeur</string>
-    <string name="defaultMake">Sélectionnez</string>
     <string name="account">Compte</string>
     <string name="destination">Destination</string>
     <string name="destinationName">Nom</string>
@@ -23,14 +21,13 @@
     <string name="errorTitle">Erreur</string>
     <string name="ok">OK</string>
     <string name="showHelp">Voir l\'aide</string>
+    <string name="showOnStarWebsite">Site web OnStar</string>
     <string name="errorIntent">L\'application n\'a pas été démarée à partir du menu Partager de Google Maps. Lisez l\'aide pour plus de détails.</string>
     <string name="loadingAddress">Chargement de l\'adresse</string>
     <string name="errorDownload">L\'adresse ne peut pas être chargée. Vérifiez votre connection internet et réessayez</string>
     <string name="errorNotGoogleMaps">Le lien partagé n\'est pas un lien Google Maps</string>
     <string name="errorNoUrl">Il n\'y a pas d\'adresse URL dans le texte partagé</string>
-    <string name="errorNotAvailable">La fonction Envoyer à un véhicule de Google Maps n\'est pas disponible dans ce pays</string>
     <string name="choose">Sélectionnez</string>
-    <string name="errorCountry">L\'adresse que vous avez partagé ne peut pas être utilisée avec Envoyer à un véhicule. Essayez une adresse dans un autre pays</string>
     <string name="validationMake">Sélectionnez un constructeur</string>
     <string name="validationAccount">Entrez un numéro de compte</string>
     <string name="validationDestination">Entrez le nom de la destination</string>
@@ -42,9 +39,40 @@
     <string name="successGPS">La destination a été envoyée au GPS</string>
     <string name="statusInvalidAccount">Numéro de compte non valide. Vérifiez l\'information et réessayez</string>
     <string name="statusInvalidTag">Tag non valide. Renomez le et réessayez</string>
+    <string name="statusOnStarMaxDestinations">Il y a une limit de 5 destinations dans le système OnStar. Quand cette limite est atteinte, une nouvelle destination ne peut être envoyée (la plus vieille destination n\'est pas effacée). Visitez https://www.onstar.com/web/portal/odm et enlevez quelques anciennes destinations.</string>
     <string name="statusTagExists">Un tag avec ce nom existe déjà. Renomez le et réessayez</string>
     <string name="statusDestinationNotSent">Cette destination ne peut être envoyée à votre véhicule. Essayez une destination différente</string>
     <string name="logViewer">Send To Car Log</string>
     <string name="menuHelp">Aide</string>
+    <string name="menuEdit">Éditer l\'adresse</string>
+    <string name="infoStart">Démarrez Google Maps et cliquez sur un endroit</string>
+    <string name="infoNext">Prochain</string>
+    <string name="infoPrev">Précédent</string>
+    <string name="infoHowTo">Comment utiliser</string>
+    <string name="infoFinish">Terminer</string>
+    <string name="infoShare">Descendez and cliquez sur "Partager"</string>
+    <string name="infoSend">Choisissez "Envoyer à un véhicule"</string>
+    <string name="infoEnter">Choisissez votre véhicule et cliquez "Envoyer"</string>
+    <string name="approximateAddress">L\'adresse est approximative</string>
+    <string name="manualNumber">#</string>
+    <string name="manualStreet">Rue</string>
+    <string name="manualCity">Ville</string>
+    <string name="manualProvince">Province/État</string>
+    <string name="manualPostalCode">Code postal</string>
+    <string name="manualCountry">Pays</string>
+    <string name="manualCountryHint">Code de 2 lettres comme US, FR, UK</string>
+    <string name="manualPhone">Téléphone</string>
+    <string name="listMapTitle">Démarrer Google Maps</string>
+    <string name="listMapDescription">Envoie une destination à votre véhicule</string>
+    <string name="listManualTitle">Saisir une adresse</string>
+    <string name="listManualDescription">Envoie une addresse saisie manuellement</string>
+    <string name="listTutorialTitle">Tutoriel</string>
+    <string name="listTutorialDescription">Guide étape par étape pour utiliser l\'application</string>
+    <string name="listHelpTitle">Voir l\'aide</string>
+    <string name="listHelpDescription">Plus d\'information sur l\'application</string>
+    <string name="listRateTitle">Donner votre avis</string>
+    <string name="listRateDescription">Si vous aimez cette application, écrivez un commentaire!</string>
+    <string name="listEmailTitle">Écrire au développeur</string>
+    <string name="listEmailDescription">Si vous avez un problème avec l\'application, vous pouvez écrire un courriel au développeur</string>
 
 </resources>

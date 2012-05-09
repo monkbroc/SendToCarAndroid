@@ -2,11 +2,9 @@
 <resources>
 
     <string name="app_name">Send To Car</string>
-    <string name="startGoogleMaps">Start Google Maps</string>
     <string name="errorStartGoogleMaps">Cannot start Google Maps</string>
     <string name="vehicle">Vehicle</string>
     <string name="make">Make</string>
-    <string name="defaultMake">Choose one</string>
     <string name="account">Account</string>
     <string name="destination">Destination</string>
     <string name="destinationName">Name</string>
@@ -29,9 +27,7 @@
     <string name="errorDownload">Could not download address. Check your internet connection and try again</string>
     <string name="errorNotGoogleMaps">The shared link was not a valid Google Maps link</string>
     <string name="errorNoUrl">There was no valid URL in the shared link</string>
-    <string name="errorNotAvailable">The Google Maps Send To Car feature is not available in this country</string>
     <string name="choose">Choose one</string>
-    <string name="errorCountry">The address you selected cannot be used with Send To Car. Try an address in a different country</string>
     <string name="validationMake">Please select a make</string>
     <string name="validationAccount">Please provide your account</string>
     <string name="validationDestination">Please enter a destination name</string>
@@ -57,7 +53,6 @@
     <string name="infoShare">Scroll down and click "Share"</string>
     <string name="infoSend">Select "Send To Car"</string>
     <string name="infoEnter">Select your car and hit "Send"</string>
-    <string name="tutorial">Tutorial</string>
     <string name="approximateAddress">Address is approximate</string>
     <string name="manualNumber">#</string>
     <string name="manualStreet">Street</string>
@@ -66,10 +61,13 @@
     <string name="manualPostalCode">Zip/Postal code</string>
     <string name="manualCountry">Country</string>
     <string name="manualCountryHint">2-letter code like US, FR, UK</string>
+    <string name="manualPhone">Phone</string>
+    <string name="notes">Notes</string>
+    <string name="optional">Optional</string>
     <string name="listMapTitle">Start Google Maps</string>
-    <string name="listMapDescription">Send a map destination to car</string>
+    <string name="listMapDescription">Sends a map point to car</string>
     <string name="listManualTitle">Enter address</string>
-    <string name="listManualDescription">Send an address manually to car</string>
+    <string name="listManualDescription">Sends an address manually to car</string>
     <string name="listTutorialTitle">Tutorial</string>
     <string name="listTutorialDescription">Step-by-step guide to use the app</string>
     <string name="listHelpTitle">View Help</string>

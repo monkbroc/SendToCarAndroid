@@ -1,8 +1,9 @@
 
 /* TODO:
- * - Figure out why the new intent is ignore when pressing home, then going back go map and choosing a new destination
- *   so that finishOnStop can be removed.
- * - show busy dialog while loading cars
+ * - Add explanation about "Address is approximate in help"
+ * - Test or ask users about setting lat/long to 1.0,1.0
+ * - Show busy dialog while loading cars (meh)
+ * - Get Spanish/German translation
  * - Test all error cases
  * - Test in other locales/languages/countries/vehicle makes
  */
@@ -84,8 +85,6 @@ public class SendToCarActivity extends Activity {
 	private Address address;
 	private boolean ignoreFirstSpinnerChange;
 	
-	private boolean finishOnStop;
-	
 	private DebugLog log;
 
 	/** Called when the activity is first created. */
@@ -98,6 +97,7 @@ public class SendToCarActivity extends Activity {
 		
 		tagVisibilityAndText(false, "");
 		manualAddressVisibility(false);
+		setupSpinner();
 
 		loadCars();
 		
@@ -114,18 +114,6 @@ public class SendToCarActivity extends Activity {
 		loader.readCars();
 	}
 
-	@Override
-	protected void onStop() {
-		super.onStop();
-		// onStop() is called when pressing the Home button. The current address should be forgotten, otherwise next time the activty
-		// is started the old address is displayed (new Intent is ignored).
-		if(finishOnStop) {
-			finish();
-		}
-	}
-
-
-
 	private void tagVisibilityAndText(boolean visible, String text) {
 		TextView tagLabel = (TextView) findViewById(R.id.tagLabel);
 		tagLabel.setVisibility(visible ? View.VISIBLE : View.GONE);
@@ -138,7 +126,6 @@ public class SendToCarActivity extends Activity {
 		tagText.setVisibility(visible ? View.VISIBLE : View.GONE);
 	}
 	
-
 	private void manualAddressVisibility(boolean manualEdit) {
 		this.manualEdit = manualEdit;
 		
@@ -151,6 +138,18 @@ public class SendToCarActivity extends Activity {
 		View manualAddress = findViewById(R.id.manualAddress);
 		manualAddress.setVisibility(manualEdit ? View.VISIBLE : View.GONE);
 		
+	}
+	
+
+	private void setupSpinner()
+	{
+		Spinner spinner = (Spinner) findViewById(R.id.makeSpinner);
+
+		List<CharSequence> itemList = new ArrayList<CharSequence>();
+		itemList.add(getString(R.string.choose));
+		ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,itemList); 
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); 
+		spinner.setAdapter(adapter); 
 	}
 
 	private void setupHttp() {
@@ -200,6 +199,7 @@ public class SendToCarActivity extends Activity {
 	    switch (item.getItemId()) {
         case R.id.idManual:
         	manualAddressVisibility(true);
+        	populatePhone();
         	
         	break;
         case R.id.idHelp:
@@ -220,8 +220,6 @@ public class SendToCarActivity extends Activity {
 			
 				taskDownload = new DownloadAddressTask();
 				taskDownload.execute(new String[] { url });
-				
-				finishOnStop = true;
 			}
 			else
 			{
@@ -776,6 +774,16 @@ public class SendToCarActivity extends Activity {
             }
         }
 	}
+	
+	protected void populatePhone() {
+		Spinner spinner = (Spinner) findViewById(R.id.makeSpinner);
+		CarProvider car = (CarProvider)spinner.getSelectedItem();
+		
+		if(car != null) {
+			TextView v = (TextView) findViewById(R.id.manualPhoneText);
+			v.setText(car.international_phone ? address.international_phone : address.phone);
+		}
+	}
 
 	private class OnSendButtonClick extends Object implements OnClickListener {
 
@@ -829,11 +837,16 @@ public class SendToCarActivity extends Activity {
 					updateAdressFromFields();
 				}
 				
+
+				EditText notesText = (EditText) findViewById(R.id.notesText);
+				String notes = notesText.getText().toString();
+				
 				taskSend = new SendToCarTask();
 				taskSend.setProvider(car);
 				taskSend.setAccount(account);
 				taskSend.setDestination(destination);
 				taskSend.setTag(tag);
+				taskSend.setNotes(notes);
 				
 				taskSend.execute(new Void[0]);
 
@@ -859,6 +872,8 @@ public class SendToCarActivity extends Activity {
             ids.put(R.id.manualProvinceText, "province");
             ids.put(R.id.manualPostalCodeText, "postalCode");
             ids.put(R.id.manualCountryText, "country");
+            ids.put(R.id.manualPhoneText, "phone");
+            ids.put(R.id.manualPhoneText, "international_phone");
             
             for(Integer id : ids.keySet()) {
             	try {
@@ -873,9 +888,13 @@ public class SendToCarActivity extends Activity {
             	}
             }
             
-            /* erase latitude and longitude in case they were set since the user may have moved the point */
-            address.latitude = "1.0000";
-            address.longitude = "1.0000";
+            /* set latitude and longitude to default value in case they were empty */
+            if(address.latitude.length() == 0) {
+            	address.latitude = "1.0000";
+            }
+            if(address.longitude.length() == 0) {
+            	address.longitude = "1.0000";
+            }
         }
 	}
 
@@ -914,10 +933,12 @@ public class SendToCarActivity extends Activity {
 		private String account;
 		private String destination;
 		private String tag;
+		private String notes;
 
 		public SendToCarTask()
 		{
 		}
+
 
 		public void setProvider(CarProvider car) {
 			this.car = car;
@@ -934,7 +955,10 @@ public class SendToCarActivity extends Activity {
 		public void setTag(String tag) {
 			this.tag = tag;
 		}
-		
+
+		public void setNotes(String notes) {
+			this.notes = notes;		
+		}
 		@Override
 		protected void onPreExecute() {
 			if(car == null || account == null || destination == null)
@@ -998,8 +1022,8 @@ public class SendToCarActivity extends Activity {
 				postData.add(destination);
 
 				// address data
-				String[] codes = {"lat", "lng", "street", "streetnum", "city", "province", "postalcode", "country", "phone"};
-				String[] values = {address.latitude, address.longitude, address.street, address.number, address.city, address.province, address.postalCode, address.country, car.international_phone ? address.international_phone : address.phone};
+				String[] codes = {"lat", "lng", "street", "streetnum", "city", "province", "postalcode", "country", "phone", "notes"};
+				String[] values = {address.latitude, address.longitude, address.street, address.number, address.city, address.province, address.postalCode, address.country, car.international_phone ? address.international_phone : address.phone, notes};
 				for(int i = 0; i < codes.length; i++)
 				{
 					if(values[i] != null && values[i].length() > 0)

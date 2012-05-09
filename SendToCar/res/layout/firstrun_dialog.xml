@@ -2,59 +2,48 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:baselineAligned="true"
     android:orientation="vertical" >
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="fill_parent"
-        android:layout_gravity="center"
-        android:maxWidth="540dp"
-        android:minWidth="540dp"
-        android:orientation="vertical" >
+    <ScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" >
 
-        <ScrollView
-            android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1" >
-
-            <TextView
-                android:id="@+id/messageText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:drawableBottom="@drawable/screenshot1"
-                android:padding="5.0dip"
-                android:text="@string/infoStart"
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-
-        </ScrollView>
-
-        <LinearLayout
-            android:layout_width="fill_parent"
+        <TextView
+            android:id="@+id/messageText"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@android:drawable/bottom_bar" >
+            android:layout_gravity="center_horizontal"
+            android:drawableBottom="@drawable/screenshot1"
+            android:padding="5.0dip"
+            android:text="@string/infoStart"
+            android:textAppearance="?android:attr/textAppearanceLarge" />
+    </ScrollView>
 
-            <Button
-                android:id="@+id/prevButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="5.0dip"
-                android:layout_weight="0.5"
-                android:drawableLeft="@drawable/ic_btn_prev"
-                android:drawablePadding="3.0dip"
-                android:text="@string/infoPrev" />
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:drawable/bottom_bar" >
 
-            <Button
-                android:id="@+id/nextButton"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_margin="5.0dip"
-                android:layout_weight="0.5"
-                android:drawablePadding="3.0dip"
-                android:drawableRight="@drawable/ic_btn_next"
-                android:text="@string/infoNext" />
-        </LinearLayout>
+        <Button
+            android:id="@+id/prevButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5.0dip"
+            android:layout_weight="0.5"
+            android:drawableLeft="@drawable/ic_btn_prev"
+            android:drawablePadding="3.0dip"
+            android:text="@string/infoPrev" />
+
+        <Button
+            android:id="@+id/nextButton"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="5.0dip"
+            android:layout_weight="0.5"
+            android:drawablePadding="3.0dip"
+            android:drawableRight="@drawable/ic_btn_next"
+            android:text="@string/infoNext" />
     </LinearLayout>
 
 </LinearLayout>
