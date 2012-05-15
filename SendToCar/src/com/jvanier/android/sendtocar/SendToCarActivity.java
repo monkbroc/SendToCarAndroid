@@ -1,5 +1,6 @@
 
 /* TODO:
+ * - Geolocate manual address to get lat/long
  * - Add explanation about "Address is approximate in help"
  * - Test or ask users about setting lat/long to 1.0,1.0
  * - Show busy dialog while loading cars (meh)
@@ -10,10 +11,7 @@
 
 package com.jvanier.android.sendtocar;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.io.InterruptedIOException;
-import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -46,6 +44,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -57,6 +56,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -129,6 +129,11 @@ public class SendToCarActivity extends Activity {
 		tagText.setVisibility(visible ? View.VISIBLE : View.GONE);
 	}
 	
+	private void notesVisibility(boolean visible) {
+		View v = findViewById(R.id.notes);
+		v.setVisibility(visible ? View.VISIBLE : View.GONE);
+	}
+	
 	private void manualAddressVisibility(boolean manualEdit) {
 		this.manualEdit = manualEdit;
 		
@@ -150,7 +155,7 @@ public class SendToCarActivity extends Activity {
 
 		List<CharSequence> itemList = new ArrayList<CharSequence>();
 		itemList.add(getString(R.string.choose));
-		ArrayAdapter adapter = new ArrayAdapter(this,android.R.layout.simple_spinner_item,itemList); 
+		ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this,android.R.layout.simple_spinner_item,itemList); 
 		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); 
 		spinner.setAdapter(adapter); 
 	}
@@ -210,6 +215,19 @@ public class SendToCarActivity extends Activity {
             	break;
 	    }
 	    return true;
+	}
+
+	private CarProvider getCar() {
+		try {
+			Spinner spinner = (Spinner) findViewById(R.id.makeSpinner);
+			CarProvider car = (CarProvider)spinner.getSelectedItem();
+			return car;
+		}
+		catch(ClassCastException e) {
+			/* Cast (CarProvider)spinner.getSelectedItem() failed because populateMakes was never called.
+			 * This is unusually and can be ignored. The user will press back and try again */
+			return null;
+		}
 	}
 
 	private void loadMapFromIntent(Intent i)
@@ -654,6 +672,7 @@ public class SendToCarActivity extends Activity {
 	}
 	
 
+	@SuppressLint("UseSparseArrays")
 	private void populateMakes()
 	{
 		CarList carsData = CarListLoader.carList;
@@ -685,7 +704,7 @@ public class SendToCarActivity extends Activity {
 			    @Override
 				public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
 
-		            CarProvider car = (CarProvider)parentView.getSelectedItem();
+		            CarProvider car = getCar();
 		            
 		            /* Replace the account label */
 		            TextView accountLabel = (TextView) findViewById(R.id.accountLabel);
@@ -699,6 +718,7 @@ public class SendToCarActivity extends Activity {
 					}
 					
 					tagVisibilityAndText(car.use_destination_tag, car.destination_tag);
+					notesVisibility(car.show_notes);
 		            
 		            /* Clear account text and Use as Default */
 					if(!ignoreFirstSpinnerChange)
@@ -755,6 +775,7 @@ public class SendToCarActivity extends Activity {
 	   }
 	}
 
+	@SuppressLint("UseSparseArrays")
 	protected void populateAddress() {
 		if(address != null)
 		{
@@ -779,8 +800,7 @@ public class SendToCarActivity extends Activity {
 	}
 	
 	protected void populatePhone() {
-		Spinner spinner = (Spinner) findViewById(R.id.makeSpinner);
-		CarProvider car = (CarProvider)spinner.getSelectedItem();
+		CarProvider car = getCar();
 		
 		if(car != null) {
 			TextView v = (TextView) findViewById(R.id.manualPhoneText);
@@ -807,8 +827,7 @@ public class SendToCarActivity extends Activity {
 		public void onClick(View v) {
 			try
 			{
-				Spinner spinner = (Spinner) findViewById(R.id.makeSpinner);
-				CarProvider car = (CarProvider)spinner.getSelectedItem();
+				CarProvider car = getCar();
 				if(car == null || car.type == 0)
 				{
 					throw new ValidationException(R.string.validationMake);
@@ -849,7 +868,9 @@ public class SendToCarActivity extends Activity {
 				taskSend.setAccount(account);
 				taskSend.setDestination(destination);
 				taskSend.setTag(tag);
-				taskSend.setNotes(notes);
+				if(car.show_notes) {
+					taskSend.setNotes(notes);
+				}
 				
 				taskSend.execute(new Void[0]);
 
@@ -857,9 +878,6 @@ public class SendToCarActivity extends Activity {
 				Context context = getApplicationContext();
 				Toast toast = Toast.makeText(context, e.errorId, Toast.LENGTH_LONG);
 				toast.show();
-			} catch(ClassCastException e) {
-				/* Cast (CarProvider)spinner.getSelectedItem() failed because populateMakes was never called.
-				 * This is unusually and can be ignored. The user will press back and try again */
 			}
 		}
 	}
@@ -909,8 +927,7 @@ public class SendToCarActivity extends Activity {
 	   String account = "";
 	   if(saveAsDefault.isChecked())
 	   {
-		   Spinner spinner = (Spinner) findViewById(R.id.makeSpinner);
-		   CarProvider car = (CarProvider)spinner.getSelectedItem();
+		   CarProvider car = getCar();
 		   if(car != null && car.type != 0)
 		   {
 			   make = car.id;
@@ -927,7 +944,7 @@ public class SendToCarActivity extends Activity {
 	   settings.commit();
 	}
 
-	private class SendToCarTask extends AsyncTask<Void, Void, Void> {
+	private class SendToCarTask extends AsyncTask<Void, Void, Boolean> {
 
 		private BackgroundTaskAbort exception;
 		private HttpPost httpPost;
@@ -937,6 +954,7 @@ public class SendToCarActivity extends Activity {
 		private String destination;
 		private String tag;
 		private String notes;
+		private boolean latLongOnly;
 
 		public SendToCarTask()
 		{
@@ -962,6 +980,11 @@ public class SendToCarActivity extends Activity {
 		public void setNotes(String notes) {
 			this.notes = notes;		
 		}
+		
+		public void setLatLongOnly(boolean latLongOnly) {
+			this.latLongOnly = latLongOnly;
+		}
+		
 		@Override
 		protected void onPreExecute() {
 			if(car == null || account == null || destination == null)
@@ -991,7 +1014,7 @@ public class SendToCarActivity extends Activity {
 		}
 
 		@Override
-		protected Void doInBackground(Void... noarg) {
+		protected Boolean doInBackground(Void... noarg) {
 			try {
 				if(isCancelled()) return null;
 				String post = preparePostData();
@@ -1001,8 +1024,9 @@ public class SendToCarActivity extends Activity {
 				parseSendToCar(sendToCarHtml);
 			} catch (BackgroundTaskAbort e) {
 				exception = e;
+				return Boolean.FALSE;
 			}
-			return null;
+			return Boolean.TRUE;
 		}
 
 		private String preparePostData() throws BackgroundTaskAbort {
@@ -1023,10 +1047,24 @@ public class SendToCarActivity extends Activity {
 
 				postData.add("name");
 				postData.add(destination);
+				
+				// full address data
+				final String[] codesFull = {"lat", "lng", "street", "streetnum", "city", "province", "postalcode", "country", "phone", "notes"};
+				final String[] valuesFull = {address.latitude, address.longitude, address.street, address.number, address.city, address.province, address.postalCode, address.country, car.international_phone ? address.international_phone : address.phone, notes};
+				// using only latitude/longitude
+				final String[] codesLL = {"lat", "lng"};
+				final String[] valuesLL = {address.latitude, address.longitude};
 
-				// address data
-				String[] codes = {"lat", "lng", "street", "streetnum", "city", "province", "postalcode", "country", "phone", "notes"};
-				String[] values = {address.latitude, address.longitude, address.street, address.number, address.city, address.province, address.postalCode, address.country, car.international_phone ? address.international_phone : address.phone, notes};
+				final String[] codes;
+				final String[] values;
+				if(latLongOnly) {
+					codes = codesLL;
+					values = valuesLL;
+				} else {
+					codes = codesFull;
+					values = valuesFull;
+				}
+				
 				for(int i = 0; i < codes.length; i++)
 				{
 					if(values[i] != null && values[i].length() > 0)
@@ -1156,7 +1194,7 @@ public class SendToCarActivity extends Activity {
 				int status = response.getInt("status");
 
 				log.d("Response JSON parsed OK. Status: " + ((status == 1) ? "Success" : "Failed"));
-				
+
 				if(status == 1)
 				{
 					// success
@@ -1188,6 +1226,14 @@ public class SendToCarActivity extends Activity {
 				case 500:
 				default:
 					errorMsg = R.string.errorSendToCar;
+					
+					// retry with lat/long only
+					if(!latLongOnly) {
+						setLatLongOnly(true);
+						if(doInBackground(new Void[0]).booleanValue()) {
+							return;
+						}
+					}
 					break;
 				}
 				
@@ -1201,7 +1247,7 @@ public class SendToCarActivity extends Activity {
 		}
 		
 		@Override
-		protected void onPostExecute(Void result) {
+		protected void onPostExecute(Boolean result) {
 			if(progressDialog != null) {
 				progressDialog.dismiss();
 				progressDialog = null;

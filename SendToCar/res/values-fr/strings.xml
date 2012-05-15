@@ -13,11 +13,6 @@
     <string name="useAsDefault">Utiliser par défaut</string>
     <string name="send">Envoyer</string>
     <string name="cancel">Annuler</string>
-
-    <string-array name="choose_array">
-        <item>Sélectionnez</item>
-    </string-array>
-
     <string name="errorTitle">Erreur</string>
     <string name="ok">OK</string>
     <string name="showHelp">Voir l\'aide</string>
@@ -62,6 +57,8 @@
     <string name="manualCountry">Pays</string>
     <string name="manualCountryHint">Code de 2 lettres comme US, FR, UK</string>
     <string name="manualPhone">Téléphone</string>
+    <string name="notes">Notes</string>
+    <string name="optional">Optionel</string>
     <string name="listMapTitle">Démarrer Google Maps</string>
     <string name="listMapDescription">Envoie une destination à votre véhicule</string>
     <string name="listManualTitle">Saisir une adresse</string>

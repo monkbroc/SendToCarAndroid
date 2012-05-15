@@ -233,20 +233,28 @@
                         android:inputType="text" />
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/notesLabel"
-                    style="@style/label"
+                <LinearLayout
+                    android:id="@+id/notes"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/notes" />
+                    android:orientation="vertical"
+                    android:visibility="gone" >
 
-                <EditText
-                    android:id="@+id/notesText"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:hint="@string/optional"
-                    android:inputType="textMultiLine"
-                    android:lines="3" />
+                    <TextView
+                        android:id="@+id/notesLabel"
+                        style="@style/label"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@string/notes" />
+
+                    <EditText
+                        android:id="@+id/notesText"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/optional"
+                        android:inputType="text|textMultiLine"
+                        android:minLines="1" />
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

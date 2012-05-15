@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 public class CarProvider implements Comparable<CarProvider>, Serializable {
 
-	private static final long serialVersionUID = 6134613837319139773L;
+	private static final long serialVersionUID = -5403127983230092895L;
 	public String host;
 	public String id;
 	public int type;
@@ -14,6 +14,8 @@ public class CarProvider implements Comparable<CarProvider>, Serializable {
 	public boolean use_destination_tag;
 	public String system;
 	public boolean international_phone;
+	public boolean show_phone;
+	public boolean show_notes;
 	
 	public CarProvider() {
 	}

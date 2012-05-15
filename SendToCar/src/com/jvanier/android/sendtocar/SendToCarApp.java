@@ -10,9 +10,8 @@ public class SendToCarApp extends Application {
 	public void onCreate() {
 		super.onCreate();
 		
-		log = new DebugLogFile(this);
-		//log = new DebugLogDummy();
-		
+		//log = new DebugLogFile(this);
+		log = new DebugLogDummy();
 	}
 
 	public DebugLog getLog() {

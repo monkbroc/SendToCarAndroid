@@ -13,11 +13,6 @@
     <string name="useAsDefault">Use as default</string>
     <string name="send">Send</string>
     <string name="cancel">Cancel</string>
-
-    <string-array name="choose_array">
-        <item>Choose one</item>
-    </string-array>
-
     <string name="errorTitle">Error</string>
     <string name="ok">OK</string>
     <string name="showHelp">Show help</string>

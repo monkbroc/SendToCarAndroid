@@ -209,6 +209,9 @@ public class CarListLoader {
 						c.use_destination_tag = provider.optBoolean("use_destination_tag", false);
 						c.destination_tag = provider.optString("destination_tag", "");
 						
+						c.show_phone = !provider.optBoolean("suppress_extra_phone", false);
+						c.show_notes= !provider.optBoolean("suppress_notes", false);
+						
 						carListTemp.add(c);
 					}
 					
