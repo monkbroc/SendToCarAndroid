@@ -37,7 +37,7 @@
     <string name="statusOnStarMaxDestinations">Existe atualmente um limite de 5 destinos que podem ser salvos para OnStar. Quando você atingir o limite, você não pode enviar um novo destino (ou seja, ele não substitui um dos pontos existentes). Por favor, visite https://www.onstar.com/web/portal/odm e remover alguns destinos.</string>
     <string name="statusTagExists">Uma Tag Destino com este nome já existe. Renomeá-lo e tente novamente</string>
     <string name="statusDestinationNotSent">Este destino não pode ser enviada para o seu carro. Tente um destino diferente</string>
-    <string name="logViewer">Enviar Para Car Log</string>
+    <string name="logViewer">Send to Car Log</string>
     <string name="menuHelp">Ajudar</string>
     <string name="menuEdit">Editar endereço</string>
     <string name="infoStart">Iniciar o Google Maps e clique em um lugar</string>

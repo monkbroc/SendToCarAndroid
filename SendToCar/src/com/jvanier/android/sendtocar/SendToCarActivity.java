@@ -12,9 +12,11 @@
 package com.jvanier.android.sendtocar;
 
 import java.io.InterruptedIOException;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -909,13 +911,9 @@ public class SendToCarActivity extends Activity {
             	}
             }
             
-            /* set latitude and longitude to default value in case they were empty */
-            if(address.latitude.length() == 0) {
-            	address.latitude = "1.0000";
-            }
-            if(address.longitude.length() == 0) {
-            	address.longitude = "1.0000";
-            }
+            /* set latitude and longitude to empty to force geocoding before sending */
+        	address.latitude = "";
+        	address.longitude = "";
         }
 	}
 
@@ -1028,6 +1026,8 @@ public class SendToCarActivity extends Activity {
 			}
 			return Boolean.TRUE;
 		}
+		
+
 
 		private String preparePostData() throws BackgroundTaskAbort {
 			String post = null;
@@ -1047,6 +1047,10 @@ public class SendToCarActivity extends Activity {
 
 				postData.add("name");
 				postData.add(destination);
+				
+				if(address.latitude.length() == 0 || address.longitude.length() == 0) {
+					updateAddressLatLong(address);
+				}
 				
 				// full address data
 				final String[] codesFull = {"lat", "lng", "street", "streetnum", "city", "province", "postalcode", "country", "phone", "notes"};
@@ -1145,6 +1149,83 @@ public class SendToCarActivity extends Activity {
 			}
 
 			return cookie_id;
+		}
+		
+		private void updateAddressLatLong(Address address) throws BackgroundTaskAbort {
+			
+			StringBuilder str = new StringBuilder();
+			
+			if(address.number.length() > 0) {
+				str.append(address.number).append(" ");
+			}
+			
+			if(address.street.length() > 0) {
+				str.append(address.street).append(",");
+			}
+			
+			if(address.city.length() > 0) {
+				str.append(address.city).append(",");
+			}
+			if(address.province.length() > 0) {
+				str.append(address.province).append(",");
+			}
+			if(address.postalCode.length() > 0) {
+				str.append(address.postalCode).append(",");
+			}
+			if(address.country.length() > 0) {
+				str.append(address.country).append(",");
+			}
+
+			String geoURI = "";
+			try {
+				geoURI = "http://maps.googleapis.com/maps/api/geocode/json?address=" +
+						URLEncoder.encode(str.toString(), "utf-8") + "&sensor=false";
+			} catch (UnsupportedEncodingException e1) {
+				// ignore
+			} 
+
+			String geoHtml = "";
+			try
+			{
+				log.d("Updating latitude/longitude  " + geoURI);
+				HttpGet httpGet = new HttpGet();
+
+				httpGet.setURI(new URI(geoURI));
+				HttpResponse response = client.execute(httpGet, httpContext);
+
+				log.d("Updating lat/long. Status: " + response.getStatusLine().getStatusCode());
+
+				if(response.getStatusLine().getStatusCode() != HttpURLConnection.HTTP_OK)
+				{
+					return;
+				}
+
+				geoHtml = EntityUtils.toString(response.getEntity());
+
+				log.d("Response: <pre>" + log.htmlSnippet(geoHtml) + "</pre>");
+
+
+			} catch(Exception e) {
+				log.d("<span style=\"color: red;\">Exception while geocoding address: " + e.toString() + "</span>");
+			}
+			
+			try {
+				
+				JSONObject geoJSON = new JSONObject(geoHtml);
+				JSONArray results = geoJSON.getJSONArray("results");
+				if(results.length() > 0) {
+					JSONObject location = results.getJSONObject(0).getJSONObject("geometry").getJSONObject("location");
+					
+					String lat = location.getString("lat");
+					String lng = location.getString("lng");
+					
+					address.latitude = lat;
+					address.longitude = lng;
+				}
+				
+			} catch(JSONException e) {
+				log.d("<span style=\"color: red;\">Exception while parsing geocoding JSON: " + e.toString() + "</span>");
+			}
 		}
 
 		private String sendToCar(String post) throws BackgroundTaskAbort {
