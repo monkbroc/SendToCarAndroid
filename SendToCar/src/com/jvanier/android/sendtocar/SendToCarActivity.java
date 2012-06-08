@@ -1,9 +1,7 @@
 
 /* TODO:
- * - Geolocate manual address to get lat/long
+ * - Add translation credits in all languages
  * - Add explanation about "Address is approximate in help"
- * - Test or ask users about setting lat/long to 1.0,1.0
- * - Show busy dialog while loading cars (meh)
  * - Get Spanish/German translation
  * - Test all error cases
  * - Test in other locales/languages/countries/vehicle makes
@@ -357,7 +355,10 @@ public class SendToCarActivity extends Activity {
 		}
 
 		@Override
-		protected void onPreExecute() {
+		protected void onPreExecute() {					
+			exception = null;
+			httpGet = new HttpGet();
+			
 			// Show progress dialog
 			Context context = SendToCarActivity.this;
 			progressDialog = ProgressDialog.show(context,
@@ -373,9 +374,6 @@ public class SendToCarActivity extends Activity {
 					httpGet.abort();
 				}
 			});
-			
-			exception = null;
-			httpGet = new HttpGet();
 		}
 		
 		@Override
@@ -946,6 +944,7 @@ public class SendToCarActivity extends Activity {
 
 		private BackgroundTaskAbort exception;
 		private HttpPost httpPost;
+		private HttpGet httpGet;
 
 		private CarProvider car;
 		private String account;
@@ -985,6 +984,10 @@ public class SendToCarActivity extends Activity {
 		
 		@Override
 		protected void onPreExecute() {
+			exception = null;
+			httpPost = new HttpPost();
+			httpGet = new HttpGet();
+			
 			if(car == null || account == null || destination == null)
 			{
 				this.cancel(false);
@@ -1003,12 +1006,11 @@ public class SendToCarActivity extends Activity {
 					public void onCancel(DialogInterface dialog) {
 						SendToCarTask.this.cancel(false);
 						httpPost.abort();
+						httpGet.abort();
 					}
 				});
 			}
 
-			exception = null;
-			httpPost = new HttpPost();
 		}
 
 		@Override
@@ -1188,8 +1190,6 @@ public class SendToCarActivity extends Activity {
 			try
 			{
 				log.d("Updating latitude/longitude  " + geoURI);
-				HttpGet httpGet = new HttpGet();
-
 				httpGet.setURI(new URI(geoURI));
 				HttpResponse response = client.execute(httpGet, httpContext);
 
