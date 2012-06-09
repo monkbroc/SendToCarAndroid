@@ -4,7 +4,7 @@
     <string name="app_name">Send to Car</string>
     <string name="errorStartGoogleMaps">Google Maps kann nicht gestartet werden</string>
     <string name="vehicle">Fahrzeug</string>
-    <string name="make">Model</string>
+    <string name="make">Marke</string>
     <string name="account">Konto</string>
     <string name="destination">Ziel</string>
     <string name="destinationName">Name</string>
@@ -62,9 +62,9 @@
     <string name="listMapTitle">Starten Sie Google Maps</string>
     <string name="listMapDescription">Sendet eine Kartenpunkt ans Auto</string>
     <string name="listManualTitle">Geben Sie eine Adresse ein</string>
-    <string name="listManualDescription">Sendet eine Adresse manuell ans Auto</string>
+    <string name="listManualDescription">Sendet eine manuell eingegebene Adresse ans Auto</string>
     <string name="listTutorialTitle">Anleitung</string>
-    <string name="listTutorialDescription">Schritt-für-Schritt-Anleitung, um die App nutzen</string>
+    <string name="listTutorialDescription">Schritt-für-Schritt-Anleitung, um die App zu nutzen</string>
     <string name="listHelpTitle">Hilfe anzeigen</string>
     <string name="listHelpDescription">Mehr Informationen über die App</string>
     <string name="listRateTitle">App bewerten</string>
