@@ -95,7 +95,7 @@ public class SendToCarActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.sendtocar);
-		
+				
 		log = ((SendToCarApp) getApplication()).getLog();
 		
 		tagVisibilityAndText(false, "");
@@ -151,13 +151,19 @@ public class SendToCarActivity extends Activity {
 
 	private void setupSpinner()
 	{
+		ArrayList<CarProvider> carsList = new ArrayList<CarProvider>();
+		CarProvider fake = new CarProvider();
+		fake.make = SendToCarActivity.this.getString(R.string.choose);
+		fake.type = 0;
+		carsList.add(fake);
+
 		Spinner spinner = (Spinner) findViewById(R.id.makeSpinner);
 
-		List<CharSequence> itemList = new ArrayList<CharSequence>();
-		itemList.add(getString(R.string.choose));
-		ArrayAdapter<CharSequence> adapter = new ArrayAdapter<CharSequence>(this,android.R.layout.simple_spinner_item,itemList); 
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); 
-		spinner.setAdapter(adapter); 
+		ArrayAdapter<CarProvider> adapter = new ArrayAdapter<CarProvider>(this,
+				android.R.layout.simple_spinner_item, carsList.toArray(new CarProvider[carsList.size()]));
+
+		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spinner.setAdapter(adapter);
 	}
 
 	private void setupHttp() {

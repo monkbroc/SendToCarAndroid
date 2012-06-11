@@ -54,7 +54,7 @@ public class CarListLoader {
 			carList = (CarList)in.readObject();
 			in.close();
 			
-			if(carList.timeToReDownload() || carList.localeChanged(country, language)) {
+			if(carList.carsEmpty() || carList.timeToReDownload() || carList.localeChanged(country, language)) {
 				loadCars();
 			}
 		}
@@ -100,7 +100,7 @@ public class CarListLoader {
 	}
 
 
-	private class DownloadCarListTask extends AsyncTask<String, Void, Void> {
+	private class DownloadCarListTask extends AsyncTask<String, Void, Boolean> {
 		private HttpContext httpContext;
 		private CookieStore cookieStore;
 		private DefaultHttpClient client;
@@ -116,7 +116,7 @@ public class CarListLoader {
 		}
 		
 		@Override
-		protected Void doInBackground(String... mapHosts) {
+		protected Boolean doInBackground(String... mapHosts) {
 			log.d("Starting car download");
 			
 			try {
@@ -128,15 +128,15 @@ public class CarListLoader {
 					}
 						
 					String carsJson = downloadCars(host);
-					if(isCancelled()) return null;
+					if(isCancelled()) return Boolean.FALSE;
 					parseCarsData(carsJson, host);
-					if(isCancelled()) return null;
+					if(isCancelled()) return Boolean.FALSE;
 				}
 			} catch(BackgroundTaskAbort e) {
-				return null;
+				return Boolean.FALSE;
 			}
 			
-			return null;
+			return Boolean.TRUE;
 		}
 		
 
@@ -226,11 +226,13 @@ public class CarListLoader {
 		}
 
 		@Override
-		protected void onPostExecute(Void result) {
+		protected void onPostExecute(Boolean result) {
 			super.onPostExecute(result);
 			
-			carList = carListTemp;
-			writeCars();
+			if(result.booleanValue()) {
+				carList = carListTemp;
+				writeCars();
+			}
 		}
 	}
 

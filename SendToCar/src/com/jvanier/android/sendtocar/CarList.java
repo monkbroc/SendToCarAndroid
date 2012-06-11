@@ -8,7 +8,7 @@ import java.util.HashMap;
 
 public class CarList implements Serializable {
 
-	private static final long serialVersionUID = 5824633241455942317L;
+	private static final long serialVersionUID = -5616821271388533549L;
 	private HashMap<String, CarProvider> carsData;
 	private long downloadDate;
 	private String language;
@@ -57,6 +57,10 @@ public class CarList implements Serializable {
 	public boolean localeChanged(String country, String language) {
 		return (this.country == null || !this.country.equals(country)) ||
 				(this.language == null || !this.language.equals(language));
+	}
+	
+	public boolean carsEmpty() {
+		return carsData.isEmpty();
 	}
 	
 }
