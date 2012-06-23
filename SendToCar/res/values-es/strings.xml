@@ -45,7 +45,8 @@
     <string name="infoPrev">Anterior</string>
     <string name="infoHowTo">Cómo funciona</string>
     <string name="infoFinish">Terminar</string>
-    <string name="infoShare">Desplácese hacia abajo y haga clic en "Compartir"</string>
+    <string name="infoShare">Pulse el botón "Menú" y haga clic en "Compartir"</string>
+    <string name="infoShare_ics">Haga clic en "..." y haga clic en "Compartir"</string>
     <string name="infoSend">Seleccione "Enviar a un coche"</string>
     <string name="infoEnter">Seleccione su vehículo y pulse "Enviar"</string>
     <string name="approximateAddress">La dirección es aproximada</string>
@@ -71,5 +72,6 @@
     <string name="listRateDescription">Si te gusta esta aplicación, por favor, deja tu comentario!</string>
     <string name="listEmailTitle">Ponete en contacto con el desarrollador.</string>
     <string name="listEmailDescription">Si tenes problemas con esta aplicación, envia un e-mail al desarrollador</string>
+    <string name="redirect">Siga las instrucciones de esta página para completar el envío de su destino</string>
 
 </resources>

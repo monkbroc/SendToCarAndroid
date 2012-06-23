@@ -45,7 +45,8 @@
     <string name="infoPrev">Previous</string>
     <string name="infoHowTo">How to Use</string>
     <string name="infoFinish">Finish</string>
-    <string name="infoShare">Scroll down and click "Share"</string>
+    <string name="infoShare">Press "Menu" and click "Share"</string>
+    <string name="infoShare_ics">Click "..." and click "Share"</string>
     <string name="infoSend">Select "Send To Car"</string>
     <string name="infoEnter">Select your car and hit "Send"</string>
     <string name="approximateAddress">Address is approximate</string>
@@ -71,5 +72,6 @@
     <string name="listRateDescription">If you like this app, please rate it!</string>
     <string name="listEmailTitle">Contact developer</string>
     <string name="listEmailDescription">If you have issues with this app, you can email the developer</string>
+    <string name="redirect">Follow the instructions on this page to finish sending your destination</string>
 
 </resources>

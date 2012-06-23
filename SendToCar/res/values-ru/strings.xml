@@ -45,7 +45,8 @@
     <string name="infoPrev">Назад</string>
     <string name="infoHowTo">Как пользоваться</string>
     <string name="infoFinish">Завершить</string>
-    <string name="infoShare">Прокрутите вниз и нажмите "Поделиться"</string>
+    <string name="infoShare">Нажмите "Меню" и нажмите "Поделиться"</string>
+    <string name="infoShare_ics">Нажмите "..." и нажмите "Поделиться"</string>
     <string name="infoSend">Выберите "Отправить в машину"</string>
     <string name="infoEnter">Выберите Вашу машину и нажмите "Отправить"</string>
     <string name="approximateAddress">Адрес приблизительный</string>
@@ -71,5 +72,6 @@
     <string name="listRateDescription">Если вам нравится это приложение, пожалуйста, оцените!</string>
     <string name="listEmailTitle">Связаться с разработчиком</string>
     <string name="listEmailDescription">Если у вас есть проблемы с этим приложением, Вы можете связаться с разработчиком</string>
+    <string name="redirect">Следуйте инструкциям на этой странице, чтобы завершить отправки назначения</string>
 
 </resources>

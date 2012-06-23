@@ -1,10 +1,11 @@
 package com.jvanier.android.sendtocar;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
@@ -14,6 +15,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewConfiguration;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -213,8 +215,23 @@ public class MainActivity extends Activity {
 	    boolean firstrun = getSharedPreferences("PREFERENCE", MODE_PRIVATE).getBoolean("firstrun", true);
 	    if (firstrun || force) {
 	    	firstRunScreen = 0;
-	    	final int screenDrawables[] = {R.drawable.screenshot1, R.drawable.screenshot2, R.drawable.screenshot3, R.drawable.screenshot4 };
-	    	final int screenStrings[] = { R.string.infoStart, R.string.infoShare, R.string.infoSend, R.string.infoEnter };
+	    	final int screenDrawablesLegacy[] = {R.drawable.screenshot1, R.drawable.screenshot2, R.drawable.screenshot3, R.drawable.screenshot4 };
+	    	final int screenStringsLegacy[] = { R.string.infoStart, R.string.infoShare, R.string.infoSend, R.string.infoEnter };
+
+	    	final int screenDrawablesICS[] = {R.drawable.screenshot1, R.drawable.screenshot2_ics, R.drawable.screenshot3, R.drawable.screenshot4 };
+	    	final int screenStringsICS[] = { R.string.infoStart, R.string.infoShare_ics, R.string.infoSend, R.string.infoEnter };
+
+	    	final int screenDrawables[];
+	    	final int screenStrings[];
+	    	
+	    	if(!hasMenuKey()) {
+	    		screenDrawables = screenDrawablesICS;
+	    		screenStrings = screenStringsICS;
+	    	} else {
+	    		screenDrawables = screenDrawablesLegacy;
+	    		screenStrings = screenStringsLegacy;
+	    	}
+
 	    	
 	    	final Dialog d = new Dialog(this, android.R.style.Theme);
 	    	d.setContentView(R.layout.firstrun_dialog);
@@ -272,5 +289,24 @@ public class MainActivity extends Activity {
 		    	.commit();
 	    }
 
+	}
+
+	private boolean hasMenuKey() {
+		// detect if menu key is available
+		// must be done by reflection since this call is not supported on old devices
+		
+		// old devices have a menu key
+		boolean hasPermanentMenuKey = true;
+		try {
+			Method hasPermanentMenuKey_fn = ViewConfiguration.class.getMethod("hasPermanentMenuKey", (Class[]) null);
+			hasPermanentMenuKey = ((Boolean)(hasPermanentMenuKey_fn.invoke(ViewConfiguration.get(getApplicationContext()), (Object[]) null))).booleanValue();
+		} catch (NoSuchMethodException nsme) {
+		    /* failure, must be older device */
+		} catch (InvocationTargetException ite) {
+		    /* unpack original exception when possible */
+		} catch (IllegalAccessException ie) {
+		    System.err.println("unexpected " + ie);
+		}
+		return hasPermanentMenuKey;
 	}
 }

@@ -1,7 +1,9 @@
 package com.jvanier.android.sendtocar;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.webkit.WebView;
 import android.widget.Button;
@@ -38,6 +40,14 @@ public class LogViewerActivity extends Activity {
         		clearLog();
         	}
         });
+
+        
+        final Button sendButton = (Button) findViewById(R.id.sendButton);
+        sendButton.setOnClickListener(new View.OnClickListener() {
+        	public void onClick(View v) {
+        		sendLog();
+        	}
+        });
 	}
 
 	private void clearLog() {
@@ -58,6 +68,19 @@ public class LogViewerActivity extends Activity {
 		WebView lv = (WebView)findViewById(R.id.logView); 
 		lv.loadData(log, "text/html", "UTF-8");
 
+	}
+	
+	private void sendLog() {
+		String log = DebugLogFile.readLog(this);
+		
+	    Intent emailIntent = new Intent(android.content.Intent.ACTION_SEND);
+	    emailIntent.setType("text/html");
+	    String aEmailList[] = { "sendtocar.app@gmail.com" };
+	    emailIntent.putExtra(android.content.Intent.EXTRA_EMAIL, aEmailList);
+	    emailIntent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Send To Car Debug Log");
+	    emailIntent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(log));
+
+	    startActivity(emailIntent);
 	}
 	
 }

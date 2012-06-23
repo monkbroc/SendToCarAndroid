@@ -45,7 +45,8 @@
     <string name="infoPrev">Vorherige</string>
     <string name="infoHowTo">Beispiel</string>
     <string name="infoFinish">Abschließen</string>
-    <string name="infoShare">Blättern Sie nach unten und klicken Sie auf "Teilen"</string>
+    <string name="infoShare">Drücken Sie "Menü" und klicken Sie auf "Teilen"</string>
+    <string name="infoShare_ics">Klicken Sie auf "..." und klicken Sie auf "Teilen"</string>
     <string name="infoSend">Wählen Sie "Send to Car"</string>
     <string name="infoEnter">Wählen Sie Ihr Auto und klicke auf "Senden"</string>
     <string name="approximateAddress">ungefähre Adresse</string>
@@ -71,5 +72,6 @@
     <string name="listRateDescription">Wenn Ihnen diese App gefällt, geben Sie bitte eine Bewertugn ab!</string>
     <string name="listEmailTitle">Den Entwickler kontaktieren</string>
     <string name="listEmailDescription">Wenn Sie Probleme mit dieser App haben, können Sie dem Entwickler eine E-Mail schicken </string>
+    <string name="redirect">Befolgen Sie die Anweisungen auf dieser Seite zu vervollständigen Senden Sie Ihr Ziel</string>
 
 </resources>

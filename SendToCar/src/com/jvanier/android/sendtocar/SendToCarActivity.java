@@ -1,10 +1,7 @@
 
 /* TODO:
- * - Add translation credits in all languages
+ * - (Maybe) Integrate with Yelp
  * - Add explanation about "Address is approximate in help"
- * - Get Spanish/German translation
- * - Test all error cases
- * - Test in other locales/languages/countries/vehicle makes
  */
 
 package com.jvanier.android.sendtocar;
@@ -56,7 +53,6 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.text.TextUtils;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -1117,46 +1113,63 @@ public class SendToCarActivity extends Activity {
 
 		private String getCookieId() {
 			String cookie_id = null;
-
-			List<Cookie> cookies = cookieStore.getCookies();
 			
-			if(cookies.size() == 0) {
-				/* try to load the main Google Maps page to get a cookie */
-				if(car != null) {
-					try {
-						URI mainPage = new URI("http", car.host, "/", "output=json", null);
-						log.d("Downloading main Google Maps page to fill the cookie jar: " + mainPage.toString());
-
-						HttpGet httpGet = new HttpGet();
-						httpGet.setURI(mainPage);
-
-						HttpResponse response = client.execute(httpGet, httpContext);
-
-						log.d("Downloaded cookie. Status: " + response.getStatusLine().getStatusCode());
-					} catch (Exception e) {
-						// ignore
-					}
-				}
-			}
-			
-			Iterator<Cookie> it = cookies.iterator();
-			while(it.hasNext()) {
-				Cookie c = it.next();
-				if(c.getName().equals("PREF")) {
-					String[] subcookies = c.getValue().split(":");
-					for(int i = 0; i < subcookies.length; i++)
-					{
-						String[] sub = subcookies[i].split("=");
-						if(sub.length >= 2 && sub[0].equals("ID")) {
-							cookie_id = sub[1];
-							log.d("Cookie: " + c.toString());
-							break;
+			if(car != null) {
+				
+				List<Cookie> cookies = cookieStore.getCookies();
+				
+				for(int tries = 0; tries < 2; tries++) {
+					
+					Iterator<Cookie> it = cookies.iterator();
+					while(it.hasNext()) {
+						Cookie c = it.next();
+						if(c.getName().equals("PREF") && car.host.endsWith(c.getDomain())) {
+							cookie_id = parseCookie(c);
+							return cookie_id;
 						}
+					}
+
+					if(tries == 0) {
+						/* try to load the main Google Maps page to get a cookie */
+						donwloadCookie();
 					}
 				}
 			}
 
 			return cookie_id;
+		}
+
+
+		private String parseCookie(Cookie c) {
+			String cookie_id = null;
+			String[] subcookies = c.getValue().split(":");
+			for(int i = 0; i < subcookies.length; i++)
+			{
+				String[] sub = subcookies[i].split("=");
+				if(sub.length >= 2 && sub[0].equals("ID")) {
+					cookie_id = sub[1];
+					log.d("Cookie: " + c.toString());
+					break;
+				}
+			}
+			return cookie_id;
+		}
+
+
+		private void donwloadCookie() {
+			try {
+				URI mainPage = new URI("http", car.host, "/", "output=json", null);
+				log.d("Downloading main Google Maps page to fill the cookie jar: " + mainPage.toString());
+
+				HttpGet httpGet = new HttpGet();
+				httpGet.setURI(mainPage);
+
+				HttpResponse response = client.execute(httpGet, httpContext);
+
+				log.d("Downloaded cookie. Status: " + response.getStatusLine().getStatusCode());
+			} catch (Exception e) {
+				// ignore
+			}
 		}
 		
 		private void updateAddressLatLong(Address address) throws BackgroundTaskAbort {
@@ -1238,14 +1251,14 @@ public class SendToCarActivity extends Activity {
 			String sendToCarHtml = "";
 			try
 			{
-				URI postUri = new URI("http", car.host, "/maps/sendto", "authuser=0&stx=c", null);
-				
-				log.d("Uploading to " + postUri.toString());
+				URI postUri = new URI("http", car.host, "/maps/sendto", "stx=c", null);
 
 				httpPost.setURI(postUri);
 				httpPost.addHeader("Content-Type", "application/x-www-form-urlencoded");
 				httpPost.setEntity(new ByteArrayEntity(post.getBytes()));
 				
+				log.d("Uploading to " + postUri.toString());
+
 				if(isCancelled() || httpPost.isAborted()) return null;
 				
 				HttpResponse response = client.execute(httpPost, httpContext);
@@ -1254,7 +1267,7 @@ public class SendToCarActivity extends Activity {
 				
 				if(isCancelled()) return null;
 
-				if(response.getStatusLine().getStatusCode() != HttpURLConnection.HTTP_OK )
+				if(response == null || response.getStatusLine().getStatusCode() != HttpURLConnection.HTTP_OK )
 				{
 					throw new BackgroundTaskAbort(R.string.errorSendToCar);
 				}
@@ -1274,7 +1287,11 @@ public class SendToCarActivity extends Activity {
 
 		private void parseSendToCar(String sendToCarHtml) throws BackgroundTaskAbort {
 			try {
-				JSONObject response = new JSONObject(sendToCarHtml.toString());
+				// replace ASCII character escapes \xAB with Unicode escapes \u00AB since those are converted
+				// automatically by the JSONObject parser to UTF-8 characters
+				String html = sendToCarHtml.toString().replaceAll("\\\\x", "\\\\u00");
+
+				JSONObject response = new JSONObject(html);
 				
 				if(isCancelled()) return;
 
@@ -1282,10 +1299,23 @@ public class SendToCarActivity extends Activity {
 
 				log.d("Response JSON parsed OK. Status: " + ((status == 1) ? "Success" : "Failed"));
 
-				if(status == 1)
-				{
+				if(status == 1) {
 					// success
 					return;
+				}
+				
+				/* status 4 means redirect, used by Toyota in Europe
+				 * other field in this case: redirect_url
+				 */
+				if(status == 4) {
+					String url = response.optString("redirect_url");
+					if(url.length() > 0) {
+						Intent i = new Intent(Intent.ACTION_VIEW);
+						i.setData(Uri.parse(url));
+						startActivity(i);
+						finish();
+						throw new BackgroundTaskAbort(R.string.redirect); 
+					}
 				}
 				
 				int errorCode = response.getInt("stcc_status");

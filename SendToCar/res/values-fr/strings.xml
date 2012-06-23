@@ -45,7 +45,8 @@
     <string name="infoPrev">Précédent</string>
     <string name="infoHowTo">Comment utiliser</string>
     <string name="infoFinish">Terminer</string>
-    <string name="infoShare">Descendez and cliquez sur "Partager"</string>
+    <string name="infoShare">Appuyez sur "Menu" et cliquez sur "Partager"</string>
+    <string name="infoShare_ics">Cliquez "..." et cliquez "Partager"</string>
     <string name="infoSend">Choisissez "Envoyer à un véhicule"</string>
     <string name="infoEnter">Choisissez votre véhicule et cliquez "Envoyer"</string>
     <string name="approximateAddress">L\'adresse est approximative</string>
@@ -71,5 +72,6 @@
     <string name="listRateDescription">Si vous aimez cette application, écrivez un commentaire!</string>
     <string name="listEmailTitle">Écrire au développeur</string>
     <string name="listEmailDescription">Si vous avez un problème avec l\'application, vous pouvez écrire un courriel au développeur</string>
+    <string name="redirect">Suivez les instructions sur cette page pour completer l\'envoi de votre destination</string>
 
 </resources>
