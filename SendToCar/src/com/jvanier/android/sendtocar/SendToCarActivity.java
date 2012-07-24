@@ -13,6 +13,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -246,7 +247,7 @@ public class SendToCarActivity extends Activity {
 			}
 			else
 			{
-		    	showMessageBoxAndFinish(R.string.errorIntent);
+		    	showMessageBoxAndFinish(getString(R.string.errorIntent));
 			}
 		} catch(NullPointerException e) {
 			// not started from Google Maps, just open the manual address mode
@@ -257,10 +258,10 @@ public class SendToCarActivity extends Activity {
 		}
 	}
 	
-	private void showMessageBoxAndFinish(int messageId) {
+	private void showMessageBoxAndFinish(String message) {
         AlertDialog.Builder alertbox = new AlertDialog.Builder(this);
         alertbox.setTitle(R.string.errorTitle);
-        alertbox.setMessage(messageId);
+        alertbox.setMessage(message);
         alertbox.setOnCancelListener(new OnCancelListener() {
         	@Override
         	public void onCancel(DialogInterface dialog) {
@@ -306,9 +307,10 @@ public class SendToCarActivity extends Activity {
 		/**
 		 * 
 		 */
-		private static final long serialVersionUID = 7349967401205013218L;
+		private static final long serialVersionUID = -1829432201341253115L;
 		public int errorId;
 		public boolean errorOnStar;
+		public String message;
 		
 		public BackgroundTaskAbort(int errorId)
 		{
@@ -320,7 +322,13 @@ public class SendToCarActivity extends Activity {
 			this.errorId = errorId;
 			this.errorOnStar = errorOnStar;
 		}
-
+		
+		public BackgroundTaskAbort(String message)
+		{
+			this.errorId = 0;
+			this.errorOnStar = false;
+			this.message = message;
+		}
 	}
 
 	private class Address {
@@ -650,7 +658,13 @@ public class SendToCarActivity extends Activity {
 			if(!isCancelled()) {
 				if(exception != null)
 				{
-					showMessageBoxAndFinish(exception.errorId);
+					String message;
+					if(exception.message != null) {
+						message = exception.message;
+					} else {
+						message = getString(exception.errorId);
+					}
+					showMessageBoxAndFinish(message);
 				}
 				else
 				{
@@ -1031,8 +1045,6 @@ public class SendToCarActivity extends Activity {
 			return Boolean.TRUE;
 		}
 		
-
-
 		private String preparePostData() throws BackgroundTaskAbort {
 			String post = null;
 
@@ -1318,6 +1330,13 @@ public class SendToCarActivity extends Activity {
 					}
 				}
 				
+				/* Ford, Lincoln, Mercury -> workaround problem in Google/Ford server communication
+				 * by sending address through Mapquest */
+				if(status == 2 && (car != null && car.id.indexOf("car_ford") == 0)) {
+					sendByMapquest();
+					return;
+				}
+				
 				int errorCode = response.getInt("stcc_status");
 				int errorMsg;
 				boolean errorOnStar = false;
@@ -1363,6 +1382,145 @@ public class SendToCarActivity extends Activity {
 			}
 		}
 		
+		private void sendByMapquest() throws BackgroundTaskAbort {
+			if(isCancelled()) return;
+			String post = prepareForMapquest();
+			if(isCancelled()) return;
+			String sendToCarHtml = sendToCarMapquest(post);
+			if(isCancelled()) return;
+			parseSendToCarMapquest(sendToCarHtml);
+		}
+		
+		private String prepareForMapquest() throws BackgroundTaskAbort {
+			try
+			{
+				JSONObject location = new JSONObject();
+				location.put("name", destination);
+				
+				
+				String streetaddress;
+				if((address.number == null || address.number.length() == 0) &&
+						(address.street == null || address.street.length() == 0)) {
+					streetaddress = null;
+				} else if(address.number == null || address.number.length() == 0) {
+					streetaddress = address.street;
+				} else {
+					streetaddress = address.number + ' ' + address.street;
+				}
+				
+				// full address data
+				final String[] codesMQ = {"street", "city", "state", "postalCode", "country"};
+				final String[] valuesMQ = { streetaddress, address.city, address.province, address.postalCode, address.country};
+				
+				final String[] codes = codesMQ;
+				final String[] values = valuesMQ;
+
+				for(int i = 0; i < codes.length; i++)
+				{
+					if(values[i] != null && values[i].length() > 0)
+					{
+						location.put(codes[i], values[i]);
+					}
+				}
+				
+				if(address.latitude != null && address.longitude != null) {
+					JSONObject latLng = new JSONObject();
+					latLng.put("lat", address.latitude);
+					latLng.put("lng", address.longitude);
+					location.put("latLng", latLng);
+				}
+				
+				JSONArray locations = new JSONArray();
+				locations.put(location);
+				
+
+				JSONObject payload = new JSONObject();
+				payload.put("mobileNumber", account);
+				payload.put("locations", locations);
+
+				String post = payload.toString();
+				
+				log.d("Sending to car. Post data <pre>" + post + "</pre>");
+				
+				return post;
+				
+			} catch(JSONException e) {
+				log.d("<span style=\"color: red;\">JSON exception while preparing post data: " + e.toString() + "</span>");
+				throw new BackgroundTaskAbort(R.string.errorSendToCar);
+			} catch(NullPointerException e) {
+				log.d("<span style=\"color: red;\">Null pointer exception while preparing post data: " + e.toString() + "</span>");
+				throw new BackgroundTaskAbort(R.string.errorSendToCar);
+			}
+		}
+		
+
+		private String sendToCarMapquest(String post) throws BackgroundTaskAbort {
+			String sendToCarHtml = "";
+			try
+			{
+				URI postUri = new URI("http", "www.mapquest.com", "/FordSyncServlet", null, null);
+				
+				httpPost = new HttpPost();
+
+				httpPost.setURI(postUri);
+				httpPost.addHeader("Content-Type", "application/json; charset=UTF-8");
+				httpPost.setEntity(new ByteArrayEntity(post.getBytes()));
+				
+				log.d("Uploading to " + postUri.toString());
+
+				if(isCancelled() || httpPost.isAborted()) return null;
+				
+				HttpResponse response = client.execute(httpPost, httpContext);
+				
+				log.d("Uploaded to car. Status: " + response.getStatusLine().getStatusCode());
+				
+				if(isCancelled()) return null;
+
+				if(response == null || response.getStatusLine().getStatusCode() != HttpURLConnection.HTTP_OK )
+				{
+					throw new BackgroundTaskAbort(R.string.errorSendToCar);
+				}
+				
+				sendToCarHtml = EntityUtils.toString(response.getEntity());
+				log.d("Response: <pre>" + log.htmlSnippet(sendToCarHtml) + "</pre>");
+			} catch(InterruptedIOException e) {
+				log.d("Upload to car aborted");
+				return null;
+			} catch(Exception e) {
+				log.d("<span style=\"color: red;\">Exception while sending to car: " + e.toString() + "</span>");
+				throw new BackgroundTaskAbort(R.string.errorSendToCar);
+			}
+			
+			return sendToCarHtml;
+		}
+		
+		private void parseSendToCarMapquest(String sendToCarHtml) throws BackgroundTaskAbort {
+			try {
+				// replace ASCII character escapes \xAB with Unicode escapes \u00AB since those are converted
+				// automatically by the JSONObject parser to UTF-8 characters
+				String html = sendToCarHtml.toString().replaceAll("\\\\x", "\\\\u00");
+
+				JSONObject response = new JSONObject(html);
+				
+				if(isCancelled()) return;
+
+				String result = response.getString("result");
+
+				log.d("Response JSON parsed OK. Status: " + result);
+
+				if(result.equals("OK")) {
+					// success
+					return;
+				}
+				
+				throw new BackgroundTaskAbort(response.getString("message"));
+			} catch(JSONException e) {
+				log.d("<span style=\"color: red;\">Exception while parsing resposne JSON: " + e.toString() + "</span>");
+				throw new BackgroundTaskAbort(R.string.errorSendToCar); 
+			}
+		}
+
+		
 		@Override
 		protected void onPostExecute(Boolean result) {
 			if(progressDialog != null) {
@@ -1403,7 +1561,13 @@ public class SendToCarActivity extends Activity {
 						alertbox.show();
 					} else {
 						Context context = getApplicationContext();
-						Toast toast = Toast.makeText(context, exception.errorId, Toast.LENGTH_LONG);
+						String message;
+						if(exception.message != null) {
+							message = exception.message;
+						} else {
+							message = getString(exception.errorId);
+						}
+						Toast toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
 						toast.show();
 					}
 
@@ -1486,6 +1650,22 @@ public class SendToCarActivity extends Activity {
             return decoded.toString();
         }
 	}
+	
+	 public static String join(Collection<?> s, String delimiter) {
+	     StringBuilder builder = new StringBuilder();
+	     Iterator<?> iter = s.iterator();
+	     while (iter.hasNext()) {
+	    	 Object o = iter.next();
+	    	 if(o != null) {
+	    		 builder.append(o);
+	    	 }
+	         if (!iter.hasNext()) {
+	           break;                  
+	         }
+	         builder.append(delimiter);
+	     }
+	     return builder.toString();
+	 }
 
 	public class JSONMapRedirectHandler extends DefaultRedirectHandler {
 
