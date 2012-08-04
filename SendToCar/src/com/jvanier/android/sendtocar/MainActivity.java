@@ -11,6 +11,7 @@ import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources.Theme;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -127,7 +128,16 @@ public class MainActivity extends Activity {
 			@Override
 			public void OnClick() {
         		Intent intent = new Intent(MainActivity.this, SendToCarActivity.class);
-        		startActivity(intent);
+        		try {
+        			startActivity(intent);
+        		}
+        		catch(ActivityNotFoundException e)
+        		{
+        			Context context = getApplicationContext();
+        			Toast toast = Toast.makeText(context, R.string.errorNoApp, Toast.LENGTH_SHORT);
+        			toast.show();
+        		}
+
         	}
         });
         
@@ -163,8 +173,16 @@ public class MainActivity extends Activity {
 			@Override
 			public void OnClick() {
         		Intent intent = new Intent(MainActivity.this, InformationActivity.class);
-        		startActivity(intent);
-        	}
+        		try {
+        			startActivity(intent);
+        		}
+        		catch(ActivityNotFoundException e)
+        		{
+        			Context context = getApplicationContext();
+        			Toast toast = Toast.makeText(context, R.string.errorNoApp, Toast.LENGTH_SHORT);
+        			toast.show();
+        		}
+			}
         });
         
 		return map;
@@ -183,8 +201,16 @@ public class MainActivity extends Activity {
 			public void OnClick() {
 				Intent intent = new Intent(Intent.ACTION_VIEW); 
 				intent.setData(Uri.parse("market://details?id=com.jvanier.android.sendtocar")); 
-				startActivity(intent);
-        	}
+        		try {
+        			startActivity(intent);
+        		}
+        		catch(ActivityNotFoundException e)
+        		{
+        			Context context = getApplicationContext();
+        			Toast toast = Toast.makeText(context, R.string.errorNoApp, Toast.LENGTH_SHORT);
+        			toast.show();
+        		}
+			}
         });
         
 		return map;
@@ -203,7 +229,15 @@ public class MainActivity extends Activity {
 			public void OnClick() {
 				Intent intent = new Intent(Intent.ACTION_VIEW); 
 				intent.setData(Uri.parse("mailto:sendtocar.app@gmail.com")); 
-				startActivity(intent);
+        		try {
+        			startActivity(intent);
+        		}
+        		catch(ActivityNotFoundException e)
+        		{
+        			Context context = getApplicationContext();
+        			Toast toast = Toast.makeText(context, R.string.errorNoApp, Toast.LENGTH_SHORT);
+        			toast.show();
+        		}
         	}
         });
         
@@ -232,8 +266,7 @@ public class MainActivity extends Activity {
 	    		screenStrings = screenStringsLegacy;
 	    	}
 
-	    	
-	    	final Dialog d = new Dialog(this, android.R.style.Theme);
+	    	final Dialog d = new Dialog(this, android.R.style.Theme_DeviceDefault);
 	    	d.setContentView(R.layout.firstrun_dialog);
 	    	d.setTitle(R.string.infoHowTo);
 	    	d.findViewById(R.id.prevButton).setVisibility(View.INVISIBLE);

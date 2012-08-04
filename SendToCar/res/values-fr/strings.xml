@@ -73,5 +73,6 @@
     <string name="listEmailTitle">Écrire au développeur</string>
     <string name="listEmailDescription">Si vous avez un problème avec l\'application, vous pouvez écrire un courriel au développeur</string>
     <string name="redirect">Suivez les instructions sur cette page pour completer l\'envoi de votre destination</string>
+    <string name="errorNoApp">Aucune application est disponible pour effectuer cette action</string>
 
 </resources>

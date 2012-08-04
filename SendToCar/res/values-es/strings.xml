@@ -73,5 +73,6 @@
     <string name="listEmailTitle">Ponete en contacto con el desarrollador.</string>
     <string name="listEmailDescription">Si tenes problemas con esta aplicación, envia un e-mail al desarrollador</string>
     <string name="redirect">Siga las instrucciones de esta página para completar el envío de su destino</string>
+    <string name="errorNoApp">No aplicación está disponible para realizar esta acción</string>
 
 </resources>

@@ -7,6 +7,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Locale;
 
@@ -131,6 +132,8 @@ public class CarListLoader {
 					if(isCancelled()) return Boolean.FALSE;
 					parseCarsData(carsJson, host);
 					if(isCancelled()) return Boolean.FALSE;
+					addMapQuestCars();
+					if(isCancelled()) return Boolean.FALSE;
 				}
 			} catch(BackgroundTaskAbort e) {
 				return Boolean.FALSE;
@@ -222,6 +225,51 @@ public class CarListLoader {
 			} catch(JSONException e) {
 				log.d("<span style=\"color: red;\">Exception while parsing cars JSON: " + e.toString() + "</span>");
 				throw new BackgroundTaskAbort(); 
+			}
+		}
+		
+		private void addMapQuestCars() {
+
+			ArrayList<CarProvider> cl = carListTemp.getList();
+			
+			String[] fordIds = { "car_ford", "car_ford_lincoln", "car_ford_mercury" };
+			String[] fordMakes = { "Ford", "Lincoln", "Mercury" };
+
+			for(int i = 0; i < fordIds.length; i++) {
+				CarProvider ford = new CarProvider();
+				ford.id = fordIds[i];
+				ford.host = SendToCarActivity.MAPQUEST;
+				ford.make = fordMakes[i];
+				ford.account = "Mobile Phone Number:";
+				ford.type = 1;
+				ford.system = "SYNC";
+				ford.show_phone = false;
+				ford.show_notes = false;
+
+				if(!cl.contains(ford)) {
+					carListTemp.add(ford);
+				}
+			}
+
+			String[] onstarIds = { "car_gm_buick", "car_gm_cadillac", "car_gm_chevrolet", "car_gm_gmc", "car_gm_hummer", "car_gm_pontiac", "car_gm_saab", "car_gm_saturn", "car_onstar", "pnd_onstar"};
+			String[] onstarMakes = { "Buick", "Cadillac", "Chevrolet", "GMC", "Hummer", "Pontiac", "Saab", "Saturn", "OnStar", "OnStar FMV" };
+			int[]    onstarTypes = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 2 };
+
+			for(int i = 0; i < onstarIds.length; i++) {
+				CarProvider onstar = new CarProvider();
+				onstar.id = onstarIds[i];
+				onstar.host = SendToCarActivity.ONSTAR;
+				onstar.make = onstarMakes[i];
+				onstar.account = "OnStar Username:";
+				onstar.type = onstarTypes[i];
+				onstar.system = "OnStar";
+				onstar.show_phone = false;
+				onstar.show_notes = false;
+				
+
+				if(!cl.contains(onstar)) {
+					carListTemp.add(onstar);
+				}
 			}
 		}
 

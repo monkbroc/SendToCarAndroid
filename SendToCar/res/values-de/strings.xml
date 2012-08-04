@@ -73,5 +73,6 @@
     <string name="listEmailTitle">Den Entwickler kontaktieren</string>
     <string name="listEmailDescription">Wenn Sie Probleme mit dieser App haben, können Sie dem Entwickler eine E-Mail schicken </string>
     <string name="redirect">Befolgen Sie die Anweisungen auf dieser Seite zu vervollständigen Senden Sie Ihr Ziel</string>
+    <string name="errorNoApp">Keine App ist verfügbar, um diese Aktion zu tun</string>
 
 </resources>

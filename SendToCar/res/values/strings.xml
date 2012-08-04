@@ -73,5 +73,5 @@
     <string name="listEmailTitle">Contact developer</string>
     <string name="listEmailDescription">If you have issues with this app, you can email the developer</string>
     <string name="redirect">Follow the instructions on this page to finish sending your destination</string>
-
-</resources>
+    <string name="errorNoApp">No app is available to do this</string>
+</resources>

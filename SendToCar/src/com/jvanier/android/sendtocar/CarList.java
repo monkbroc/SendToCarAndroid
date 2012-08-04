@@ -7,8 +7,8 @@ import java.util.HashMap;
 
 
 public class CarList implements Serializable {
+	private static final long serialVersionUID = -2790923474808426237L;
 
-	private static final long serialVersionUID = -5616821271388533549L;
 	private HashMap<String, CarProvider> carsData;
 	private long downloadDate;
 	private String language;

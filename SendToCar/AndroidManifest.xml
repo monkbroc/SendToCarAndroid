@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jvanier.android.sendtocar"
-    android:versionCode="12"
-    android:versionName="1.6" >
+    android:versionCode="17"
+    android:versionName="1.7" >
 
     <uses-permission android:name="android.permission.INTERNET" />
 
@@ -47,6 +47,7 @@
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
+        <!--
         <activity
             android:name=".LogViewerActivity"
             android:label="@string/logViewer"
@@ -57,7 +58,8 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity>
+        -->
     </application>
 
 </manifest>

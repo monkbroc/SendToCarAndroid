@@ -73,5 +73,6 @@
     <string name="listEmailTitle">Связаться с разработчиком</string>
     <string name="listEmailDescription">Если у вас есть проблемы с этим приложением, Вы можете связаться с разработчиком</string>
     <string name="redirect">Следуйте инструкциям на этой странице, чтобы завершить отправки назначения</string>
+    <string name="errorNoApp">Нет приложение доступно для этого действия</string>
 
 </resources>

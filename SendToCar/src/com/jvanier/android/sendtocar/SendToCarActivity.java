@@ -46,6 +46,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
@@ -55,6 +56,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.text.format.Time;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -71,6 +73,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 public class SendToCarActivity extends Activity {
+	public static String MAPQUEST = "www.mapquest.com";
+	public static String ONSTAR = "www.onstar.com";
+	
 	private ProgressDialog progressDialog;
 	private DownloadAddressTask taskDownload;
 	private SendToCarTask taskSend;
@@ -1032,12 +1037,28 @@ public class SendToCarActivity extends Activity {
 		@Override
 		protected Boolean doInBackground(Void... noarg) {
 			try {
-				if(isCancelled()) return null;
-				String post = preparePostData();
-				if(isCancelled()) return null;
-				String sendToCarHtml = sendToCar(post);
-				if(isCancelled()) return null;
-				parseSendToCar(sendToCarHtml);
+				if(car.host.equals(MAPQUEST)) {
+					if(isCancelled()) return null;
+					String post = preparePostDataMapquest();
+					if(isCancelled()) return null;
+					String sendToCarHtml = sendToCarMapquest(post);
+					if(isCancelled()) return null;
+					parseSendToCarMapquest(sendToCarHtml);	
+				} else if(car.host.equals(ONSTAR)) {
+					if(isCancelled()) return null;
+					String post = preparePostDataOnStar();
+					if(isCancelled()) return null;
+					String sendToCarHtml = sendToCarOnStar(post);
+					if(isCancelled()) return null;
+					parseSendToCarOnStar(sendToCarHtml);	
+				} else {
+					if(isCancelled()) return null;
+					String post = preparePostData();
+					if(isCancelled()) return null;
+					String sendToCarHtml = sendToCar(post);
+					if(isCancelled()) return null;
+					parseSendToCar(sendToCarHtml);
+				}
 			} catch (BackgroundTaskAbort e) {
 				exception = e;
 				return Boolean.FALSE;
@@ -1123,6 +1144,7 @@ public class SendToCarActivity extends Activity {
 			return post;
 		}
 
+
 		private String getCookieId() {
 			String cookie_id = null;
 			
@@ -1150,7 +1172,6 @@ public class SendToCarActivity extends Activity {
 
 			return cookie_id;
 		}
-
 
 		private String parseCookie(Cookie c) {
 			String cookie_id = null;
@@ -1324,17 +1345,19 @@ public class SendToCarActivity extends Activity {
 					if(url.length() > 0) {
 						Intent i = new Intent(Intent.ACTION_VIEW);
 						i.setData(Uri.parse(url));
-						startActivity(i);
+		        		try
+		        		{
+		        			startActivity(i);
+		        		}
+		        		catch(ActivityNotFoundException e)
+		        		{
+		        			Context context = getApplicationContext();
+		        			Toast toast = Toast.makeText(context, R.string.errorStartGoogleMaps, Toast.LENGTH_SHORT);
+		        			toast.show();
+		        		}
 						finish();
 						throw new BackgroundTaskAbort(R.string.redirect); 
 					}
-				}
-				
-				/* Ford, Lincoln, Mercury -> workaround problem in Google/Ford server communication
-				 * by sending address through Mapquest */
-				if(status == 2 && (car != null && car.id.indexOf("car_ford") == 0)) {
-					sendByMapquest();
-					return;
 				}
 				
 				int errorCode = response.getInt("stcc_status");
@@ -1382,16 +1405,7 @@ public class SendToCarActivity extends Activity {
 			}
 		}
 		
-		private void sendByMapquest() throws BackgroundTaskAbort {
-			if(isCancelled()) return;
-			String post = prepareForMapquest();
-			if(isCancelled()) return;
-			String sendToCarHtml = sendToCarMapquest(post);
-			if(isCancelled()) return;
-			parseSendToCarMapquest(sendToCarHtml);
-		}
-		
-		private String prepareForMapquest() throws BackgroundTaskAbort {
+		private String preparePostDataMapquest() throws BackgroundTaskAbort {
 			try
 			{
 				JSONObject location = new JSONObject();
@@ -1423,7 +1437,11 @@ public class SendToCarActivity extends Activity {
 					}
 				}
 				
-				if(address.latitude != null && address.longitude != null) {
+				if(address.latitude.length() == 0 || address.longitude.length() == 0) {
+					updateAddressLatLong(address);
+				}
+				
+				if(address.latitude.length() > 0 && address.longitude.length() > 0) {
 					JSONObject latLng = new JSONObject();
 					latLng.put("lat", address.latitude);
 					latLng.put("lng", address.longitude);
@@ -1440,28 +1458,25 @@ public class SendToCarActivity extends Activity {
 
 				String post = payload.toString();
 				
-				log.d("Sending to car. Post data <pre>" + post + "</pre>");
+				log.d("Sending to MapQuest. Post data <pre>" + post + "</pre>");
 				
 				return post;
 				
 			} catch(JSONException e) {
-				log.d("<span style=\"color: red;\">JSON exception while preparing post data: " + e.toString() + "</span>");
+				log.d("<span style=\"color: red;\">JSON exception while preparing MapQuest post data: " + e.toString() + "</span>");
 				throw new BackgroundTaskAbort(R.string.errorSendToCar);
 			} catch(NullPointerException e) {
-				log.d("<span style=\"color: red;\">Null pointer exception while preparing post data: " + e.toString() + "</span>");
+				log.d("<span style=\"color: red;\">Null pointer exception while preparing MapQuest post data: " + e.toString() + "</span>");
 				throw new BackgroundTaskAbort(R.string.errorSendToCar);
 			}
 		}
 		
-
 		private String sendToCarMapquest(String post) throws BackgroundTaskAbort {
 			String sendToCarHtml = "";
 			try
 			{
-				URI postUri = new URI("http", "www.mapquest.com", "/FordSyncServlet", null, null);
+				URI postUri = new URI("http", car.host, "/FordSyncServlet", null, null);
 				
-				httpPost = new HttpPost();
-
 				httpPost.setURI(postUri);
 				httpPost.addHeader("Content-Type", "application/json; charset=UTF-8");
 				httpPost.setEntity(new ByteArrayEntity(post.getBytes()));
@@ -1472,7 +1487,7 @@ public class SendToCarActivity extends Activity {
 				
 				HttpResponse response = client.execute(httpPost, httpContext);
 				
-				log.d("Uploaded to car. Status: " + response.getStatusLine().getStatusCode());
+				log.d("Uploaded to Mapquest. Status: " + response.getStatusLine().getStatusCode());
 				
 				if(isCancelled()) return null;
 
@@ -1484,10 +1499,10 @@ public class SendToCarActivity extends Activity {
 				sendToCarHtml = EntityUtils.toString(response.getEntity());
 				log.d("Response: <pre>" + log.htmlSnippet(sendToCarHtml) + "</pre>");
 			} catch(InterruptedIOException e) {
-				log.d("Upload to car aborted");
+				log.d("Upload to Mapquest aborted");
 				return null;
 			} catch(Exception e) {
-				log.d("<span style=\"color: red;\">Exception while sending to car: " + e.toString() + "</span>");
+				log.d("<span style=\"color: red;\">Exception while sending to Mapquest: " + e.toString() + "</span>");
 				throw new BackgroundTaskAbort(R.string.errorSendToCar);
 			}
 			
@@ -1506,7 +1521,7 @@ public class SendToCarActivity extends Activity {
 
 				String result = response.getString("result");
 
-				log.d("Response JSON parsed OK. Status: " + result);
+				log.d("Mapquest response JSON parsed OK. Status: " + result);
 
 				if(result.equals("OK")) {
 					// success
@@ -1515,16 +1530,93 @@ public class SendToCarActivity extends Activity {
 				
 				throw new BackgroundTaskAbort(response.getString("message"));
 			} catch(JSONException e) {
-				log.d("<span style=\"color: red;\">Exception while parsing resposne JSON: " + e.toString() + "</span>");
+				log.d("<span style=\"color: red;\">Exception while parsing Mapquest resposne JSON: " + e.toString() + "</span>");
 				throw new BackgroundTaskAbort(R.string.errorSendToCar); 
 			}
 		}
+		
+		private String preparePostDataOnStar() throws BackgroundTaskAbort {
+			try
+			{
+				StringBuilder payload = new StringBuilder();
+				payload.append("s_name=" + URLEncoder.encode(destination));
 
+				String streetaddress;
+				if((address.number == null || address.number.length() == 0) &&
+						(address.street == null || address.street.length() == 0)) {
+					streetaddress = null;
+				} else if(address.number == null || address.number.length() == 0) {
+					streetaddress = address.street;
+				} else {
+					streetaddress = address.number + ' ' + address.street;
+				}
+
+				if(address.latitude.length() == 0 || address.longitude.length() == 0) {
+					updateAddressLatLong(address);
+				}
+				
+				Time now = new Time();
+				now.setToNow();
+				String timestamp = now.toMillis(true) + "";
+
+                // full address data
+				final String[] codesMQ = {"s_lat", "s_long", "s_street", "s_city", "s_state_province", "s_postalcode", "s_country", "s_locale", "s_nounce", "s_entity_id", "SignatureMethod", "Signature" };
+				final String[] valuesMQ = { address.latitude, address.longitude, streetaddress, address.city, address.province, address.postalCode, address.country, "en_US", timestamp, " " + timestamp, "https://mapquest.com.onstar.com", "RSA-SHA256", "" };
+				
+				final String[] codes = codesMQ;
+				final String[] values = valuesMQ;
+
+				for(int i = 0; i < codes.length; i++)
+				{
+					if(values[i] != null && values[i].length() > 0)
+					{
+						payload.append("&" + codes[i] + "=" + URLEncoder.encode(values[i]));
+					}
+				}
+				
+				String post = payload.toString();
+				
+				log.d("Sending to OnStar. Post data <pre>" + post + "</pre>");
+				
+				return post;
+				
+			} catch(NullPointerException e) {
+				log.d("<span style=\"color: red;\">Null pointer exception while preparing MapQuest post data: " + e.toString() + "</span>");
+				throw new BackgroundTaskAbort(R.string.errorSendToCar);
+			}
+		}
+		
+		private String sendToCarOnStar(String post) throws BackgroundTaskAbort {
+			Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.onstar.com/web/portal/odm?" + post));
+    		try
+    		{
+    			startActivity(browserIntent);
+				finish();
+				throw new BackgroundTaskAbort(R.string.redirect); 
+    		}
+    		catch(ActivityNotFoundException e)
+    		{
+    			Context context = getApplicationContext();
+    			Toast toast = Toast.makeText(context, R.string.errorStartGoogleMaps, Toast.LENGTH_SHORT);
+    			toast.show();
+    		}
+
+			return "";
+		}
+
+		private void parseSendToCarOnStar(String sendToCarHtml) throws BackgroundTaskAbort {
+			/* Nothing to do */
+		}
+		
 		
 		@Override
 		protected void onPostExecute(Boolean result) {
 			if(progressDialog != null) {
-				progressDialog.dismiss();
+				try {
+					progressDialog.dismiss();
+				} catch(Exception e) {
+					/* Dismissing dialog might fail if view is already gone */
+				}
 				progressDialog = null;
 			}
 						
@@ -1545,7 +1637,16 @@ public class SendToCarActivity extends Activity {
 							@Override
 							public void onClick(DialogInterface arg0, int arg1) {
 								Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.onstar.com/web/portal/odm"));
-								startActivity(browserIntent);
+				        		try
+				        		{
+				        			startActivity(browserIntent);
+				        		}
+				        		catch(ActivityNotFoundException e)
+				        		{
+				        			Context context = getApplicationContext();
+				        			Toast toast = Toast.makeText(context, R.string.errorStartGoogleMaps, Toast.LENGTH_SHORT);
+				        			toast.show();
+				        		}
 							}
 						});
 

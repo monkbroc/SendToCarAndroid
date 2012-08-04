@@ -23,6 +23,8 @@
                 android:layout_height="wrap_content"
                 android:text="@string/vehicle" />
 
+            <View style="@style/headerDiv" />
+
             <LinearLayout
                 android:id="@+id/linearLayout3"
                 style="@style/viewGroup"
@@ -69,6 +71,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/destination" />
+
+            <View style="@style/headerDiv" />
 
             <LinearLayout
                 android:id="@+id/linearLayout4"
@@ -259,29 +263,6 @@
         </LinearLayout>
     </ScrollView>
 
-    <LinearLayout
-        style="@android:style/ButtonBar"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:drawable/bottom_bar" >
-
-        <Button
-            android:id="@+id/sendButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5.0dip"
-            android:layout_weight="0.5"
-            android:drawablePadding="3.0dip"
-            android:text="@string/send" />
-
-        <Button
-            android:id="@+id/cancelButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="5.0dip"
-            android:layout_weight="0.5"
-            android:drawablePadding="3.0dip"
-            android:text="@string/cancel" />
-    </LinearLayout>
+    <include layout="@layout/sendbar" />
 
 </LinearLayout>
