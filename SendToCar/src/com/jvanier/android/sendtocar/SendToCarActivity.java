@@ -1539,7 +1539,7 @@ public class SendToCarActivity extends Activity {
 			try
 			{
 				StringBuilder payload = new StringBuilder();
-				payload.append("s_name=" + URLEncoder.encode(destination));
+				payload.append("s_name=" + URLEncoder.encode(destination, "UTF-8"));
 
 				String streetaddress;
 				if((address.number == null || address.number.length() == 0) &&
@@ -1570,7 +1570,7 @@ public class SendToCarActivity extends Activity {
 				{
 					if(values[i] != null && values[i].length() > 0)
 					{
-						payload.append("&" + codes[i] + "=" + URLEncoder.encode(values[i]));
+						payload.append("&" + codes[i] + "=" + URLEncoder.encode(values[i], "UTF-8"));
 					}
 				}
 				
@@ -1580,6 +1580,9 @@ public class SendToCarActivity extends Activity {
 				
 				return post;
 				
+			} catch(UnsupportedEncodingException e) {
+				log.d("<span style=\"color: red;\">Unsupported encoding exception while preparing MapQuest post data: " + e.toString() + "</span>");
+				throw new BackgroundTaskAbort(R.string.errorSendToCar);
 			} catch(NullPointerException e) {
 				log.d("<span style=\"color: red;\">Null pointer exception while preparing MapQuest post data: " + e.toString() + "</span>");
 				throw new BackgroundTaskAbort(R.string.errorSendToCar);

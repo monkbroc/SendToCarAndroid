@@ -10,7 +10,6 @@ import java.util.Date;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
 public class DebugLogFile implements DebugLog {
 	private final static String FILENAME = "sendtocar.log";

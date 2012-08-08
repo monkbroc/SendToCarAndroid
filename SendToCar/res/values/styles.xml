@@ -24,4 +24,14 @@
         <item name="android:paddingLeft">6dp</item>
     </style>
 
+    <style name="layoutDiv"></style>
+
+    <style name="bottomBar">
+        <item name="android:background">@android:drawable/bottom_bar</item>
+    </style>
+
+    <style name="firstRunButton">
+        <item name="android:drawablePadding">3dp</item>
+    </style>
+
 </resources>

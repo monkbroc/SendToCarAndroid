@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/bottomBar"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:background="@android:drawable/bottom_bar" >
+    android:layout_height="wrap_content" >
 
     <Button
         android:id="@+id/sendButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="5.0dip"
         android:layout_weight="0.5"
@@ -15,7 +15,7 @@
 
     <Button
         android:id="@+id/cancelButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="5.0dip"
         android:layout_weight="0.5"

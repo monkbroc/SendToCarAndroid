@@ -11,7 +11,6 @@ import android.content.ActivityNotFoundException;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources.Theme;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -63,7 +62,6 @@ public class MainActivity extends Activity {
         // Insert each list element into an ArrayList
         ArrayList<HashMap<String, String>> listItems = new ArrayList<HashMap<String, String>>();
         mainEvents = new ArrayList<Clicker>();
-        HashMap<String, String> map;
 
         listItems.add(setupOpenMap());
         listItems.add(setupManualAddress());
