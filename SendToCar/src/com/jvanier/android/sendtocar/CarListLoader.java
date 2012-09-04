@@ -119,6 +119,7 @@ public class CarListLoader {
 		@Override
 		protected Boolean doInBackground(String... mapHosts) {
 			log.d("Starting car download");
+			Boolean ret = Boolean.FALSE;
 			
 			try {
 				setupHttp();
@@ -130,16 +131,21 @@ public class CarListLoader {
 						
 					String carsJson = downloadCars(host);
 					if(isCancelled()) return Boolean.FALSE;
+					if(carsJson.length() == 0) {
+						continue;
+					}
 					parseCarsData(carsJson, host);
 					if(isCancelled()) return Boolean.FALSE;
 					addMapQuestCars();
 					if(isCancelled()) return Boolean.FALSE;
+					
+					ret = Boolean.TRUE;
 				}
 			} catch(BackgroundTaskAbort e) {
 				return Boolean.FALSE;
 			}
 			
-			return Boolean.TRUE;
+			return ret;
 		}
 		
 
@@ -165,8 +171,13 @@ public class CarListLoader {
 				
 				log.d("Downloaded cars. Status: " + response.getStatusLine().getStatusCode());
 				
-				if(response.getStatusLine().getStatusCode() != HttpURLConnection.HTTP_OK )
-				{
+				switch(response.getStatusLine().getStatusCode()) {
+					case HttpURLConnection.HTTP_OK:
+					break;
+					case HttpURLConnection.HTTP_NOT_FOUND:
+					log.d("Car list not found. Skipping server " + host);
+					return "";
+					default:
 					throw new BackgroundTaskAbort();
 				}
 				

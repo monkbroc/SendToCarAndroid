@@ -1475,7 +1475,7 @@ public class SendToCarActivity extends Activity {
 			String sendToCarHtml = "";
 			try
 			{
-				URI postUri = new URI("http", car.host, "/FordSyncServlet", null, null);
+				URI postUri = new URI("https", car.host, "/FordSyncServlet/submit", null, null);
 				
 				httpPost.setURI(postUri);
 				httpPost.addHeader("Content-Type", "application/json; charset=UTF-8");
@@ -1529,7 +1529,7 @@ public class SendToCarActivity extends Activity {
 				}
 				
 				throw new BackgroundTaskAbort(response.getString("message"));
-			} catch(JSONException e) {
+			} catch(Exception e) {
 				log.d("<span style=\"color: red;\">Exception while parsing Mapquest resposne JSON: " + e.toString() + "</span>");
 				throw new BackgroundTaskAbort(R.string.errorSendToCar); 
 			}
