@@ -66,7 +66,6 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -746,9 +745,6 @@ public class SendToCarActivity extends Activity {
 					{
 						EditText accountText = (EditText) findViewById(R.id.accountText);
 						accountText.setText("");
-
-						CheckBox saveAsDefault = (CheckBox) findViewById(R.id.useDefaultCheck);
-						saveAsDefault.setChecked(false);
 					}
 						
 					ignoreFirstSpinnerChange = false;
@@ -788,9 +784,6 @@ public class SendToCarActivity extends Activity {
 			   EditText accountText = (EditText) findViewById(R.id.accountText);
 			   accountText.setText(account);
 
-			   CheckBox saveAsDefault = (CheckBox) findViewById(R.id.useDefaultCheck);
-			   saveAsDefault.setChecked(true);
-			   
 			   ignoreFirstSpinnerChange = true;
 		   }
 	   }
@@ -903,6 +896,7 @@ public class SendToCarActivity extends Activity {
 		}
 	}
 	
+	@SuppressLint("UseSparseArrays")
 	private void updateAdressFromFields() {
 		if(address != null)
 		{
@@ -937,21 +931,17 @@ public class SendToCarActivity extends Activity {
 	}
 
 	private void saveMakeToPreferences() {
-	   CheckBox saveAsDefault = (CheckBox) findViewById(R.id.useDefaultCheck);
-
 	   // erase defaults if invalid values were saved
 	   String make = "";
 	   String account = "";
-	   if(saveAsDefault.isChecked())
-	   {
-		   CarProvider car = getCar();
-		   if(car != null && car.type != 0)
-		   {
-			   make = car.id;
 
-			   EditText accountText = (EditText) findViewById(R.id.accountText);
-			   account = accountText.getText().toString();
-		   }
+	   CarProvider car = getCar();
+	   if(car != null && car.type != 0)
+	   {
+		   make = car.id;
+
+		   EditText accountText = (EditText) findViewById(R.id.accountText);
+		   account = accountText.getText().toString();
 	   }
 
        SharedPreferences.Editor settings = getPreferences(Context.MODE_PRIVATE).edit();

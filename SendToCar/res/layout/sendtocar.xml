@@ -1,268 +1,262 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/layoutDiv"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+	style="@style/layoutDiv"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical" >
 
-    <ScrollView
-        android:id="@+id/scrollView1"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" >
+	<ScrollView
+		android:id="@+id/scrollView1"
+		android:layout_width="fill_parent"
+		android:layout_height="0dp"
+		android:layout_weight="1" >
 
-        <LinearLayout
-            android:id="@+id/linearLayout2"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical" >
+		<LinearLayout
+			android:id="@+id/linearLayout2"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/textView3"
-                style="@style/headerBar"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/vehicle" />
+			<TextView
+				android:id="@+id/textView3"
+				style="@style/headerBar"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/vehicle" />
 
-            <View style="@style/headerDiv" />
+			<View style="@style/headerDiv" />
 
-            <LinearLayout
-                android:id="@+id/linearLayout3"
-                style="@style/viewGroup"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
+			<LinearLayout
+				android:id="@+id/linearLayout3"
+				style="@style/viewGroup"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical" >
 
-                <TextView
-                    style="@style/label"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:text="@string/make" />
+				<TextView
+					style="@style/label"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:text="@string/make" />
 
-                <Spinner
-                    android:id="@+id/makeSpinner"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:prompt="@string/make" />
+				<Spinner
+					android:id="@+id/makeSpinner"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:prompt="@string/make" />
 
-                <TextView
-                    android:id="@+id/accountLabel"
-                    style="@style/label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/account" />
+				<TextView
+					android:id="@+id/accountLabel"
+					style="@style/label"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/account" />
 
-                <EditText
-                    android:id="@+id/accountText"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
+				<EditText
+					android:id="@+id/accountText"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:inputType="text" />
+			</LinearLayout>
 
-                <CheckBox
-                    android:id="@+id/useDefaultCheck"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="right"
-                    android:text="@string/useAsDefault" />
-            </LinearLayout>
+			<TextView
+				android:id="@+id/TextView01"
+				style="@style/headerBar"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:text="@string/destination" />
 
-            <TextView
-                android:id="@+id/TextView01"
-                style="@style/headerBar"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/destination" />
+			<View style="@style/headerDiv" />
 
-            <View style="@style/headerDiv" />
+			<LinearLayout
+				android:id="@+id/linearLayout4"
+				style="@style/viewGroup"
+				android:layout_width="fill_parent"
+				android:layout_height="wrap_content"
+				android:orientation="vertical" >
 
-            <LinearLayout
-                android:id="@+id/linearLayout4"
-                style="@style/viewGroup"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
+				<TextView
+					android:id="@+id/textView1"
+					style="@style/label"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/destinationName" />
 
-                <TextView
-                    android:id="@+id/textView1"
-                    style="@style/label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/destinationName" />
+				<EditText
+					android:id="@+id/destinationText"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:inputType="text" />
 
-                <EditText
-                    android:id="@+id/destinationText"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text" />
+				<TextView
+					android:id="@+id/tagLabel"
+					style="@style/label"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/destinationTag"
+					android:visibility="gone" />
 
-                <TextView
-                    android:id="@+id/tagLabel"
-                    style="@style/label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/destinationTag"
-                    android:visibility="gone" />
+				<EditText
+					android:id="@+id/tagText"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:inputType="text"
+					android:visibility="gone" />
 
-                <EditText
-                    android:id="@+id/tagText"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:inputType="text"
-                    android:visibility="gone" />
+				<TextView
+					android:id="@+id/addressLabel"
+					style="@style/label"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:text="@string/address" />
 
-                <TextView
-                    android:id="@+id/addressLabel"
-                    style="@style/label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/address" />
+				<TextView
+					android:id="@+id/addressText"
+					style="@style/label"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:textStyle="italic" />
 
-                <TextView
-                    android:id="@+id/addressText"
-                    style="@style/label"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textStyle="italic" />
+				<LinearLayout
+					android:id="@+id/manualAddress"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:orientation="vertical"
+					android:visibility="gone" >
 
-                <LinearLayout
-                    android:id="@+id/manualAddress"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone" >
+					<LinearLayout
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content" >
 
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content" >
+						<TextView
+							android:id="@+id/manualNumberLabel"
+							style="@style/label"
+							android:layout_width="80dp"
+							android:layout_height="wrap_content"
+							android:paddingRight="6dp"
+							android:text="@string/manualNumber" />
 
-                        <TextView
-                            android:id="@+id/manualNumberLabel"
-                            style="@style/label"
-                            android:layout_width="80dp"
-                            android:layout_height="wrap_content"
-                            android:paddingRight="6dp"
-                            android:text="@string/manualNumber" />
+						<TextView
+							android:id="@+id/manualStreetLabel"
+							style="@style/label"
+							android:layout_width="fill_parent"
+							android:layout_height="wrap_content"
+							android:text="@string/manualStreet" />
+					</LinearLayout>
 
-                        <TextView
-                            android:id="@+id/manualStreetLabel"
-                            style="@style/label"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:text="@string/manualStreet" />
-                    </LinearLayout>
+					<LinearLayout
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content" >
 
-                    <LinearLayout
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content" >
+						<EditText
+							android:id="@+id/manualNumberText"
+							android:layout_width="80dp"
+							android:layout_height="wrap_content"
+							android:inputType="numberDecimal"
+							android:paddingRight="6dp" />
 
-                        <EditText
-                            android:id="@+id/manualNumberText"
-                            android:layout_width="80dp"
-                            android:layout_height="wrap_content"
-                            android:inputType="numberDecimal"
-                            android:paddingRight="6dp" />
+						<EditText
+							android:id="@+id/manualStreetText"
+							android:layout_width="fill_parent"
+							android:layout_height="wrap_content"
+							android:inputType="text"
+							android:paddingRight="6dp" />
+					</LinearLayout>
 
-                        <EditText
-                            android:id="@+id/manualStreetText"
-                            android:layout_width="fill_parent"
-                            android:layout_height="wrap_content"
-                            android:inputType="text"
-                            android:paddingRight="6dp" />
-                    </LinearLayout>
+					<TextView
+						android:id="@+id/manualCityLabel"
+						style="@style/label"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:text="@string/manualCity" />
 
-                    <TextView
-                        android:id="@+id/manualCityLabel"
-                        style="@style/label"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/manualCity" />
+					<EditText
+						android:id="@+id/manualCityText"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:inputType="text" />
 
-                    <EditText
-                        android:id="@+id/manualCityText"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text" />
+					<TextView
+						android:id="@+id/manualProvinceLabel"
+						style="@style/label"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:text="@string/manualProvince" />
 
-                    <TextView
-                        android:id="@+id/manualProvinceLabel"
-                        style="@style/label"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/manualProvince" />
+					<EditText
+						android:id="@+id/manualProvinceText"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:inputType="text" />
 
-                    <EditText
-                        android:id="@+id/manualProvinceText"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text" />
+					<TextView
+						android:id="@+id/manualPostalCodeLabel"
+						style="@style/label"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:text="@string/manualPostalCode" />
 
-                    <TextView
-                        android:id="@+id/manualPostalCodeLabel"
-                        style="@style/label"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/manualPostalCode" />
+					<EditText
+						android:id="@+id/manualPostalCodeText"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:inputType="text" />
 
-                    <EditText
-                        android:id="@+id/manualPostalCodeText"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:inputType="text" />
+					<TextView
+						android:id="@+id/manualCountryLabel"
+						style="@style/label"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:text="@string/manualCountry" />
 
-                    <TextView
-                        android:id="@+id/manualCountryLabel"
-                        style="@style/label"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/manualCountry" />
+					<EditText
+						android:id="@+id/manualCountryText"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:hint="@string/manualCountryHint"
+						android:inputType="text" />
 
-                    <EditText
-                        android:id="@+id/manualCountryText"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/manualCountryHint"
-                        android:inputType="text" />
+					<TextView
+						android:id="@+id/manualPhoneLabel"
+						style="@style/label"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:text="@string/manualPhone" />
 
-                    <TextView
-                        android:id="@+id/manualPhoneLabel"
-                        style="@style/label"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/manualPhone" />
+					<EditText
+						android:id="@+id/manualPhoneText"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:hint="@string/optional"
+						android:inputType="text" />
+				</LinearLayout>
 
-                    <EditText
-                        android:id="@+id/manualPhoneText"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/optional"
-                        android:inputType="text" />
-                </LinearLayout>
+				<LinearLayout
+					android:id="@+id/notes"
+					android:layout_width="fill_parent"
+					android:layout_height="wrap_content"
+					android:orientation="vertical"
+					android:visibility="gone" >
 
-                <LinearLayout
-                    android:id="@+id/notes"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:visibility="gone" >
+					<TextView
+						android:id="@+id/notesLabel"
+						style="@style/label"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:text="@string/notes" />
 
-                    <TextView
-                        android:id="@+id/notesLabel"
-                        style="@style/label"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:text="@string/notes" />
+					<EditText
+						android:id="@+id/notesText"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:hint="@string/optional"
+						android:inputType="text|textMultiLine"
+						android:minLines="1" />
+				</LinearLayout>
+			</LinearLayout>
+		</LinearLayout>
+	</ScrollView>
 
-                    <EditText
-                        android:id="@+id/notesText"
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/optional"
-                        android:inputType="text|textMultiLine"
-                        android:minLines="1" />
-                </LinearLayout>
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+	<include layout="@layout/sendbar" />
 
-    <include layout="@layout/sendbar" />
 </LinearLayout>
