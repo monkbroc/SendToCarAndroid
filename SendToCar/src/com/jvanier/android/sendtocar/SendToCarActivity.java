@@ -1500,12 +1500,14 @@ public class SendToCarActivity extends Activity {
 		}
 		
 		private void parseSendToCarMapquest(String sendToCarHtml) throws BackgroundTaskAbort {
+			JSONObject response;
+			
 			try {
 				// replace ASCII character escapes \xAB with Unicode escapes \u00AB since those are converted
 				// automatically by the JSONObject parser to UTF-8 characters
 				String html = sendToCarHtml.toString().replaceAll("\\\\x", "\\\\u00");
 
-				JSONObject response = new JSONObject(html);
+				response = new JSONObject(html);
 				
 				if(isCancelled()) return;
 
@@ -1518,11 +1520,15 @@ public class SendToCarActivity extends Activity {
 					return;
 				}
 				
-				throw new BackgroundTaskAbort(response.getString("message"));
 			} catch(Exception e) {
 				log.d("<span style=\"color: red;\">Exception while parsing Mapquest resposne JSON: " + e.toString() + "</span>");
 				throw new BackgroundTaskAbort(R.string.errorSendToCar); 
 			}
+
+			String errorMsg = response.optString("message");
+			log.d("<span style=\"color: red;\">Could not send to Mapquest. Error: " + errorMsg + "</span>");
+			throw new BackgroundTaskAbort(errorMsg);
+
 		}
 		
 		private String preparePostDataOnStar() throws BackgroundTaskAbort {
@@ -1671,7 +1677,13 @@ public class SendToCarActivity extends Activity {
 				{
 					int msgId = (car.type == 2) ?  R.string.successGPS : R.string.successCar;
 					Context context = getApplicationContext();
-					Toast toast = Toast.makeText(context, msgId, Toast.LENGTH_LONG);
+					String msgStr = context.getString(msgId);
+
+					/* Show additional message for Ford since users seem to find it difficult to download the destination to the car */
+					if(car.host.equals(MAPQUEST)) {
+						msgStr += "\n" + context.getString(R.string.fordDownload);
+					}
+					Toast toast = Toast.makeText(context, msgStr, Toast.LENGTH_LONG);
 					toast.show();
 
 					finish();
