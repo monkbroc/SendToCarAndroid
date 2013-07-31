@@ -243,14 +243,19 @@ public class SendToCarActivity extends Activity {
 	private void loadMapFromIntent(Intent i)
 	{
 		try {
-			//log.d("Intent. Action: " + i.getAction() + ", Text: " + i.getExtras().getCharSequence(Intent.EXTRA_TEXT).toString());
+			log.d("Intent. Action: " + i.getAction() + ", Text: " + i.getExtras().getCharSequence(Intent.EXTRA_TEXT).toString());
 			if(i.getAction().equals(Intent.ACTION_SEND)) {
 				String url = findURL(i.getExtras().getCharSequence(Intent.EXTRA_TEXT).toString());
 			
 				log.d("URL: <a href=\""+ url + "\">url</a>");
-			
-				taskDownload = new DownloadAddressTask();
-				taskDownload.execute(new String[] { url });
+				
+				if(url == null) {
+					// Show message about the Google Maps long press bug
+					showMessageBoxAndFinish(getString(R.string.errorGoogleMapsLongPressBug));
+				} else {
+					taskDownload = new DownloadAddressTask();
+					taskDownload.execute(new String[] { url });
+				}
 			}
 			else
 			{
@@ -574,7 +579,7 @@ public class SendToCarActivity extends Activity {
 			{
 				log.d("<span style=\"color: red;\">Cannot find address JSON</span>");
 				address = null;
-				throw new BackgroundTaskAbort(R.string.errorDownload); 
+				throw new BackgroundTaskAbort(R.string.errorGoogleMapsIncompleteAddressBug); 
 			}
 		}
 

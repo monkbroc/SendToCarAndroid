@@ -1,7 +1,5 @@
 package com.jvanier.android.sendtocar;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -15,10 +13,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewConfiguration;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
@@ -262,9 +260,9 @@ public class MainActivity extends Activity {
 					{
 						firstRunScreen--;
 						TextView t = (TextView)d.findViewById(R.id.messageText);
+						ImageView im = (ImageView)d.findViewById(R.id.screenshotImage);
 						t.setText(screenStrings[firstRunScreen]);
-						t.setCompoundDrawablesWithIntrinsicBounds(null, null, null,
-								v.getResources().getDrawable(screenDrawables[firstRunScreen]));
+						im.setImageResource(screenDrawables[firstRunScreen]);
 					}
 					
 					boolean hide = (firstRunScreen == 0);
@@ -281,9 +279,9 @@ public class MainActivity extends Activity {
 					{
 						firstRunScreen++;
 						TextView t = (TextView)d.findViewById(R.id.messageText);
+						ImageView im = (ImageView)d.findViewById(R.id.screenshotImage);
 						t.setText(screenStrings[firstRunScreen]);
-						t.setCompoundDrawablesWithIntrinsicBounds(null, null, null,
-								v.getResources().getDrawable(screenDrawables[firstRunScreen]));
+						im.setImageResource(screenDrawables[firstRunScreen]);
 					}
 					else
 					{
