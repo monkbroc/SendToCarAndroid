@@ -511,6 +511,10 @@ public class SendToCarActivity extends Activity {
 						if(mapData.has("infoWindow"))
 						{
 							JSONObject info = mapData.getJSONObject("infoWindow");
+							if(info.has("title") && address.title.length() == 0) {
+								address.title = decodeHtml(info.optString("title", ""));
+							}
+								
 							if(info.has("addressLines"))
 							{
 								JSONArray lines = info.getJSONArray("addressLines");

@@ -39,13 +39,12 @@
 	<string name="logViewer">Send To Car Log</string>
 	<string name="menuHelp">Help</string>
 	<string name="menuEdit">Edit address</string>
-	<string name="infoStart">Start Google Maps and click on a place</string>
+	<string name="infoStart">Start Google Maps and find a place</string>
 	<string name="infoNext">Next</string>
 	<string name="infoPrev">Previous</string>
 	<string name="infoHowTo">How to Use</string>
 	<string name="infoFinish">Finish</string>
 	<string name="infoShare">Press "Menu" and click "Share"</string>
-	<string name="infoShare_ics">Click "..." and click "Share"</string>
 	<string name="infoSend">Select "Send To Car"</string>
 	<string name="infoEnter">Select your car and hit "Send"</string>
 	<string name="approximateAddress">Address is approximate</string>

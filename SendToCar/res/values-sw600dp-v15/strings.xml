@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="infoStart">Start Google Maps, find a place and press on the white address box</string>
+	<string name="infoShare">Press "Share"</string>
+</resources>

@@ -1,22 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.jvanier.android.sendtocar"
-	android:versionCode="23"
-	android:versionName="2.1" >
+	android:versionCode="25"
+	android:versionName="3.0" >
 
 	<uses-permission android:name="android.permission.INTERNET" />
 
 	<uses-sdk
 		android:minSdkVersion="4"
-		android:targetSdkVersion="14" />
+		android:targetSdkVersion="17" />
 
 	<application
 		android:name="SendToCarApp"
+		android:allowBackup="true"
 		android:icon="@drawable/ic_launcher"
 		android:label="@string/app_name" >
 		<activity
 			android:name=".MainActivity"
-			android:configChanges="orientation"
+			android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize"
 			android:label="@string/app_name"
 			android:taskAffinity="com.jvanier.android.sendtocar.main" >
 			<intent-filter>
@@ -28,13 +29,13 @@
 		</activity>
 		<activity
 			android:name=".InformationActivity"
-			android:configChanges="orientation"
+			android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize"
 			android:label="@string/app_name"
 			android:theme="@android:style/Theme.NoTitleBar" >
 		</activity>
 		<activity
 			android:name=".SendToCarActivity"
-			android:configChanges="orientation"
+			android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize"
 			android:excludeFromRecents="true"
 			android:label="@string/app_name"
 			android:taskAffinity="com.jvanier.android.sendtocar.send"
@@ -51,14 +52,16 @@
         activity
             android:name=".LogViewerActivity"
             android:label="@string/logViewer"
-            android:taskAffinity="com.jvanier.android.sendtocar.log" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            android:taskAffinity="com.jvanier.android.sendtocar.log" >
+		<intent-filter>
+			<action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity
+			<category android:name="android.intent.category.DEFAULT" />
+			<category android:name="android.intent.category.LAUNCHER" />
+		</intent-filter>
+
+
+		</activity
 		-->
 	</application>
 
