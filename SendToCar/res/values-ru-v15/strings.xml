@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string name="infoStart">Запустить Google Maps, выбрать место и скользить вверх белая коробка</string>
+	<string name="infoShare">Нажмите "Поделиться"</string>
+
+</resources>

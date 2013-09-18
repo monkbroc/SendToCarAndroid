@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string name="infoStart">Démarrez Google Maps, cliquez sur un endroit et appuyez sur la boîte blanche</string>
+	<string name="infoShare">Appuyez sur "Partager"</string>
+
+</resources>

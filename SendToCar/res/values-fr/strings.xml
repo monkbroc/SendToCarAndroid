@@ -45,7 +45,6 @@
 	<string name="infoHowTo">Comment utiliser</string>
 	<string name="infoFinish">Terminer</string>
 	<string name="infoShare">Appuyez sur "Menu" et cliquez sur "Partager"</string>
-	<string name="infoShare_ics">Cliquez "..." et cliquez "Partager"</string>
 	<string name="infoSend">Choisissez "Envoyer à un véhicule"</string>
 	<string name="infoEnter">Choisissez votre véhicule et cliquez "Envoyer"</string>
 	<string name="approximateAddress">L\'adresse est approximative</string>

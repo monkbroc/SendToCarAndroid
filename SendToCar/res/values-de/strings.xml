@@ -45,7 +45,6 @@
 	<string name="infoHowTo">Beispiel</string>
 	<string name="infoFinish">Abschließen</string>
 	<string name="infoShare">Drücken Sie "Menü" und klicken Sie auf "Teilen"</string>
-	<string name="infoShare_ics">Klicken Sie auf "..." und klicken Sie auf "Teilen"</string>
 	<string name="infoSend">Wählen Sie "Send to Car"</string>
 	<string name="infoEnter">Wählen Sie Ihr Auto und klicke auf "Senden"</string>
 	<string name="approximateAddress">ungefähre Adresse</string>

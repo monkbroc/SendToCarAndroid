@@ -45,7 +45,6 @@
 	<string name="infoHowTo">Как пользоваться</string>
 	<string name="infoFinish">Завершить</string>
 	<string name="infoShare">Нажмите "Меню" и нажмите "Поделиться"</string>
-	<string name="infoShare_ics">Нажмите "..." и нажмите "Поделиться"</string>
 	<string name="infoSend">Выберите "Отправить в машину"</string>
 	<string name="infoEnter">Выберите Вашу машину и нажмите "Отправить"</string>
 	<string name="approximateAddress">Адрес приблизительный</string>

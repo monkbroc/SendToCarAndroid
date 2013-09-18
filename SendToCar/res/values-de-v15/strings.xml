@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<string name="infoStart">Starten Sie Google Maps, klicken Sie auf einen Ort und schieben die weißen Adressfeld nach oben</string>
+	<string name="infoShare">Drücken Sie auf "Teilen"</string>
+
+</resources>
