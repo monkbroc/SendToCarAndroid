@@ -6,6 +6,7 @@
 
 package com.jvanier.android.sendtocar;
 
+import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
@@ -245,7 +246,9 @@ public class SendToCarActivity extends Activity {
 		try {
 			log.d("Intent. Action: " + i.getAction() + ", Text: " + i.getExtras().getCharSequence(Intent.EXTRA_TEXT).toString());
 			if(i.getAction().equals(Intent.ACTION_SEND)) {
-				String url = findURL(i.getExtras().getCharSequence(Intent.EXTRA_TEXT).toString());
+				List<String> urls = findURLs(i.getExtras().getCharSequence(Intent.EXTRA_TEXT).toString());
+				
+				String url = (urls.size() > 0) ? urls.get(urls.size()-1) : null;
 			
 				log.d("URL: <a href=\""+ url + "\">url</a>");
 				
@@ -300,19 +303,19 @@ public class SendToCarActivity extends Activity {
         alertbox.show();
 	}
 
-	private String findURL(String string) {
+	private List<String> findURLs(String string) {
+		List<String> urls = new ArrayList<String>();
+		
 		// match a URL, but try not to grab the punctuation at the end
-		Pattern urlPatt = Pattern.compile("(?i)\\bhttps?://[a-z0-9_.\\-,@?^=%&:/~+#]*[a-z0-9_\\-@^=%&:/~+#]");
+		Pattern urlPatt = Pattern.compile("\\bhttps?://[a-z0-9_.\\-,@?^=%&:/~+#!]*[a-z0-9_\\-@^=%&:/~+#]", Pattern.CASE_INSENSITIVE);
 		Matcher matcher = urlPatt.matcher(string);
 			
-		if(matcher.find())
+		while(matcher.find())
 		{
-			return matcher.group();
+			urls.add(matcher.group());
 		}
-		else
-		{
-			return null;
-		}
+
+		return urls;
 	}
 	
 	private class BackgroundTaskAbort extends Exception {
@@ -437,7 +440,8 @@ public class SendToCarActivity extends Activity {
 
 				if(response.getStatusLine().getStatusCode() != HttpURLConnection.HTTP_OK)
 				{
-					throw new BackgroundTaskAbort(R.string.errorDownload);
+					log.d("<span style=\"color: red;\">Bad HTTP code while downloading address: " + response.getStatusLine().getStatusCode() + "</span>");
+					throw new BackgroundTaskAbort(R.string.errorGoogleMapsLongPressBug);
 				}
 				
 				mapHtml = EntityUtils.toString(response.getEntity());
@@ -453,7 +457,11 @@ public class SendToCarActivity extends Activity {
 				
 				log.d("Google Maps host: " + mapHost.getHostName());
 
-			} catch(Exception e) {
+			} catch(URISyntaxException e) {
+				log.d("<span style=\"color: red;\">Exception while downloading address: " + e.toString() + "</span>");
+				throw new BackgroundTaskAbort(R.string.errorDownload);
+			
+			} catch(IOException e) {
 				log.d("<span style=\"color: red;\">Exception while downloading address: " + e.toString() + "</span>");
 				throw new BackgroundTaskAbort(R.string.errorDownload);
 			}
