@@ -22,11 +22,13 @@ import java.util.ListIterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLPeerUnverifiedException;
 
 import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.ProtocolException;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.RedirectHandler;
@@ -1485,36 +1487,16 @@ public class SendToCarActivity extends Activity {
 			String sendToCarHtml = "";
 			try
 			{
-				URI postUri = new URI("https", car.host, "/FordSyncServlet/submit", null, null);
-				
-				httpPost.setURI(postUri);
-				httpPost.addHeader("Content-Type", "application/json; charset=UTF-8");
-				httpPost.setEntity(new ByteArrayEntity(post.getBytes()));
-				
-				log.d("Uploading to " + postUri.toString());
-
-				if(isCancelled() || httpPost.isAborted()) return null;
-				
-				HttpResponse response = client.execute(httpPost, httpContext);
-				
-				log.d("Uploaded to Mapquest. Status: " + response.getStatusLine().getStatusCode());
-				
-				if(isCancelled()) return null;
-
-				if(response == null || response.getStatusLine().getStatusCode() != HttpURLConnection.HTTP_OK )
-				{
-					throw new BackgroundTaskAbort(R.string.errorSendToCar);
-				}
-				
-				sendToCarHtml = EntityUtils.toString(response.getEntity());
-				log.d("Response: <pre>" + log.htmlSnippet(sendToCarHtml) + "</pre>");
-				
+				sendToCarHtml = sendToCarMapquestCore(post, true, false);
 			} catch(InterruptedIOException e) {
 				log.d("Upload to Mapquest aborted");
 				return null;
 			} catch(SSLPeerUnverifiedException e) {
 				log.d("SSLPeerUnverifiedException while sending to MapQuest. Trying again in fallback mode.");
 				return sendToCarMapquestTrustAll(post);
+			} catch(SSLException e) {
+				log.d("SSLException while sending to MapQuest. Trying again without HTTPS.");
+				return sendToCarMapquestNoSSL(post);
 			} catch(Exception e) {
 				log.d("<span style=\"color: red;\">Exception while sending to Mapquest: " + e.toString() + "</span>");
 				throw new BackgroundTaskAbort(R.string.errorSendToCar);
@@ -1529,31 +1511,7 @@ public class SendToCarActivity extends Activity {
 			String sendToCarHtml = "";
 			try
 			{
-				URI postUri = new URI("https", car.host, "/FordSyncServlet/submit", null, null);
-				
-				httpPost.setURI(postUri);
-				httpPost.addHeader("Content-Type", "application/json; charset=UTF-8");
-				httpPost.setEntity(new ByteArrayEntity(post.getBytes()));
-				
-				log.d("Uploading to " + postUri.toString());
-
-				if(isCancelled() || httpPost.isAborted()) return null;
-				
-				HttpClient trustAll = HttpClientTrustAll.getNewHttpClient();
-				
-				HttpResponse response = trustAll.execute(httpPost, httpContext);
-				
-				log.d("Uploaded to Mapquest. Status: " + response.getStatusLine().getStatusCode());
-				
-				if(isCancelled()) return null;
-
-				if(response == null || response.getStatusLine().getStatusCode() != HttpURLConnection.HTTP_OK )
-				{
-					throw new BackgroundTaskAbort(R.string.errorSendToCar);
-				}
-				
-				sendToCarHtml = EntityUtils.toString(response.getEntity());
-				log.d("Response: <pre>" + log.htmlSnippet(sendToCarHtml) + "</pre>");
+				sendToCarHtml = sendToCarMapquestCore(post, true, true);
 			} catch(InterruptedIOException e) {
 				log.d("Upload to Mapquest aborted");
 				return null;
@@ -1564,6 +1522,63 @@ public class SendToCarActivity extends Activity {
 			
 			return sendToCarHtml;
 		}
+
+		/* Workaround for bug in Android 4.3 that makes SSL connections fail on 4G
+		 * => Call without SSL */
+		private String sendToCarMapquestNoSSL(String post) throws BackgroundTaskAbort {
+			String sendToCarHtml = "";
+			try
+			{
+				sendToCarHtml = sendToCarMapquestCore(post, false, false);
+			} catch(InterruptedIOException e) {
+				log.d("Upload to Mapquest aborted");
+				return null;
+			} catch(Exception e) {
+				log.d("<span style=\"color: red;\">Exception while sending to Mapquest (fallback mode): " + e.toString() + "</span>");
+				throw new BackgroundTaskAbort(R.string.errorSendToCar);
+			}
+			
+			return sendToCarHtml;
+		}
+		
+		private String sendToCarMapquestCore(String post, boolean useSSL, boolean trustAllCertificates) throws URISyntaxException, ClientProtocolException, IOException, BackgroundTaskAbort {
+			String sendToCarHtml;
+			
+			URI postUri = new URI(useSSL ? "https" : "http", car.host, "/FordSyncServlet/submit", null, null);
+			
+			httpPost.setURI(postUri);
+			httpPost.addHeader("Content-Type", "application/json; charset=UTF-8");
+			httpPost.setEntity(new ByteArrayEntity(post.getBytes()));
+			
+			log.d("Uploading to " + postUri.toString());
+
+			if(isCancelled() || httpPost.isAborted()) return null;
+			
+			HttpClient c;
+			if(trustAllCertificates) {	
+				HttpClient trustAll = HttpClientTrustAll.getNewHttpClient();
+				c = trustAll;
+			} else {
+				c = client;
+			}
+			
+			HttpResponse response = c.execute(httpPost, httpContext);
+			
+			log.d("Uploaded to Mapquest. Status: " + response.getStatusLine().getStatusCode());
+			
+			if(isCancelled()) return null;
+
+			if(response == null || response.getStatusLine().getStatusCode() != HttpURLConnection.HTTP_OK )
+			{
+				throw new BackgroundTaskAbort(R.string.errorSendToCar);
+			}
+			
+			sendToCarHtml = EntityUtils.toString(response.getEntity());
+			log.d("Response: <pre>" + log.htmlSnippet(sendToCarHtml) + "</pre>");
+			
+			return sendToCarHtml;
+		}
+		
 		
 		private void parseSendToCarMapquest(String sendToCarHtml) throws BackgroundTaskAbort {
 			JSONObject response;
