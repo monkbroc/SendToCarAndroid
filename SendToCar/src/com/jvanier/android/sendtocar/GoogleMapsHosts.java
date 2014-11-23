@@ -1,5 +1,7 @@
 package com.jvanier.android.sendtocar;
 
+import java.util.Locale;
+
 public final class GoogleMapsHosts {
 	final public static String hosts[] = {
 		"maps.google.com.br",
@@ -44,7 +46,6 @@ public final class GoogleMapsHosts {
 		"maps.google.pt",
 		"maps.google.com.sa",
 		"maps.google.com.sg",
-		"maps.google.sk",
 		"maps.google.co.za",
 		"maps.google.se",
 		"maps.google.co.th",
@@ -86,7 +87,35 @@ public final class GoogleMapsHosts {
 		"maps.google.co.zm",
 		"maps.google.co.zw",
 		"maps.google.cn",
-		"mapy.google.pl",
+
+		// European countries that use the German car list
+		"maps.google.de",
+		"maps.google.de",
+		"maps.google.de",
+		"maps.google.de",
+		"maps.google.de",
+		"maps.google.de",
+		"maps.google.de",
+		"maps.google.de",
+		"maps.google.de",
+		"maps.google.de",
+		"maps.google.de",
+		"maps.google.de",
+		"maps.google.de",
+		"maps.google.de",
+		"maps.google.de",
+		"maps.google.de",
+		"maps.google.de",
+		"maps.google.de",
+		"maps.google.de",
+		"maps.google.de",
+		"maps.google.de",
+		"maps.google.de",
+		"maps.google.de",
+		"maps.google.de",
+		"maps.google.de",
+		"maps.google.de",
+		"maps.google.de",
 	};
 	
 	final public static String countries[] = {
@@ -132,7 +161,6 @@ public final class GoogleMapsHosts {
 		"pt",
 		"sa",
 		"sg",
-		"sk",
 		"za",
 		"se",
 		"th",
@@ -174,11 +202,39 @@ public final class GoogleMapsHosts {
 		"zm",
 		"zw",
 		"cn",
-		"pl",
+		
+		// European countries that use the German car list
+		"al",
+		"ad",
+		"by",
+		"ba",
+		"bg",
+		"hr",
+		"cy",
+		"ee",
+		"fo",
+		"gi",
+		"is",
+		"ie",
+		"lv",
+		"lt",
+		"lu",
+		"mk",
+		"mt",
+		"md",
+		"mc",
+		"ro",
+		"sm",
+		"rs",
+		"sk",
+		"si",
+		"ua",
+		"va",
+		"me",
 	};
 	
 	public static String getHostByCountry(String country) {
-		country = country.toLowerCase();
+		country = country.toLowerCase(Locale.US);
 		for(int c = 0; c < countries.length; c++) {
 			if(countries[c].equals(country)) {
 				return hosts[c]; 

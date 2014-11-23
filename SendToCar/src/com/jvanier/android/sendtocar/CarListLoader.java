@@ -198,7 +198,6 @@ public class CarListLoader {
 				JSONObject carsRaw = new JSONObject(carsJson.toString().replaceAll("\\\\x", "\\\\u00"));
 				JSONObject providers = carsRaw.getJSONObject("providers");
 				
-				@SuppressWarnings("unchecked")
 				Iterator<String> it = (Iterator<String>)providers.keys();
 				while(it.hasNext())
 				{
