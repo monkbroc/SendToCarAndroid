@@ -1,0 +1,18 @@
+<resources>
+    <!-- Material Theme colors for action bar and widgets -->
+   	<color name="primary">#009688</color>
+	<color name="primaryDark">#00796B</color>
+	<color name="accent">#69F0AE</color>
+	
+    <!-- Material Theme from AppCompat library -->
+    <style name="AppBaseTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+	    <item name="colorPrimary">@color/primary</item>
+	    <item name="colorPrimaryDark">@color/primaryDark</item>
+	    <item name="colorAccent">@color/accent</item>
+    </style>
+
+    <!-- Application theme for API 7 to 20 -->
+    <style name="AppTheme" parent="AppBaseTheme">
+        <!-- Customizations for old versions go here -->
+    </style>
+</resources>
