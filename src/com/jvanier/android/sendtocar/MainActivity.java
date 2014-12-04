@@ -139,7 +139,7 @@ public class MainActivity extends ActionBarActivity
             
             CardView cardView = (CardView) rootView.findViewById(R.id.vehicleCard);
             
-            createVehicleListView(inflater, cardView);
+            createCurrentVehicleView(inflater, cardView);
             
             return rootView;
         }
@@ -147,21 +147,36 @@ public class MainActivity extends ActionBarActivity
 		private void createCurrentVehicleView(final LayoutInflater inflater, final CardView cardView) {
 			cardView.removeAllViews();
 			View currentVehicleView = inflater.inflate(R.layout.current_vehicle, cardView, true);
+			
+			View changeVehicleView = currentVehicleView.findViewById(R.id.changeVehicle);
             
-            /*
             final PlaceholderFragment fragment = this;
-            newVehicleView.setOnClickListener(new OnClickListener() {
+            changeVehicleView.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					fragment.createCurrentVehicleView(inflater, cardView);
+					fragment.createVehicleListView(inflater, cardView);
 				}
 			});
-			*/
 		}
-		
+
 		private void createVehicleListView(final LayoutInflater inflater, final CardView cardView) {
 			cardView.removeAllViews();
 			View vehicleListView = inflater.inflate(R.layout.vehicle_list, cardView, true);
+			
+			View vehicleEditView = vehicleListView.findViewById(R.id.editButton);
+
+            final PlaceholderFragment fragment = this;
+            vehicleEditView.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					fragment.createVehicleEditListView(inflater, cardView);
+				}
+			});
+		}
+		
+		private void createVehicleEditListView(final LayoutInflater inflater, final CardView cardView) {
+			cardView.removeAllViews();
+			View vehicleListView = inflater.inflate(R.layout.vehicle_edit_list, cardView, true);
 			
             Spinner makeSpinner = (Spinner) vehicleListView.findViewById(R.id.makeSpinner);
             setupMakeSpinner(makeSpinner);

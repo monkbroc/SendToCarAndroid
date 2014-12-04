@@ -20,5 +20,6 @@
     <string name="remove_vehicle">Remove vehicle</string>
     <string name="add_vehicle">Add another vehicle</string>
     <string name="accept_vehicle">Use this vehicle</string>
+    <string name="edit_vehicle">Edit vehicle</string>
 
 </resources>

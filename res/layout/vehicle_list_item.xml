@@ -7,60 +7,46 @@
     android:padding="@dimen/card_padding" >
 
     <ImageButton
-        android:id="@+id/acceptButton"
+        android:id="@+id/editButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
+        android:layout_centerVertical="true"
         android:background="?android:attr/selectableItemBackground"
-        android:contentDescription="@string/accept_vehicle"
+        android:contentDescription="@string/edit_vehicle"
         android:padding="10dp"
-        android:src="@drawable/ic_action_accept" />
+        android:src="@drawable/ic_action_edit" />
 
-    <ImageButton
-        android:id="@+id/removeButton"
+    <TextView
+        android:id="@+id/nameText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:background="?android:attr/selectableItemBackground"
-        android:contentDescription="@string/remove_vehicle"
-        android:padding="10dp"
-        android:src="@drawable/ic_action_remove" />
-    
-    <Spinner
-        android:id="@+id/makeSpinner"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@id/removeButton"
-        android:prompt="@string/make" />
+        android:layout_toLeftOf="@id/editButton"
+        android:text="@string/name_hint"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
 
-    <EditText
-        android:id="@+id/nameField"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/makeText"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/makeSpinner"
+        android:layout_below="@+id/nameText"
         android:layout_marginTop="8dp"
-        android:layout_toLeftOf="@id/removeButton"
-        android:ems="10"
-        android:hint="@string/name_hint" >
+        android:layout_toLeftOf="@id/editButton"
+        android:text="@string/make"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
-        <requestFocus />
-    </EditText>
-
-    <EditText
-        android:id="@+id/accountField"
-        android:layout_width="match_parent"
+    <TextView
+        android:id="@+id/accountText"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@+id/nameField"
+        android:layout_below="@+id/makeText"
         android:layout_marginTop="8dp"
-        android:layout_toLeftOf="@id/removeButton"
-        android:ems="10"
-        android:hint="@string/account_hint" />
-
+        android:layout_toLeftOf="@id/editButton"
+        android:text="@string/account_hint"
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </RelativeLayout>
