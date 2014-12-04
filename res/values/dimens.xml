@@ -9,5 +9,6 @@
          https://developer.android.com/design/patterns/navigation-drawer.html
     -->
     <dimen name="navigation_drawer_width">240dp</dimen>
+    <dimen name="card_padding">10dp</dimen>
 
 </resources>

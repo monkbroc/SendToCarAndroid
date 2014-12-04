@@ -12,5 +12,13 @@
     <string name="vehicle">Vehicle</string>
     <string name="change_vehicle">Change</string>
     <string name="plus">+</string>
+    <string name="make">Make</string>
+    <string name="name">Name</string>
+    <string name="name_hint">Name for this vehicle</string>
+    <string name="account_hint">Account</string>
+    <string name="choose_make">Choose a make</string>
+    <string name="remove_vehicle">Remove vehicle</string>
+    <string name="add_vehicle">Add another vehicle</string>
+    <string name="accept_vehicle">Use this vehicle</string>
 
 </resources>

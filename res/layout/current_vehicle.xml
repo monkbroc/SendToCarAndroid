@@ -20,7 +20,7 @@
         android:layout_alignParentRight="true"
         android:layout_below="@id/textCurrentMake"
         android:background="?android:attr/selectableItemBackground"
-        android:drawableLeft="@drawable/expander_open_holo_light"
+        android:drawableLeft="@drawable/ic_button_expand"
         android:minHeight="0dip"
         android:padding="0dp"
         android:text="@string/change_vehicle"

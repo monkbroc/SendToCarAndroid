@@ -1,5 +1,7 @@
 package com.jvanier.android.sendtocar;
 
+import java.util.ArrayList;
+
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,7 +18,9 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 
@@ -135,23 +139,10 @@ public class MainActivity extends ActionBarActivity
             
             CardView cardView = (CardView) rootView.findViewById(R.id.vehicleCard);
             
-            createNewVehicleView(inflater, cardView);
+            createVehicleListView(inflater, cardView);
             
             return rootView;
         }
-
-		private void createNewVehicleView(final LayoutInflater inflater, final CardView cardView) {
-			cardView.removeAllViews();
-			View newVehicleView = inflater.inflate(R.layout.new_vehicle, cardView, true);
-                        
-            final PlaceholderFragment fragment = this;
-            newVehicleView.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					fragment.createCurrentVehicleView(inflater, cardView);
-				}
-			});
-		}
 		
 		private void createCurrentVehicleView(final LayoutInflater inflater, final CardView cardView) {
 			cardView.removeAllViews();
@@ -166,6 +157,50 @@ public class MainActivity extends ActionBarActivity
 				}
 			});
 			*/
+		}
+		
+		private void createVehicleListView(final LayoutInflater inflater, final CardView cardView) {
+			cardView.removeAllViews();
+			View vehicleListView = inflater.inflate(R.layout.vehicle_list, cardView, true);
+			
+            Spinner makeSpinner = (Spinner) vehicleListView.findViewById(R.id.makeSpinner);
+            setupMakeSpinner(makeSpinner);
+
+			/*
+            final PlaceholderFragment fragment = this;
+            newVehicleView.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					fragment.createVehicleListView(inflater, cardView);
+				}
+			});
+			*/
+		}
+		
+		private void setupMakeSpinner(Spinner spinner)
+		{
+			/*
+			ArrayList<CarProvider> carsList = new ArrayList<CarProvider>();
+			CarProvider fake = new CarProvider();
+			fake.make = getString(R.string.choose_make);
+			fake.type = 0;
+			carsList.add(fake);
+			
+
+			ArrayAdapter<CarProvider> adapter = new ArrayAdapter<CarProvider>(this,
+					android.R.layout.simple_spinner_item, carsList.toArray(new CarProvider[carsList.size()]));
+					*/
+
+			String[] carsList = new String[3];
+			carsList[0] = getString(R.string.choose_make);
+			carsList[1] = "Ford";
+			carsList[2] = "Toyota";
+
+			ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+					R.layout.make_spinner_item, carsList);
+
+			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+			spinner.setAdapter(adapter);
 		}
 
         @Override
