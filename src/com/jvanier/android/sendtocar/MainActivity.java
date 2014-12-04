@@ -135,11 +135,14 @@ public class MainActivity extends ActionBarActivity
             
             final CardView c = (CardView) rootView.findViewById(R.id.vehicleCard);
             c.setOnClickListener(new OnClickListener() {
-            	public boolean down = true;
+            	public int targetHeight = 600;
 				@Override
 				public void onClick(View v) {
 					Toast.makeText(getActivity(), "Click on card", Toast.LENGTH_SHORT).show();
-					//DropDownAnim anim = new DropDownAnim(c, 600, true);
+					DropDownAnimation anim = new DropDownAnimation(c, targetHeight);
+					anim.setDuration(500);
+					c.startAnimation(anim);
+					targetHeight = (targetHeight > 400) ? 200 : 600;
 				}
 			});
             
@@ -151,41 +154,6 @@ public class MainActivity extends ActionBarActivity
             super.onAttach(activity);
             ((MainActivity) activity).onSectionAttached(
                     getArguments().getInt(ARG_SECTION_NUMBER));
-        }
-    }
-    
-    public class DropDownAnim extends Animation {
-        private final int targetHeight;
-        private final View view;
-        private final boolean down;
-
-        public DropDownAnim(View view, int targetHeight, boolean down) {
-            this.view = view;
-            this.targetHeight = targetHeight;
-            this.down = down;
-        }
-
-        @Override
-        protected void applyTransformation(float interpolatedTime, Transformation t) {
-            int newHeight;
-            if (down) {
-                newHeight = (int) (targetHeight * interpolatedTime);
-            } else {
-                newHeight = (int) (targetHeight * (1 - interpolatedTime));
-            }
-            view.getLayoutParams().height = newHeight;
-            view.requestLayout();
-        }
-
-        @Override
-        public void initialize(int width, int height, int parentWidth,
-                int parentHeight) {
-            super.initialize(width, height, parentWidth, parentHeight);
-        }
-
-        @Override
-        public boolean willChangeBounds() {
-            return true;
         }
     }
 }
