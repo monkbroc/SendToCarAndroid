@@ -16,7 +16,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.animation.Animation;
+import android.view.animation.Animation.AnimationListener;
 import android.view.animation.Transformation;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
@@ -129,6 +132,8 @@ public class MainActivity extends ActionBarActivity
             return fragment;
         }
 
+		private int mShortAnimationDuration;
+
         public PlaceholderFragment() {
         }
 
@@ -136,7 +141,13 @@ public class MainActivity extends ActionBarActivity
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
-            
+
+			// Retrieve and cache the system's default "short" animation time.
+			mShortAnimationDuration = getResources().getInteger(
+					android.R.integer.config_shortAnimTime);
+			
+			mShortAnimationDuration = 3000;
+
             CardView cardView = (CardView) rootView.findViewById(R.id.vehicleCard);
             
             createCurrentVehicleView(inflater, cardView);
@@ -160,8 +171,13 @@ public class MainActivity extends ActionBarActivity
 		}
 
 		private void createVehicleListView(final LayoutInflater inflater, final CardView cardView) {
-			cardView.removeAllViews();
 			View vehicleListView = inflater.inflate(R.layout.vehicle_list, cardView, true);
+
+			// Animate transition
+			final View previousView = cardView.getChildAt(0);
+			final View newView = cardView.getChildAt(1);
+			ReplaceSubViewAnimation anim = new ReplaceSubViewAnimation(cardView, previousView, newView);
+			anim.setDuration(mShortAnimationDuration).start();
 			
 			View vehicleEditView = vehicleListView.findViewById(R.id.editButton);
 
