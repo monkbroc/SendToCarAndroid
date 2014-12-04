@@ -133,21 +133,40 @@ public class MainActivity extends ActionBarActivity
                 Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_main, container, false);
             
-            final CardView c = (CardView) rootView.findViewById(R.id.vehicleCard);
-            c.setOnClickListener(new OnClickListener() {
-            	public int targetHeight = 600;
-				@Override
-				public void onClick(View v) {
-					Toast.makeText(getActivity(), "Click on card", Toast.LENGTH_SHORT).show();
-					DropDownAnimation anim = new DropDownAnimation(c, targetHeight);
-					anim.setDuration(500);
-					c.startAnimation(anim);
-					targetHeight = (targetHeight > 400) ? 200 : 600;
-				}
-			});
+            CardView cardView = (CardView) rootView.findViewById(R.id.vehicleCard);
+            
+            createNewVehicleView(inflater, cardView);
             
             return rootView;
         }
+
+		private void createNewVehicleView(final LayoutInflater inflater, final CardView cardView) {
+			cardView.removeAllViews();
+			View newVehicleView = inflater.inflate(R.layout.new_vehicle, cardView, true);
+                        
+            final PlaceholderFragment fragment = this;
+            newVehicleView.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					fragment.createCurrentVehicleView(inflater, cardView);
+				}
+			});
+		}
+		
+		private void createCurrentVehicleView(final LayoutInflater inflater, final CardView cardView) {
+			cardView.removeAllViews();
+			View currentVehicleView = inflater.inflate(R.layout.current_vehicle, cardView, true);
+            
+            /*
+            final PlaceholderFragment fragment = this;
+            newVehicleView.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					fragment.createCurrentVehicleView(inflater, cardView);
+				}
+			});
+			*/
+		}
 
         @Override
         public void onAttach(Activity activity) {
