@@ -3,15 +3,14 @@
     android:id="@+id/RelativeLayout1"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
     android:padding="@dimen/card_padding" >
 
     <ImageButton
         android:id="@+id/acceptButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
+        android:layout_alignParentRight="true"
         android:background="?attr/selectableItemBackground"
         android:contentDescription="@string/accept_vehicle"
         android:padding="10dp"
@@ -21,7 +20,7 @@
         android:id="@+id/removeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/acceptButton"
         android:layout_alignParentRight="true"
         android:background="?attr/selectableItemBackground"
         android:contentDescription="@string/remove_vehicle"
@@ -61,6 +60,5 @@
         android:layout_toLeftOf="@id/removeButton"
         android:ems="10"
         android:hint="@string/account_hint" />
-
 
 </RelativeLayout>

@@ -136,7 +136,7 @@ public class MainActivity extends ActionBarActivity
 			// Retrieve and cache the system's default "short" animation time.
 			mShortAnimationDuration = getResources().getInteger(
 					android.R.integer.config_shortAnimTime);
-
+			
             CardView cardView = (CardView) rootView.findViewById(R.id.vehicleCard);
             
             createCurrentVehicleView(inflater, cardView);
@@ -160,7 +160,7 @@ public class MainActivity extends ActionBarActivity
 		}
 
 		private void createVehicleListView(final LayoutInflater inflater, final CardView cardView) {
-			View vehicleListView = inflater.inflate(R.layout.vehicle_list, cardView, true);
+			View vehicleListView = inflater.inflate(R.layout.vehicle_list, cardView, false);
 
 			View vehicleEditView = vehicleListView.findViewById(R.id.editButton);
 
@@ -171,16 +171,16 @@ public class MainActivity extends ActionBarActivity
 					fragment.createVehicleEditListView(inflater, cardView);
 				}
 			});
-			animateTransitionOfChildViews(cardView);
+			animateReplacementOfChildView(cardView, vehicleListView);
 		}
 		
 		private void createVehicleEditListView(final LayoutInflater inflater, final CardView cardView) {
-			View vehicleListView = inflater.inflate(R.layout.vehicle_edit_list, cardView, true);
+			View vehicleEditListView = inflater.inflate(R.layout.vehicle_edit_list, cardView, false);
 			
-            Spinner makeSpinner = (Spinner) vehicleListView.findViewById(R.id.makeSpinner);
+            Spinner makeSpinner = (Spinner) vehicleEditListView.findViewById(R.id.makeSpinner);
             setupMakeSpinner(makeSpinner);
             
-			animateTransitionOfChildViews(cardView);
+			animateReplacementOfChildView(cardView, vehicleEditListView);
 
 			/*
             final PlaceholderFragment fragment = this;
@@ -219,11 +219,8 @@ public class MainActivity extends ActionBarActivity
 			spinner.setAdapter(adapter);
 		}
 		
-		private void animateTransitionOfChildViews(ViewGroup container) {
-            // Animate transition
-			final View previousView = container.getChildAt(0);
-			final View newView = container.getChildAt(1);
-			ReplaceChildViewAnimation anim = new ReplaceChildViewAnimation(container, previousView, newView);
+		private void animateReplacementOfChildView(ViewGroup container, View newView) {
+			ReplaceChildViewAnimation anim = new ReplaceChildViewAnimation(container, newView);
 			anim.setDuration(mShortAnimationDuration).start();
 		}
 

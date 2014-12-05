@@ -7,6 +7,7 @@ import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.util.Log;
 import android.view.View;
+import android.view.View.MeasureSpec;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
@@ -19,9 +20,9 @@ public class ReplaceChildViewAnimation {
 	private int duration;
 	private AnimatorSet set;
 
-    public ReplaceChildViewAnimation(ViewGroup container, View previousView, View newView) {
+    public ReplaceChildViewAnimation(ViewGroup container, View newView) {
         this.container = container;
-        this.previousView = previousView;
+        this.previousView = container.getChildAt(0);
         this.newView = newView;
     }
     
@@ -35,8 +36,26 @@ public class ReplaceChildViewAnimation {
     		Log.d(TAG, "ReplaceChildViewAnimation called with some null views. No animation performed.");
     		return;
     	}
-        newView.setAlpha(0.0f);
+    	
+    	int previousHeight = container.getMeasuredHeight();
+    	
+    	// Add new child
+    	container.addView(newView);
+    	// Measure height of new child
+    	container.measure(MeasureSpec.makeMeasureSpec(container.getWidth(), MeasureSpec.EXACTLY), MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED));
+    	
+    	// Fix height of container and child views
+    	int newHeight = container.getMeasuredHeight();
+    	previousView.getLayoutParams().height = previousHeight;
+    	newView.getLayoutParams().height = newHeight;
+    	container.getLayoutParams().height = newHeight;
+    	
+    	newView.setAlpha(0.0f);
+    	
+    	animate(previousHeight, newHeight);
 
+    	/*
+        // When the layout is done, start 
 		ViewTreeObserver vto = container.getViewTreeObserver(); 
 		vto.addOnGlobalLayoutListener(new OnGlobalLayoutListener() { 
 		    @SuppressWarnings("deprecation")
@@ -46,6 +65,7 @@ public class ReplaceChildViewAnimation {
 		    	animate(previousView.getMeasuredHeight(), newView.getMeasuredHeight());
 		    }
 		});
+		*/
     }
     
     private void animate(int previousHeight, int newHeight) {
@@ -78,6 +98,7 @@ public class ReplaceChildViewAnimation {
           public void onAnimationEnd(Animator animation) {
         	  container.removeView(previousView);
         	  container.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+        	  newView.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
           }
         });
         set.start();
