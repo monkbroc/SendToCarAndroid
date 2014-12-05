@@ -1,18 +1,22 @@
 package com.jvanier.android.sendtocar;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.view.animation.Animation;
-import android.view.animation.Transformation;
-import android.view.animation.Animation.AnimationListener;
 
 public class ReplaceSubViewAnimation {
     private final ViewGroup container;
     private final View previousView;
     private final View newView;
 	private int duration;
+	private AnimatorSet set;
 
     public ReplaceSubViewAnimation(ViewGroup container, View previousView, View newView) {
         this.container = container;
@@ -33,8 +37,48 @@ public class ReplaceSubViewAnimation {
 		    @SuppressWarnings("deprecation")
 			@Override 
 		    public void onGlobalLayout() { 
-		    	container.getViewTreeObserver().removeGlobalOnLayoutListener(this); 
+		    	container.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+		    	animate(previousView.getMeasuredHeight(), newView.getMeasuredHeight());
+		    }
+		});
+    }
+    
+    private void animate(int previousHeight, int newHeight) {
+    	
+    	ObjectAnimator animation1 = ObjectAnimator.ofFloat(newView, "alpha", 0.0f, 1.0f);
+    	animation1.setDuration(duration);
+    	
+    	ObjectAnimator animation2 = ObjectAnimator.ofFloat(previousView, "alpha", 1.0f, 0.0f);
+    	animation2.setDuration(duration);
+
+        ValueAnimator animation3 = ValueAnimator.ofInt(previousHeight, newHeight);
+        animation3.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                int val = (Integer) valueAnimator.getAnimatedValue();
+                Log.d("Animation", "Height " + val);
+                ViewGroup.LayoutParams layoutParams = container.getLayoutParams();
+                layoutParams.height = val;
+                container.setLayoutParams(layoutParams);
+            }
+        });
+    	animation3.setDuration(duration);
+    	
+    	set = new AnimatorSet();
+        set.playTogether(animation1, animation2, animation3);
+
+        set.addListener(new AnimatorListenerAdapter() {
+
+          @Override
+          public void onAnimationEnd(Animator animation) {
+        	  container.removeView(previousView);
+        	  container.getLayoutParams().height = ViewGroup.LayoutParams.WRAP_CONTENT;
+          }
+        });
+        set.start();
+    }
 		    			        
+        /*
 		        newView.animate()
 		            .alpha(1f)
 		            .setDuration(duration)
@@ -102,4 +146,5 @@ public class ReplaceSubViewAnimation {
 	        return true;
 	    }
     }
+    */
 }

@@ -145,8 +145,6 @@ public class MainActivity extends ActionBarActivity
 			// Retrieve and cache the system's default "short" animation time.
 			mShortAnimationDuration = getResources().getInteger(
 					android.R.integer.config_shortAnimTime);
-			
-			mShortAnimationDuration = 3000;
 
             CardView cardView = (CardView) rootView.findViewById(R.id.vehicleCard);
             
