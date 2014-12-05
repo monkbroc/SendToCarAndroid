@@ -1,7 +1,5 @@
 package com.jvanier.android.sendtocar;
 
-import java.util.ArrayList;
-
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,15 +14,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.view.animation.Transformation;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 
 public class MainActivity extends ActionBarActivity
@@ -171,12 +162,6 @@ public class MainActivity extends ActionBarActivity
 		private void createVehicleListView(final LayoutInflater inflater, final CardView cardView) {
 			View vehicleListView = inflater.inflate(R.layout.vehicle_list, cardView, true);
 
-			// Animate transition
-			final View previousView = cardView.getChildAt(0);
-			final View newView = cardView.getChildAt(1);
-			ReplaceSubViewAnimation anim = new ReplaceSubViewAnimation(cardView, previousView, newView);
-			anim.setDuration(mShortAnimationDuration).start();
-			
 			View vehicleEditView = vehicleListView.findViewById(R.id.editButton);
 
             final PlaceholderFragment fragment = this;
@@ -186,14 +171,16 @@ public class MainActivity extends ActionBarActivity
 					fragment.createVehicleEditListView(inflater, cardView);
 				}
 			});
+			animateTransitionOfChildViews(cardView);
 		}
 		
 		private void createVehicleEditListView(final LayoutInflater inflater, final CardView cardView) {
-			cardView.removeAllViews();
 			View vehicleListView = inflater.inflate(R.layout.vehicle_edit_list, cardView, true);
 			
             Spinner makeSpinner = (Spinner) vehicleListView.findViewById(R.id.makeSpinner);
             setupMakeSpinner(makeSpinner);
+            
+			animateTransitionOfChildViews(cardView);
 
 			/*
             final PlaceholderFragment fragment = this;
@@ -230,6 +217,14 @@ public class MainActivity extends ActionBarActivity
 
 			adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 			spinner.setAdapter(adapter);
+		}
+		
+		private void animateTransitionOfChildViews(ViewGroup container) {
+            // Animate transition
+			final View previousView = container.getChildAt(0);
+			final View newView = container.getChildAt(1);
+			ReplaceChildViewAnimation anim = new ReplaceChildViewAnimation(container, previousView, newView);
+			anim.setDuration(mShortAnimationDuration).start();
 		}
 
         @Override

@@ -1802,7 +1802,7 @@ containing a value of this type.
         public static final int RelativeLayout1=0x7f080049;
         public static final int acceptButton=0x7f08004a;
         public static final int accountField=0x7f08004e;
-        public static final int accountText=0x7f080052;
+        public static final int accountText=0x7f080053;
         public static final int action_bar=0x7f080031;
         public static final int action_bar_activity_content=0x7f080018;
         public static final int action_bar_container=0x7f080030;
@@ -1811,13 +1811,13 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f08001f;
         public static final int action_bar_title=0x7f08001e;
         public static final int action_context_bar=0x7f080032;
-        public static final int action_example=0x7f080054;
+        public static final int action_example=0x7f080055;
         public static final int action_menu_divider=0x7f08001a;
         public static final int action_menu_presenter=0x7f08001b;
         public static final int action_mode_bar=0x7f08002e;
         public static final int action_mode_bar_stub=0x7f08002d;
         public static final int action_mode_close_button=0x7f080020;
-        public static final int action_settings=0x7f080053;
+        public static final int action_settings=0x7f080054;
         public static final int activity_chooser_view_content=0x7f080021;
         public static final int addVehicle=0x7f080042;
         public static final int always=0x7f08000d;
@@ -1846,10 +1846,10 @@ containing a value of this type.
         public static final int listMode=0x7f080002;
         public static final int list_item=0x7f080025;
         public static final int makeSpinner=0x7f08004c;
-        public static final int makeText=0x7f080051;
+        public static final int makeText=0x7f080052;
         public static final int middle=0x7f080013;
         public static final int nameField=0x7f08004d;
-        public static final int nameText=0x7f080050;
+        public static final int nameText=0x7f080051;
         public static final int navigation_drawer=0x7f080041;
         public static final int never=0x7f08000b;
         public static final int none=0x7f080004;
@@ -1881,6 +1881,7 @@ containing a value of this type.
         public static final int up=0x7f080016;
         public static final int useLogo=0x7f080005;
         public static final int vehicleCard=0x7f080047;
+        public static final int vehicleDescription=0x7f080050;
         public static final int withText=0x7f08000e;
         public static final int wrap_content=0x7f080000;
     }

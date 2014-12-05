@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_below="@id/textCurrentMake"
-        android:background="?android:attr/selectableItemBackground"
+        android:background="?attr/selectableItemBackground"
         android:drawableLeft="@drawable/ic_button_expand"
         android:minHeight="0dip"
         android:paddingBottom="0dp"

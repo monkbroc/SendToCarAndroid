@@ -11,25 +11,30 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 
-public class ReplaceSubViewAnimation {
+public class ReplaceChildViewAnimation {
+	private static final String TAG = "ReplaceChildViewAnimation";
     private final ViewGroup container;
     private final View previousView;
     private final View newView;
 	private int duration;
 	private AnimatorSet set;
 
-    public ReplaceSubViewAnimation(ViewGroup container, View previousView, View newView) {
+    public ReplaceChildViewAnimation(ViewGroup container, View previousView, View newView) {
         this.container = container;
         this.previousView = previousView;
         this.newView = newView;
     }
     
-    public ReplaceSubViewAnimation setDuration(int duration) {
+    public ReplaceChildViewAnimation setDuration(int duration) {
 	    this.duration = duration;
 	    return this;
     }
     
     public void start() {
+    	if(container == null || previousView == null || newView == null) {
+    		Log.d(TAG, "ReplaceChildViewAnimation called with some null views. No animation performed.");
+    		return;
+    	}
         newView.setAlpha(0.0f);
 
 		ViewTreeObserver vto = container.getViewTreeObserver(); 
