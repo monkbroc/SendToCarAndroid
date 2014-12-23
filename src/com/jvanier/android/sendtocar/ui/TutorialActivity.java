@@ -11,7 +11,7 @@ import com.viewpagerindicator.CirclePageIndicator;
 import com.viewpagerindicator.PageIndicator;
 
 public class TutorialActivity extends ActionBarActivity {
-	TutorialFragmentAdapter mAdapter;
+	TutorialPagesFragmentAdapter mAdapter;
     ViewPager mPager;
     PageIndicator mIndicator;
     
@@ -20,7 +20,7 @@ public class TutorialActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.tutorial_activity);
 
-        mAdapter = new TutorialFragmentAdapter(getSupportFragmentManager());
+        mAdapter = new TutorialPagesFragmentAdapter(getSupportFragmentManager());
 
         mPager = (ViewPager)findViewById(R.id.pager);
         mPager.setAdapter(mAdapter);

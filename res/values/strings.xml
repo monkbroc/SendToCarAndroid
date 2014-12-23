@@ -25,6 +25,15 @@
 	<string name="screenshot">Screenshot</string>
     
     
+	<string name="listTutorialTitle">Tutorial</string>
+	<string name="listTutorialDescription">Step-by-step guide to use the app</string>
+	<string name="listHelpTitle">Help</string>
+	<string name="listHelpDescription">More information about the app</string>
+	<string name="listRateTitle">Rate app</string>
+	<string name="listRateDescription">If you like this app, please rate it!</string>
+	<string name="listEmailTitle">Contact developer</string>
+	<string name="listEmailDescription">If you have issues with this app, you can email the developer</string>
+	
 	<string name="infoHowTo">How to Use</string>
 	<string name="infoFinish">Finish</string>
 	<string name="infoStart">Start Google Maps, find a place and slide the white address box up</string>
