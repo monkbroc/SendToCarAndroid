@@ -1783,20 +1783,20 @@ containing a value of this type.
         public static final int default_underline_indicator_fades=0x7f070004;
     }
     public static final class color {
-        public static final int abc_background_cache_hint_selector_material_dark=0x7f06004b;
-        public static final int abc_background_cache_hint_selector_material_light=0x7f06004c;
+        public static final int abc_background_cache_hint_selector_material_dark=0x7f06004c;
+        public static final int abc_background_cache_hint_selector_material_light=0x7f06004d;
         public static final int abc_input_method_navigation_guard=0x7f060018;
-        public static final int abc_primary_text_disable_only_material_dark=0x7f06004d;
-        public static final int abc_primary_text_disable_only_material_light=0x7f06004e;
-        public static final int abc_primary_text_material_dark=0x7f06004f;
-        public static final int abc_primary_text_material_light=0x7f060050;
-        public static final int abc_search_url_text=0x7f060051;
+        public static final int abc_primary_text_disable_only_material_dark=0x7f06004e;
+        public static final int abc_primary_text_disable_only_material_light=0x7f06004f;
+        public static final int abc_primary_text_material_dark=0x7f060050;
+        public static final int abc_primary_text_material_light=0x7f060051;
+        public static final int abc_search_url_text=0x7f060052;
         public static final int abc_search_url_text_normal=0x7f060015;
         public static final int abc_search_url_text_pressed=0x7f060017;
         public static final int abc_search_url_text_selected=0x7f060016;
-        public static final int abc_secondary_text_material_dark=0x7f060052;
-        public static final int abc_secondary_text_material_light=0x7f060053;
-        public static final int accent=0x7f06004a;
+        public static final int abc_secondary_text_material_dark=0x7f060053;
+        public static final int abc_secondary_text_material_light=0x7f060054;
+        public static final int accent=0x7f06004b;
         public static final int accent_material_dark=0x7f060024;
         public static final int accent_material_light=0x7f060023;
         public static final int background_floating_material_dark=0x7f06001b;
@@ -1857,10 +1857,11 @@ containing a value of this type.
         public static final int material_blue_grey_950=0x7f060045;
         public static final int material_deep_teal_200=0x7f060041;
         public static final int material_deep_teal_500=0x7f060042;
+        public static final int navigation_primary=0x7f060048;
         /**  Material Theme colors for action bar and widgets 
          */
-        public static final int primary=0x7f060048;
-        public static final int primaryDark=0x7f060049;
+        public static final int primary=0x7f060049;
+        public static final int primaryDark=0x7f06004a;
         public static final int primary_dark_material_dark=0x7f06001f;
         public static final int primary_dark_material_light=0x7f060020;
         public static final int primary_material_dark=0x7f06001d;
@@ -1889,8 +1890,8 @@ containing a value of this type.
         public static final int vpi__bright_foreground_holo_light=0x7f060003;
         public static final int vpi__bright_foreground_inverse_holo_dark=0x7f060006;
         public static final int vpi__bright_foreground_inverse_holo_light=0x7f060007;
-        public static final int vpi__dark_theme=0x7f060054;
-        public static final int vpi__light_theme=0x7f060055;
+        public static final int vpi__dark_theme=0x7f060055;
+        public static final int vpi__light_theme=0x7f060056;
     }
     public static final class dimen {
         /**  Default height of an action bar. 
@@ -2119,10 +2120,10 @@ containing a value of this type.
         public static final int ic_button_new=0x7f02003c;
         public static final int ic_drawer=0x7f02003d;
         public static final int ic_launcher=0x7f02003e;
-        public static final int ic_menu_email=0x7f02003f;
-        public static final int ic_menu_help=0x7f020040;
-        public static final int ic_menu_list=0x7f020041;
-        public static final int ic_menu_star=0x7f020042;
+        public static final int ic_navigation_email=0x7f02003f;
+        public static final int ic_navigation_help=0x7f020040;
+        public static final int ic_navigation_lightbulb=0x7f020041;
+        public static final int ic_navigation_star=0x7f020042;
         public static final int screenshot1=0x7f020043;
         public static final int screenshot2=0x7f020044;
         public static final int screenshot3=0x7f020045;

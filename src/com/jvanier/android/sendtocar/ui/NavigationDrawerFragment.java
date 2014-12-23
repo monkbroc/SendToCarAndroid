@@ -1,23 +1,16 @@
 package com.jvanier.android.sendtocar.ui;
 
-import com.jvanier.android.sendtocar.R;
-import com.jvanier.android.sendtocar.R.drawable;
-import com.jvanier.android.sendtocar.R.id;
-import com.jvanier.android.sendtocar.R.layout;
-import com.jvanier.android.sendtocar.R.menu;
-import com.jvanier.android.sendtocar.R.string;
-
-import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;
-import android.support.v7.app.ActionBar;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.widget.DrawerLayout;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.v4.app.Fragment;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -27,7 +20,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.jvanier.android.sendtocar.R;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -35,12 +31,24 @@ import android.widget.Toast;
  * design guidelines</a> for a complete explanation of the behaviors implemented here.
  */
 public class NavigationDrawerFragment extends Fragment {
-
-    /**
-     * Remember the position of the selected item.
-     */
-    private static final String STATE_SELECTED_POSITION = "selected_navigation_drawer_position";
-
+	
+	final private class NavigationItem {
+		public final int stringId;
+		public final int drawableId;
+		
+		public NavigationItem(int stringId, int drawableId) {
+			this.stringId = stringId;
+			this.drawableId = drawableId;
+		}
+	}
+	
+	private NavigationItem items[] = {
+		new NavigationItem(R.string.listTutorialTitle, R.drawable.ic_navigation_lightbulb),
+		new NavigationItem(R.string.listHelpTitle, R.drawable.ic_navigation_help),
+		new NavigationItem(R.string.listRateTitle, R.drawable.ic_navigation_star),
+		new NavigationItem(R.string.listEmailTitle, R.drawable.ic_navigation_email)
+	};
+	
     /**
      * Per the design guidelines, you should show the drawer on launch until the user manually
      * expands it. This shared preference tracks this.
@@ -61,7 +69,6 @@ public class NavigationDrawerFragment extends Fragment {
     private ListView mDrawerListView;
     private View mFragmentContainerView;
 
-    private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
 
@@ -76,14 +83,13 @@ public class NavigationDrawerFragment extends Fragment {
         // drawer. See PREF_USER_LEARNED_DRAWER for details.
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
+        mUserLearnedDrawer = false;
 
         if (savedInstanceState != null) {
-            mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             mFromSavedInstanceState = true;
         }
 
-        // Select either the default item (0) or the last selected item.
-        selectItem(mCurrentSelectedPosition);
+       selectItem(0);
     }
 
     @Override
@@ -104,6 +110,8 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
+        
+/*
         mDrawerListView.setAdapter(new ArrayAdapter<String>(
                 getActionBar().getThemedContext(),
                 android.R.layout.simple_list_item_1,
@@ -113,7 +121,30 @@ public class NavigationDrawerFragment extends Fragment {
                         getString(R.string.title_section2),
                         getString(R.string.title_section3),
                 }));
-        mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+        */
+        
+        
+        mDrawerListView.setAdapter(new ArrayAdapter<NavigationItem>(
+                getActionBar().getThemedContext(),
+                R.layout.navigation_item,
+                android.R.id.text1,
+                items) {
+
+					@Override
+					public View getView(int position, View convertView,
+							ViewGroup parent) {
+						View v = super.getView(position, convertView, parent);
+						
+						NavigationItem item = getItem(position);
+						TextView tv = (TextView) v.findViewById(android.R.id.text1);
+						tv.setText(item.stringId);
+						tv.setCompoundDrawablesWithIntrinsicBounds(item.drawableId, 0, 0, 0);
+						
+						return v;
+					}
+        	
+        });
+        
         return mDrawerListView;
     }
 
@@ -195,10 +226,6 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     private void selectItem(int position) {
-        mCurrentSelectedPosition = position;
-        if (mDrawerListView != null) {
-            mDrawerListView.setItemChecked(position, true);
-        }
         if (mDrawerLayout != null) {
             mDrawerLayout.closeDrawer(mFragmentContainerView);
         }
@@ -226,7 +253,6 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt(STATE_SELECTED_POSITION, mCurrentSelectedPosition);
     }
 
     @Override

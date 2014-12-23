@@ -2,5 +2,6 @@
 <resources>
     <color name="grey">#AA222222</color>
     <color name="green">#0D0</color>
+    <color name="navigation_primary">#9A1E1E1E</color>
     
 </resources>
