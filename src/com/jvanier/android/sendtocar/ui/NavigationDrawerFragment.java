@@ -1,4 +1,11 @@
-package com.jvanier.android.sendtocar;
+package com.jvanier.android.sendtocar.ui;
+
+import com.jvanier.android.sendtocar.R;
+import com.jvanier.android.sendtocar.R.drawable;
+import com.jvanier.android.sendtocar.R.id;
+import com.jvanier.android.sendtocar.R.layout;
+import com.jvanier.android.sendtocar.R.menu;
+import com.jvanier.android.sendtocar.R.string;
 
 import android.support.v7.app.ActionBarActivity;
 import android.app.Activity;

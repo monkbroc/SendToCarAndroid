@@ -21,5 +21,14 @@
     <string name="add_vehicle">Add another vehicle</string>
     <string name="accept_vehicle">Use this vehicle</string>
     <string name="edit_vehicle">Edit vehicle</string>
-
+    <string name="done">Done</string>
+	<string name="screenshot">Screenshot</string>
+    
+    
+	<string name="infoHowTo">How to Use</string>
+	<string name="infoFinish">Finish</string>
+	<string name="infoStart">Start Google Maps, find a place and slide the white address box up</string>
+	<string name="infoShare">Press "Share"</string>
+	<string name="infoSend">Select "Send To Car"</string>
+	<string name="infoEnter">Select your car and hit "Send"</string>
 </resources>

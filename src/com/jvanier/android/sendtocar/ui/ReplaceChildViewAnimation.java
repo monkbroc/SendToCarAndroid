@@ -1,4 +1,4 @@
-package com.jvanier.android.sendtocar;
+package com.jvanier.android.sendtocar.ui;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

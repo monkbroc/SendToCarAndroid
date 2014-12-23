@@ -1,6 +1,7 @@
-package com.jvanier.android.sendtocar;
+package com.jvanier.android.sendtocar.ui;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -16,6 +17,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+
+import com.jvanier.android.sendtocar.R;
 
 
 public class MainActivity extends ActionBarActivity
@@ -44,6 +47,9 @@ public class MainActivity extends ActionBarActivity
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
+
+		Intent intent = new Intent(MainActivity.this, TutorialActivity.class);
+		startActivity(intent);
     }
 
     @Override
