@@ -1,8 +1,11 @@
 package com.jvanier.android.sendtocar.ui;
 
-import android.app.Activity;
+import android.content.ActivityNotFoundException;
+import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -12,8 +15,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,22 +33,75 @@ import com.jvanier.android.sendtocar.R;
  */
 public class NavigationDrawerFragment extends Fragment {
 	
+	private interface Command {
+		public abstract void perfrom(Context context);
+	}
 	final private class NavigationItem {
 		public final int stringId;
 		public final int drawableId;
+		public final Command handler;
 		
-		public NavigationItem(int stringId, int drawableId) {
+		public NavigationItem(int stringId, int drawableId, Command handler) {
 			this.stringId = stringId;
 			this.drawableId = drawableId;
+			this.handler = handler;
 		}
 	}
 	
 	private NavigationItem items[] = {
-		new NavigationItem(R.string.listTutorialTitle, R.drawable.ic_navigation_lightbulb),
-		new NavigationItem(R.string.listHelpTitle, R.drawable.ic_navigation_help),
-		new NavigationItem(R.string.listRateTitle, R.drawable.ic_navigation_star),
-		new NavigationItem(R.string.listEmailTitle, R.drawable.ic_navigation_email)
+		new NavigationItem(R.string.listTutorialTitle, R.drawable.ic_navigation_lightbulb, new ShowTutorial()),
+		new NavigationItem(R.string.listHelpTitle, R.drawable.ic_navigation_help, new ShowHelp()),
+		new NavigationItem(R.string.listRateTitle, R.drawable.ic_navigation_star, new ShowAppInGooglePlay()),
+		new NavigationItem(R.string.listEmailTitle, R.drawable.ic_navigation_email, new WriteEmailToDeveloper())
 	};
+	
+	private class ShowTutorial implements Command {
+		@Override
+		public void perfrom(Context context) {
+			Intent intent = new Intent(context, TutorialActivity.class);
+			startActivity(intent);
+		}
+	}
+	
+	private class ShowHelp implements Command {
+		@Override
+		public void perfrom(Context context) {
+			// TODO Auto-generated method stub
+		}
+	}
+	
+	private class ShowAppInGooglePlay implements Command {
+		@Override
+		public void perfrom(Context context) {
+			Intent intent = new Intent(Intent.ACTION_VIEW); 
+			intent.setData(Uri.parse("market://details?id=com.jvanier.android.sendtocar")); 
+    		try {
+    			startActivity(intent);
+    		}
+    		catch(ActivityNotFoundException e)
+    		{
+    			Toast toast = Toast.makeText(context, R.string.errorNoApp, Toast.LENGTH_SHORT);
+    			toast.show();
+    		}
+		}
+	}
+	
+	private class WriteEmailToDeveloper implements Command {
+		@Override
+		public void perfrom(Context context) {
+			Intent intent = new Intent(Intent.ACTION_VIEW); 
+			intent.setData(Uri.parse("mailto:sendtocar.app@gmail.com")); 
+    		try {
+    			startActivity(intent);
+    		}
+    		catch(ActivityNotFoundException e)
+    		{
+    			Toast toast = Toast.makeText(context, R.string.errorNoApp, Toast.LENGTH_SHORT);
+    			toast.show();
+    		}
+		}
+	}
+
 	
     /**
      * Per the design guidelines, you should show the drawer on launch until the user manually
@@ -78,7 +132,6 @@ public class NavigationDrawerFragment extends Fragment {
         // drawer. See PREF_USER_LEARNED_DRAWER for details.
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
         mUserLearnedDrawer = sp.getBoolean(PREF_USER_LEARNED_DRAWER, false);
-        //mUserLearnedDrawer = false;
 
         if (savedInstanceState != null) {
             mFromSavedInstanceState = true;
@@ -95,8 +148,7 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        mDrawerListView = (ListView) inflater.inflate(
-                R.layout.navigation_drawer_fragment, container, false);
+        mDrawerListView = (ListView) inflater.inflate(R.layout.navigation_drawer_fragment, container, false);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -104,6 +156,7 @@ public class NavigationDrawerFragment extends Fragment {
             }
         });
         
+        // FIXME: maybe replace ArrayAdapter by SimpleAdapter 
         mDrawerListView.setAdapter(new ArrayAdapter<NavigationItem>(
                 getActionBar().getThemedContext(),
                 R.layout.navigation_item,
@@ -122,7 +175,6 @@ public class NavigationDrawerFragment extends Fragment {
 						
 						return v;
 					}
-        	
         });
         
         return mDrawerListView;
@@ -158,15 +210,6 @@ public class NavigationDrawerFragment extends Fragment {
                 R.string.navigation_drawer_open,  /* "open drawer" description for accessibility */
                 R.string.navigation_drawer_close  /* "close drawer" description for accessibility */
         ) {
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-                if (!isAdded()) {
-                    return;
-                }
-
-                getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
-            }
 
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -183,8 +226,6 @@ public class NavigationDrawerFragment extends Fragment {
                             .getDefaultSharedPreferences(getActivity());
                     sp.edit().putBoolean(PREF_USER_LEARNED_DRAWER, true).commit();
                 }
-
-                getActivity().supportInvalidateOptionsMenu(); // calls onPrepareOptionsMenu()
             }
         };
 
@@ -205,13 +246,6 @@ public class NavigationDrawerFragment extends Fragment {
         mDrawerLayout.setDrawerListener(mDrawerToggle);
     }
 
-    private void selectItem(int position) {
-        if (mDrawerLayout != null) {
-            mDrawerLayout.closeDrawer(mFragmentContainerView);
-        }
-        
-        // TODO
-    }
 
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
@@ -221,41 +255,33 @@ public class NavigationDrawerFragment extends Fragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        // If the drawer is open, show the global app actions in the action bar. See also
-        // showGlobalContextActionBar, which controls the top-left area of the action bar.
-        if (mDrawerLayout != null && isDrawerOpen()) {
-            inflater.inflate(R.menu.global, menu);
-            showGlobalContextActionBar();
-        }
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
+    	// Let the drawer toggle component handle the hamburger button
         if (mDrawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
-
-        if (item.getItemId() == R.id.action_example) {
-            Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
-            return true;
-        }
-
         return super.onOptionsItemSelected(item);
-    }
-
-    /**
-     * Per the navigation drawer design guidelines, updates the action bar to show the global app
-     * 'context', rather than just what's in the current screen.
-     */
-    private void showGlobalContextActionBar() {
-        ActionBar actionBar = getActionBar();
-        actionBar.setDisplayShowTitleEnabled(true);
-        actionBar.setTitle(R.string.app_name);
     }
 
     private ActionBar getActionBar() {
         return ((ActionBarActivity) getActivity()).getSupportActionBar();
+    }
+
+	public void handleMenuKey() {
+		if(mDrawerLayout.isDrawerOpen(mFragmentContainerView)) {
+			mDrawerLayout.closeDrawer(mFragmentContainerView);
+		} else {
+			mDrawerLayout.openDrawer(mFragmentContainerView);
+		}
+	}
+
+    private void selectItem(int position) {
+        if (mDrawerLayout != null) {
+            mDrawerLayout.closeDrawer(mFragmentContainerView);
+        }
+        Command handler = items[position].handler;
+        if(handler != null) {
+        	handler.perfrom(getActivity());
+        }
     }
 }

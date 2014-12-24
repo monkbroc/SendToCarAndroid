@@ -2150,13 +2150,11 @@ containing a value of this type.
         public static final int action_bar_subtitle=0x7f050023;
         public static final int action_bar_title=0x7f050022;
         public static final int action_context_bar=0x7f050036;
-        public static final int action_example=0x7f05005d;
         public static final int action_menu_divider=0x7f05001e;
         public static final int action_menu_presenter=0x7f05001f;
         public static final int action_mode_bar=0x7f050032;
         public static final int action_mode_bar_stub=0x7f050031;
         public static final int action_mode_close_button=0x7f050024;
-        public static final int action_settings=0x7f05005c;
         public static final int activity_chooser_view_content=0x7f050025;
         public static final int addVehicle=0x7f050043;
         public static final int always=0x7f050011;
@@ -2170,7 +2168,7 @@ containing a value of this type.
         public static final int default_activity_button=0x7f050028;
         public static final int dialog=0x7f050014;
         public static final int disableHome=0x7f05000e;
-        public static final int done=0x7f05005e;
+        public static final int done=0x7f05005c;
         public static final int drawer_layout=0x7f050046;
         public static final int dropdown=0x7f050015;
         public static final int editButton=0x7f050057;
@@ -2303,9 +2301,7 @@ containing a value of this type.
         public static final int vehicle_list_item=0x7f030024;
     }
     public static final class menu {
-        public static final int global=0x7f0c0000;
-        public static final int main=0x7f0c0001;
-        public static final int tutorial=0x7f0c0002;
+        public static final int tutorial=0x7f0c0000;
     }
     public static final class string {
         /**  Content description for the action bar "home" affordance. [CHAR LIMIT=NONE] 
@@ -2374,20 +2370,21 @@ containing a value of this type.
         public static final int choose_make=0x7f0b001f;
         public static final int done=0x7f0b0024;
         public static final int edit_vehicle=0x7f0b0023;
-        public static final int infoEnter=0x7f0b0033;
-        public static final int infoFinish=0x7f0b002f;
-        public static final int infoHowTo=0x7f0b002e;
-        public static final int infoSend=0x7f0b0032;
-        public static final int infoShare=0x7f0b0031;
-        public static final int infoStart=0x7f0b0030;
-        public static final int listEmailDescription=0x7f0b002d;
-        public static final int listEmailTitle=0x7f0b002c;
-        public static final int listHelpDescription=0x7f0b0029;
-        public static final int listHelpTitle=0x7f0b0028;
-        public static final int listRateDescription=0x7f0b002b;
-        public static final int listRateTitle=0x7f0b002a;
-        public static final int listTutorialDescription=0x7f0b0027;
-        public static final int listTutorialTitle=0x7f0b0026;
+        public static final int errorNoApp=0x7f0b0026;
+        public static final int infoEnter=0x7f0b0034;
+        public static final int infoFinish=0x7f0b0030;
+        public static final int infoHowTo=0x7f0b002f;
+        public static final int infoSend=0x7f0b0033;
+        public static final int infoShare=0x7f0b0032;
+        public static final int infoStart=0x7f0b0031;
+        public static final int listEmailDescription=0x7f0b002e;
+        public static final int listEmailTitle=0x7f0b002d;
+        public static final int listHelpDescription=0x7f0b002a;
+        public static final int listHelpTitle=0x7f0b0029;
+        public static final int listRateDescription=0x7f0b002c;
+        public static final int listRateTitle=0x7f0b002b;
+        public static final int listTutorialDescription=0x7f0b0028;
+        public static final int listTutorialTitle=0x7f0b0027;
         public static final int make=0x7f0b001b;
         public static final int name=0x7f0b001c;
         public static final int name_hint=0x7f0b001d;

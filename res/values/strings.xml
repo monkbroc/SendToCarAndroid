@@ -24,7 +24,8 @@
     <string name="done">Done</string>
 	<string name="screenshot">Screenshot</string>
     
-    
+	<string name="errorNoApp">No app is available to do this</string>
+	
 	<string name="listTutorialTitle">Tutorial</string>
 	<string name="listTutorialDescription">Step-by-step guide to use the app</string>
 	<string name="listHelpTitle">Help</string>
