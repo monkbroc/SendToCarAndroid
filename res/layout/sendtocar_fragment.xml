@@ -1,126 +1,160 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="@dimen/activity_vertical_margin"
-    android:paddingLeft="@dimen/activity_horizontal_margin"
-    android:paddingRight="@dimen/activity_horizontal_margin"
-    android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context=".ui.SendToCarFragment" >
 
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:layout_height="0dp"
+        android:layout_weight="1" >
 
-        <TextView
-            android:id="@+id/vehicleLabel"
-            style="@style/cardHeaderLabel"
-            android:text="@string/vehicle" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin" >
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/vehicleCard"
-            style="@style/card" >
+            <TextView
+                android:id="@+id/vehicleLabel"
+                style="@style/cardHeaderLabel"
+                android:text="@string/vehicle" />
 
-            <LinearLayout style="@style/cardLinearContainer" >
+            <android.support.v7.widget.CardView
+                android:id="@+id/vehicleCard"
+                style="@style/card" >
 
-                <Spinner
-                    android:id="@+id/makeSpinner"
-                    style="@style/cardFirstItem"
-                    android:layout_marginTop="@dimen/card_padding"
-                    android:prompt="@string/make" />
+                <LinearLayout style="@style/cardLinearContainer" >
 
-                <TextView
-                    android:id="@+id/accountLabel"
-                    style="@style/cardItem"
-                    android:text="@string/account" />
+                    <Spinner
+                        android:id="@+id/makeSpinner"
+                        style="@style/cardFirstItem"
+                        android:layout_marginTop="@dimen/card_padding"
+                        android:prompt="@string/make" />
 
-                <EditText
-                    android:id="@+id/accountText"
-                    style="@style/cardItem"
-                    android:inputType="text" />
+                    <TextView
+                        android:id="@+id/accountLabel"
+                        style="@style/cardItem"
+                        android:text="@string/account" />
 
-                <View style="@style/horizontalDivider" >
-                </View>
-
-                <Button
-                    android:id="@+id/vehicleHelp"
-                    style="@style/helpButton"
-                    android:drawableLeft="@drawable/ic_button_new"
-                    android:drawableStart="@drawable/ic_button_new"
-                    android:text="@string/help_for_vehicle" />
-
-                <LinearLayout
-                    android:id="@+id/vehicleIssueGroup"
-                    style="@style/cardLinearContainer"
-                    android:visibility="gone" >
+                    <EditText
+                        android:id="@+id/accountText"
+                        style="@style/cardItem"
+                        android:inputType="text" />
 
                     <View style="@style/horizontalDivider" >
                     </View>
 
                     <Button
-                        android:id="@+id/vehicleIssue"
+                        android:id="@+id/vehicleHelp"
                         style="@style/helpButton"
-                        android:drawableLeft="@drawable/ic_button_new"
-                        android:drawableStart="@drawable/ic_button_new"
-                        android:text="@string/known_issue_for_vehicle"
-                        android:textStyle="bold" />
+                        android:drawableLeft="@drawable/ic_button_help"
+                        android:drawableStart="@drawable/ic_button_help"
+                        android:text="@string/help_for_vehicle" />
+
+                    <LinearLayout
+                        android:id="@+id/vehicleIssueGroup"
+                        style="@style/cardLinearContainer"
+                        android:visibility="gone" >
+
+                        <View style="@style/horizontalDivider" >
+                        </View>
+
+                        <Button
+                            android:id="@+id/vehicleIssue"
+                            style="@style/helpButton"
+                            android:drawableLeft="@drawable/ic_button_warning"
+                            android:drawableStart="@drawable/ic_button_warning"
+                            android:text="@string/known_issue_for_vehicle"
+                            android:textStyle="bold" />
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
+            </android.support.v7.widget.CardView>
 
-        <TextView
-            android:id="@+id/destinationLabel"
-            style="@style/cardHeaderLabel"
-            android:layout_marginTop="@dimen/card_header_margin_top"
-            android:text="@string/destination" />
+            <TextView
+                android:id="@+id/destinationLabel"
+                style="@style/cardHeaderLabel"
+                android:layout_marginTop="@dimen/card_header_margin_top"
+                android:text="@string/destination" />
 
-        <android.support.v7.widget.CardView
-            android:id="@+id/destinationCard"
-            style="@style/card" >
+            <android.support.v7.widget.CardView
+                android:id="@+id/destinationCard"
+                style="@style/card" >
 
-            <LinearLayout style="@style/cardLinearContainer" >
-
-                <TextView
-                    android:id="@+id/destinationNameLabel"
-                    style="@style/cardFirstItem"
-                    android:text="@string/destinationName" />
-
-                <EditText
-                    android:id="@+id/destinationText"
-                    style="@style/cardItem"
-                    android:inputType="text" />
-
-                <TextView
-                    android:id="@+id/addressLabel"
-                    style="@style/cardItem"
-                    android:text="@string/address" />
-
-                <TextView
-                    android:id="@+id/addressText"
-                    style="@style/cardItem"
-                    android:textStyle="italic" />
-
-                <LinearLayout
-                    android:id="@+id/notes"
-                    style="@style/cardLinearContainer"
-                    android:visibility="gone" >
+                <LinearLayout style="@style/cardLinearContainer" >
 
                     <TextView
-                        android:id="@+id/notesLabel"
-                        style="@style/cardItem"
-                        android:text="@string/notes" />
+                        android:id="@+id/destinationNameLabel"
+                        style="@style/cardFirstItem"
+                        android:text="@string/destinationName" />
 
                     <EditText
-                        android:id="@+id/notesText"
+                        android:id="@+id/destinationText"
                         style="@style/cardItem"
-                        android:hint="@string/optional"
+                        android:inputType="text" />
+
+                    <TextView
+                        android:id="@+id/addressLabel"
+                        style="@style/cardItem"
+                        android:text="@string/address" />
+
+                    <EditText
+                        android:id="@+id/addressText"
+                        style="@style/cardItem"
+                        android:gravity="top"
                         android:inputType="text|textMultiLine"
-                        android:minLines="1" />
+                        android:minLines="3" />
+
+                    <LinearLayout
+                        android:id="@+id/notes"
+                        style="@style/cardLinearContainer"
+                        android:visibility="gone" >
+
+                        <TextView
+                            android:id="@+id/notesLabel"
+                            style="@style/cardItem"
+                            android:text="@string/notes" />
+
+                        <EditText
+                            android:id="@+id/notesText"
+                            style="@style/cardItem"
+                            android:hint="@string/optional"
+                            android:inputType="text|textMultiLine"
+                            android:minLines="1" />
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        style="?android:attr/buttonBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/cancelButton"
+            style="?android:attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/cancel" />
+
+        <Button
+            android:id="@+id/sendButton"
+            style="?android:attr/buttonBarButtonStyle"
+            android:drawableLeft="@drawable/ic_action_send_now"
+            android:drawableStart="@drawable/ic_action_send_now"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/send" />
     </LinearLayout>
 
-</ScrollView>
+</LinearLayout>

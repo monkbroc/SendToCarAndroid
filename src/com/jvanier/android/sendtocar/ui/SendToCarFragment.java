@@ -70,7 +70,6 @@ public class SendToCarFragment extends Fragment {
 		issueGroup = rootView.findViewById(R.id.vehicleIssueGroup);
 		
 		updateVehicleHelpButtons(getResources().getText(R.string.vehicle_lowercase).toString());
-		showVehicleIssueButton(true);
 	}
 	
 	private void updateVehicleHelpButtons(String make) {

@@ -4,28 +4,19 @@
     <string name="app_name">Send To Car</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="action_example">Example action</string>
-    <string name="action_settings">Settings</string>
     <string name="vehicle">Vehicle</string>
     <string name="vehicle_lowercase">vehicle</string>
-    <string name="change_vehicle">Change</string>
-    <string name="plus">+</string>
     <string name="make">Make</string>
-    <string name="name">Name</string>
 	<string name="account">Account</string>
-    <string name="name_hint">Name for this vehicle</string>
-    <string name="account_hint">Account</string>
 	<string name="address">Address</string>
 	<string name="destination">Destination</string>
 	<string name="destinationName">Name</string>
 	<string name="notes">Notes</string>
 	<string name="optional">Optional</string>
+	<string name="send">Send</string>
+	<string name="cancel">Cancel</string>
 
     <string name="choose_make">Choose a make</string>
-    <string name="remove_vehicle">Remove vehicle</string>
-    <string name="add_vehicle">Add another vehicle</string>
-    <string name="accept_vehicle">Use this vehicle</string>
-    <string name="edit_vehicle">Edit vehicle</string>
     <string name="done">Done</string>
 	<string name="screenshot">Screenshot</string>
     
@@ -45,7 +36,6 @@
 	<string name="listEmailDescription">If you have issues with this app, you can email the developer</string>
 	
 	<string name="infoHowTo">How to Use</string>
-	<string name="infoFinish">Finish</string>
 	<string name="infoStart">Start Google Maps, find a place and slide the white address box up</string>
 	<string name="infoShare">Press "Share"</string>
 	<string name="infoSend">Select "Send To Car"</string>

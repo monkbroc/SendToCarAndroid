@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:ellipsize="marquee"
     android:paddingLeft="4dp"
+    android:paddingRight="4dp"
     android:singleLine="true"
-    android:textAlignment="inherit"
     android:textAppearance="?android:attr/textAppearanceLarge" />
 
