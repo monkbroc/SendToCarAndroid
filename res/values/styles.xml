@@ -1,8 +1,72 @@
-<resources>
-    
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:card_view="http://schemas.android.com/apk/res-auto">
+
     <style name="CustomCirclePageIndicator">
         <item name="fillColor">#FF666666</item>
         <item name="strokeColor">#FFAAAAAA</item>
         <item name="radius">5dp</item>
     </style>
+
+    <style name="card">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/card_margin_top</item>
+        <item name="android:background">@android:color/white</item>
+        <item name="cardElevation">3dp</item>
+    </style>
+
+    <style name="cardHeaderLabel">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAppearance">?android:attr/textAppearanceMedium</item>
+    </style>
+
+    <style name="cardLinearContainer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="cardItem">
+        
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/card_padding</item>
+        <item name="android:layout_marginRight">@dimen/card_padding</item>
+        <item name="android:layout_marginBottom">@dimen/card_item_spacing</item>
+    </style>
+    
+    <style name="cardFirstItem" parent="@style/cardItem">
+        <item name="android:layout_marginTop">@dimen/card_padding</item>
+    </style>
+    
+    <style name="cardLastItem" parent="@style/cardItem">
+        <item name="android:layout_marginBottom">@dimen/card_padding</item>
+    </style>
+    
+    <style name="cardField">
+        <item name="android:paddingLeft">@dimen/card_padding</item>
+    </style>
+
+    <style name="cardLabel">
+        <item name="android:paddingLeft">@dimen/card_padding</item>
+    </style>
+
+    <style name="helpButton" parent="noCaps">
+        <item name="android:minHeight">36dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">?attr/selectableItemBackground</item>
+        <item name="android:paddingLeft">@dimen/card_padding</item>
+        <item name="android:paddingRight">@dimen/card_padding</item>
+        <item name="android:textColor">@color/grey</item>
+    </style>
+
+    <style name="noCaps"></style>
+
+    <style name="horizontalDivider">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">?android:attr/dividerVertical</item>
+    </style>
+
 </resources>

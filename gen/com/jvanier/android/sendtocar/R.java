@@ -1991,6 +1991,9 @@ containing a value of this type.
          */
         public static final int activity_horizontal_margin=0x7f09003b;
         public static final int activity_vertical_margin=0x7f09003c;
+        public static final int card_header_margin_top=0x7f090040;
+        public static final int card_item_spacing=0x7f090041;
+        public static final int card_margin_top=0x7f09003f;
         public static final int card_padding=0x7f09003e;
         /**  Inset shadow for RoundRectDrawableWithShadow. It is used to avoid gaps between the card
      and the shadow. 
@@ -2137,11 +2140,12 @@ containing a value of this type.
         public static final int vpi__tab_unselected_pressed_holo=0x7f02004d;
     }
     public static final class id {
-        public static final int LinearLayout1=0x7f050050;
-        public static final int RelativeLayout1=0x7f050051;
-        public static final int acceptButton=0x7f050052;
-        public static final int accountField=0x7f050056;
-        public static final int accountText=0x7f05005b;
+        public static final int LinearLayout1=0x7f05005e;
+        public static final int RelativeLayout1=0x7f05005f;
+        public static final int acceptButton=0x7f050060;
+        public static final int accountField=0x7f050063;
+        public static final int accountLabel=0x7f05004c;
+        public static final int accountText=0x7f05004d;
         public static final int action_bar=0x7f050035;
         public static final int action_bar_activity_content=0x7f05001c;
         public static final int action_bar_container=0x7f050034;
@@ -2157,6 +2161,8 @@ containing a value of this type.
         public static final int action_mode_close_button=0x7f050024;
         public static final int activity_chooser_view_content=0x7f050025;
         public static final int addVehicle=0x7f050043;
+        public static final int addressLabel=0x7f050055;
+        public static final int addressText=0x7f050056;
         public static final int always=0x7f050011;
         public static final int beginning=0x7f050016;
         public static final int bottom=0x7f050003;
@@ -2166,12 +2172,16 @@ containing a value of this type.
         public static final int container=0x7f050047;
         public static final int decor_content_parent=0x7f050033;
         public static final int default_activity_button=0x7f050028;
+        public static final int destinationCard=0x7f050052;
+        public static final int destinationLabel=0x7f050051;
+        public static final int destinationNameLabel=0x7f050053;
+        public static final int destinationText=0x7f050054;
         public static final int dialog=0x7f050014;
         public static final int disableHome=0x7f05000e;
-        public static final int done=0x7f05005c;
+        public static final int done=0x7f050068;
         public static final int drawer_layout=0x7f050046;
         public static final int dropdown=0x7f050015;
-        public static final int editButton=0x7f050057;
+        public static final int editButton=0x7f050064;
         public static final int edit_query=0x7f050037;
         public static final int end=0x7f050018;
         public static final int expand_activities_button=0x7f050026;
@@ -2181,26 +2191,28 @@ containing a value of this type.
         public static final int icon=0x7f05002a;
         public static final int ifRoom=0x7f050010;
         public static final int image=0x7f050027;
-        public static final int indicator=0x7f05004d;
-        public static final int linearLayout2=0x7f050049;
+        public static final int indicator=0x7f05005b;
         public static final int listMode=0x7f050007;
         public static final int list_item=0x7f050029;
-        public static final int makeSpinner=0x7f050054;
-        public static final int makeText=0x7f05005a;
-        public static final int messageText=0x7f05004e;
+        public static final int makeSpinner=0x7f05004b;
+        public static final int makeText=0x7f050067;
+        public static final int messageText=0x7f05005c;
         public static final int middle=0x7f050017;
-        public static final int nameField=0x7f050055;
-        public static final int nameText=0x7f050059;
+        public static final int nameField=0x7f050062;
+        public static final int nameText=0x7f050066;
         public static final int navigation_drawer=0x7f050048;
         public static final int never=0x7f05000f;
         public static final int none=0x7f050000;
         public static final int normal=0x7f050006;
-        public static final int pager=0x7f05004c;
+        public static final int notes=0x7f050057;
+        public static final int notesLabel=0x7f050058;
+        public static final int notesText=0x7f050059;
+        public static final int pager=0x7f05005a;
         public static final int progress_circular=0x7f050020;
         public static final int progress_horizontal=0x7f050021;
         public static final int radio=0x7f05002f;
-        public static final int removeButton=0x7f050053;
-        public static final int screenshotImage=0x7f05004f;
+        public static final int removeButton=0x7f050061;
+        public static final int screenshotImage=0x7f05005d;
         public static final int search_badge=0x7f050039;
         public static final int search_bar=0x7f050038;
         public static final int search_button=0x7f05003a;
@@ -2219,15 +2231,18 @@ containing a value of this type.
         public static final int submit_area=0x7f050040;
         public static final int tabMode=0x7f050008;
         public static final int textCurrentMake=0x7f050044;
-        public static final int textVehicle=0x7f05004a;
         public static final int title=0x7f05002b;
         public static final int top=0x7f050004;
         public static final int triangle=0x7f050001;
         public static final int underline=0x7f050002;
         public static final int up=0x7f05001a;
         public static final int useLogo=0x7f050009;
-        public static final int vehicleCard=0x7f05004b;
-        public static final int vehicleDescription=0x7f050058;
+        public static final int vehicleCard=0x7f05004a;
+        public static final int vehicleDescription=0x7f050065;
+        public static final int vehicleHelp=0x7f05004e;
+        public static final int vehicleIssue=0x7f050050;
+        public static final int vehicleIssueGroup=0x7f05004f;
+        public static final int vehicleLabel=0x7f050049;
         public static final int withText=0x7f050012;
         public static final int wrap_content=0x7f050005;
     }
@@ -2360,53 +2375,59 @@ containing a value of this type.
         /**  Content description for the Toolbar icon used to collapse an expanded action mode. [CHAR LIMIT=NONE] 
          */
         public static final int abc_toolbar_collapse_description=0x7f0b0004;
-        public static final int accept_vehicle=0x7f0b0022;
-        public static final int account_hint=0x7f0b001e;
-        public static final int action_example=0x7f0b0016;
-        public static final int action_settings=0x7f0b0017;
-        public static final int add_vehicle=0x7f0b0021;
+        public static final int accept_vehicle=0x7f0b0026;
+        public static final int account=0x7f0b001b;
+        public static final int account_hint=0x7f0b001d;
+        public static final int action_example=0x7f0b0013;
+        public static final int action_settings=0x7f0b0014;
+        public static final int add_vehicle=0x7f0b0025;
+        public static final int address=0x7f0b001e;
         public static final int app_name=0x7f0b0010;
-        public static final int change_vehicle=0x7f0b0019;
-        public static final int choose_make=0x7f0b001f;
-        public static final int done=0x7f0b0024;
-        public static final int edit_vehicle=0x7f0b0023;
-        public static final int errorNoApp=0x7f0b0026;
-        public static final int infoEnter=0x7f0b0034;
-        public static final int infoFinish=0x7f0b0030;
-        public static final int infoHowTo=0x7f0b002f;
-        public static final int infoSend=0x7f0b0033;
-        public static final int infoShare=0x7f0b0032;
-        public static final int infoStart=0x7f0b0031;
-        public static final int listEmailDescription=0x7f0b002e;
-        public static final int listEmailTitle=0x7f0b002d;
-        public static final int listHelpDescription=0x7f0b002a;
-        public static final int listHelpTitle=0x7f0b0029;
-        public static final int listRateDescription=0x7f0b002c;
-        public static final int listRateTitle=0x7f0b002b;
-        public static final int listTutorialDescription=0x7f0b0028;
-        public static final int listTutorialTitle=0x7f0b0027;
-        public static final int make=0x7f0b001b;
-        public static final int name=0x7f0b001c;
-        public static final int name_hint=0x7f0b001d;
-        public static final int navigation_drawer_close=0x7f0b0015;
-        public static final int navigation_drawer_open=0x7f0b0014;
-        public static final int plus=0x7f0b001a;
-        public static final int remove_vehicle=0x7f0b0020;
-        public static final int screenshot=0x7f0b0025;
-        public static final int title_section1=0x7f0b0011;
-        public static final int title_section2=0x7f0b0012;
-        public static final int title_section3=0x7f0b0013;
-        public static final int vehicle=0x7f0b0018;
+        public static final int change_vehicle=0x7f0b0017;
+        public static final int choose_make=0x7f0b0023;
+        public static final int destination=0x7f0b001f;
+        public static final int destinationName=0x7f0b0020;
+        public static final int done=0x7f0b0028;
+        public static final int edit_vehicle=0x7f0b0027;
+        public static final int errorNoApp=0x7f0b002c;
+        public static final int help_for_vehicle=0x7f0b002a;
+        public static final int infoEnter=0x7f0b003a;
+        public static final int infoFinish=0x7f0b0036;
+        public static final int infoHowTo=0x7f0b0035;
+        public static final int infoSend=0x7f0b0039;
+        public static final int infoShare=0x7f0b0038;
+        public static final int infoStart=0x7f0b0037;
+        public static final int known_issue_for_vehicle=0x7f0b002b;
+        public static final int listEmailDescription=0x7f0b0034;
+        public static final int listEmailTitle=0x7f0b0033;
+        public static final int listHelpDescription=0x7f0b0030;
+        public static final int listHelpTitle=0x7f0b002f;
+        public static final int listRateDescription=0x7f0b0032;
+        public static final int listRateTitle=0x7f0b0031;
+        public static final int listTutorialDescription=0x7f0b002e;
+        public static final int listTutorialTitle=0x7f0b002d;
+        public static final int make=0x7f0b0019;
+        public static final int name=0x7f0b001a;
+        public static final int name_hint=0x7f0b001c;
+        public static final int navigation_drawer_close=0x7f0b0012;
+        public static final int navigation_drawer_open=0x7f0b0011;
+        public static final int notes=0x7f0b0021;
+        public static final int optional=0x7f0b0022;
+        public static final int plus=0x7f0b0018;
+        public static final int remove_vehicle=0x7f0b0024;
+        public static final int screenshot=0x7f0b0029;
+        public static final int vehicle=0x7f0b0015;
+        public static final int vehicle_lowercase=0x7f0b0016;
     }
     public static final class style {
         /**  Material Theme from AppCompat library 
          */
-        public static final int AppBaseTheme=0x7f0a00f4;
+        public static final int AppBaseTheme=0x7f0a00ff;
         /**  Application theme for API 7 to 20 
  Customizations for old versions go here 
  Application theme for API 21+ 
          */
-        public static final int AppTheme=0x7f0a00f5;
+        public static final int AppTheme=0x7f0a0100;
         public static final int Base_TextAppearance_AppCompat=0x7f0a00a0;
         public static final int Base_TextAppearance_AppCompat_Body1=0x7f0a00ab;
         public static final int Base_TextAppearance_AppCompat_Body2=0x7f0a00aa;
@@ -2731,6 +2752,17 @@ containing a value of this type.
         public static final int Widget_AppCompat_Toolbar_Button_Navigation=0x7f0a003d;
         public static final int Widget_IconPageIndicator=0x7f0a0004;
         public static final int Widget_TabPageIndicator=0x7f0a0002;
+        public static final int card=0x7f0a00f4;
+        public static final int cardField=0x7f0a00fa;
+        public static final int cardFirstItem=0x7f0a00f8;
+        public static final int cardHeaderLabel=0x7f0a00f5;
+        public static final int cardItem=0x7f0a00f7;
+        public static final int cardLabel=0x7f0a00fb;
+        public static final int cardLastItem=0x7f0a00f9;
+        public static final int cardLinearContainer=0x7f0a00f6;
+        public static final int helpButton=0x7f0a00fc;
+        public static final int horizontalDivider=0x7f0a00fe;
+        public static final int noCaps=0x7f0a00fd;
     }
     public static final class styleable {
         /**  ============================================ 

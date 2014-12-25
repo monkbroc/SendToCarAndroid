@@ -2,20 +2,25 @@
 <resources>
 
     <string name="app_name">Send To Car</string>
-    <string name="title_section1">Send To Car</string>
-    <string name="title_section2">Section 2</string>
-    <string name="title_section3">Section 3</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="action_example">Example action</string>
     <string name="action_settings">Settings</string>
     <string name="vehicle">Vehicle</string>
+    <string name="vehicle_lowercase">vehicle</string>
     <string name="change_vehicle">Change</string>
     <string name="plus">+</string>
     <string name="make">Make</string>
     <string name="name">Name</string>
+	<string name="account">Account</string>
     <string name="name_hint">Name for this vehicle</string>
     <string name="account_hint">Account</string>
+	<string name="address">Address</string>
+	<string name="destination">Destination</string>
+	<string name="destinationName">Name</string>
+	<string name="notes">Notes</string>
+	<string name="optional">Optional</string>
+
     <string name="choose_make">Choose a make</string>
     <string name="remove_vehicle">Remove vehicle</string>
     <string name="add_vehicle">Add another vehicle</string>
@@ -24,6 +29,10 @@
     <string name="done">Done</string>
 	<string name="screenshot">Screenshot</string>
     
+
+	<string name="help_for_vehicle">Help for {0}</string>
+	<string name="known_issue_for_vehicle">Known issue for {0}</string>
+		
 	<string name="errorNoApp">No app is available to do this</string>
 	
 	<string name="listTutorialTitle">Tutorial</string>

@@ -10,5 +10,8 @@
     -->
     <dimen name="navigation_drawer_width">240dp</dimen>
     <dimen name="card_padding">10dp</dimen>
-
+    <dimen name="card_margin_top">10dp</dimen>
+    <dimen name="card_header_margin_top">20dp</dimen>
+    <dimen name="card_item_spacing">6dp</dimen>
+    
 </resources>
