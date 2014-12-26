@@ -2,6 +2,7 @@ package com.jvanier.android.sendtocar.ui;
 
 import java.text.MessageFormat;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -29,6 +30,9 @@ public class SendToCarFragment extends Fragment {
 
         setupMakeSpinner(rootView);
         setupVehicleHelp(rootView);
+        
+        Intent intent = new Intent(getActivity(), MakeActivity.class);
+        startActivity(intent);
         
         return rootView;
     }
@@ -70,6 +74,7 @@ public class SendToCarFragment extends Fragment {
 		issueGroup = rootView.findViewById(R.id.vehicleIssueGroup);
 		
 		updateVehicleHelpButtons(getResources().getText(R.string.vehicle_lowercase).toString());
+		showVehicleIssueButton(true);
 	}
 	
 	private void updateVehicleHelpButtons(String make) {

@@ -23,6 +23,9 @@
 
 	<string name="help_for_vehicle">Help for {0}</string>
 	<string name="known_issue_for_vehicle">Known issue for {0}</string>
+	
+	<string name="recent_vehicles">Recent vehicles</string>
+	<string name="discard">Discard</string>
 		
 	<string name="errorNoApp">No app is available to do this</string>
 	

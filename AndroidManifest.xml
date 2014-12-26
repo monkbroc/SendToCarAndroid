@@ -26,6 +26,10 @@
             android:name="com.jvanier.android.sendtocar.ui.TutorialActivity"
             android:label="@string/infoHowTo" >
         </activity>
+        <activity
+            android:name="com.jvanier.android.sendtocar.ui.MakeActivity"
+            android:label="@string/choose_make" >
+        </activity>
     </application>
 
 </manifest>
