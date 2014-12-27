@@ -1,4 +1,4 @@
-package com.jvanier.android.sendtocar.ui;
+package com.jvanier.android.sendtocar.controllers;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

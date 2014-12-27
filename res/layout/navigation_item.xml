@@ -5,14 +5,10 @@
     android:layout_height="wrap_content"
     android:drawableLeft="@drawable/ic_action_send_now"
     android:drawablePadding="?attr/listPreferredItemPaddingLeft"
-    android:drawableStart="@drawable/ic_action_send_now"
     android:gravity="center_vertical"
     android:minHeight="?attr/listPreferredItemHeightSmall"
-    android:paddingEnd="?attr/listPreferredItemPaddingRight"
     android:paddingLeft="?attr/listPreferredItemPaddingLeft"
     android:paddingRight="?attr/listPreferredItemPaddingRight"
-    android:paddingStart="?attr/listPreferredItemPaddingLeft"
     android:text=""
     android:textAppearance="?attr/textAppearanceListItemSmall"
     android:textColor="@color/navigation_primary" />
-

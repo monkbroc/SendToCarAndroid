@@ -1,4 +1,4 @@
-package com.jvanier.android.sendtocar.ui;
+package com.jvanier.android.sendtocar.controllers;
 
 import android.content.ActivityNotFoundException;
 import android.content.Context;

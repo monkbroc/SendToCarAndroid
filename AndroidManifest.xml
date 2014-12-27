@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.jvanier.android.sendtocar"
     android:versionCode="29"
-    android:versionName="4.0" >
+    android:versionName="4.0" xmlns:tools="http://schemas.android.com/tools">
 
     <uses-sdk
         android:minSdkVersion="12"
@@ -12,9 +12,10 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme" 
+        android:supportsRtl="false" tools:ignore="UnusedAttribute">
         <activity
-            android:name="com.jvanier.android.sendtocar.ui.SendToCarActivity"
+            android:name="com.jvanier.android.sendtocar.controllers.SendToCarActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,11 +24,11 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.jvanier.android.sendtocar.ui.TutorialActivity"
+            android:name="com.jvanier.android.sendtocar.controllers.TutorialActivity"
             android:label="@string/infoHowTo" >
         </activity>
         <activity
-            android:name="com.jvanier.android.sendtocar.ui.MakeActivity"
+            android:name="com.jvanier.android.sendtocar.controllers.MakeActivity"
             android:label="@string/choose_make" >
         </activity>
     </application>

@@ -51,7 +51,6 @@
                         android:id="@+id/vehicleHelp"
                         style="@style/helpButton"
                         android:drawableLeft="@drawable/ic_button_help"
-                        android:drawableStart="@drawable/ic_button_help"
                         android:text="@string/help_for_vehicle" />
 
                     <LinearLayout
@@ -65,7 +64,6 @@
                             android:id="@+id/vehicleIssue"
                             style="@style/helpButton"
                             android:drawableLeft="@drawable/ic_button_warning"
-                            android:drawableStart="@drawable/ic_button_warning"
                             android:text="@string/known_issue_for_vehicle"
                             android:textStyle="bold" />
                     </LinearLayout>
@@ -149,7 +147,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:drawableLeft="@drawable/ic_action_send_now"
-            android:drawableStart="@drawable/ic_action_send_now"
             android:text="@string/send" />
     </LinearLayout>
 
