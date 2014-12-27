@@ -46,4 +46,8 @@ public class CarProvider implements Comparable<CarProvider>, Serializable {
     	int typediff = (this.type - other.type);
         return (typediff == 0) ? this.make.compareTo(other.make) : typediff;
     }
+
+	public void addSupportedCountry(String country) {
+		supportedCountries.add(country);		
+	}
 }

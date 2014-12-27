@@ -1,8 +1,8 @@
 package com.jvanier.android.sendtocar.controllers;
 
 import java.text.MessageFormat;
+import java.util.Locale;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -13,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.jvanier.android.sendtocar.R;
+import com.jvanier.android.sendtocar.downloaders.CarListManager;
 
 public class SendToCarFragment extends Fragment {
 
@@ -26,17 +27,21 @@ public class SendToCarFragment extends Fragment {
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.sendtocar_fragment, container, false);
+        updateCarList();
 
+        View rootView = inflater.inflate(R.layout.sendtocar_fragment, container, false);
+        
         setupMakeSpinner(rootView);
         setupVehicleHelp(rootView);
-        
-        Intent intent = new Intent(getActivity(), MakeActivity.class);
-        startActivity(intent);
         
         return rootView;
     }
 	
+	private void updateCarList() {
+		CarListManager.sharedInstance().updateCarList(getActivity(), Locale.getDefault().getLanguage());
+		
+	}
+
 	private void setupMakeSpinner(View rootView)
 	{
         Spinner makeSpinner = (Spinner) rootView.findViewById(R.id.makeSpinner);
