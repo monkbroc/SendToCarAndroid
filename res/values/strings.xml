@@ -16,6 +16,12 @@
 	<string name="send">Send</string>
 	<string name="cancel">Cancel</string>
 
+	<string name="errorDownload">Could not download address. Check your internet connection and try again</string>
+	<string name="errorNotGoogleMaps">The shared link was not a valid Google Maps link</string>
+	<string name="errorNoUrl">There was no valid URL in the shared link</string>
+	<string name="errorGoogleMapsLongPressBug">Due to a bug in the new version of Google Maps, a blank address was just shared from Google Maps to the Send To Car app.\n\nYou can work around this bug by searching for an address in the Google Maps app using the search bar instead of long-pressing on the map.\n\nPlease write to Google that this bug affects you.\n\nOpen the Google Maps app, pull open the panel to the left and click Send feedback.\n\nWrite something like: \"When long-pressing on the map then pressing the Share button, the shared Google Maps link doesn\'t point to any location.\"\n\nSorry for the inconvenience.\n\n- Julien Vanier</string>
+	<string name="errorGoogleMapsIncompleteAddressBug">Due to a bug in the new version of Google Maps, an incomplete address was just shared from Google Maps to the Send To Car app. It contains the street address, but not the city, state and country so Send To Car cannot find your destination.\n\nYou can sometimes work around this bug by searching for a street, city and state in the Google Maps app using the search bar. You can also search for a business near your destination.\n\nPlease write to Google that this bug affects you.\n\nOpen the Google Maps app, pull open the panel to the left and click Send feedback.\n\nWrite something like: \"When searching for a street address then pressing the Share button, the new Google Maps shares an incomplete address without city and state.\"\n\nSorry for the inconvenience.\n\n- Julien Vanier</string>
+		
     <string name="choose_make">Choose a make</string>
     <string name="done">Done</string>
 	<string name="screenshot">Screenshot</string>

@@ -14,39 +14,30 @@ import org.json.JSONObject;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.jvanier.android.sendtocar.common.BackgroundTaskAbort;
 import com.jvanier.android.sendtocar.common.Constants;
 import com.jvanier.android.sendtocar.models.Issue;
 
-public class IssueLoader extends AsyncTask<Void, Void, Boolean> {
+/* Users of this class can override onPostExecute(Issue issue) to receive the results */
+public class IssueLoader extends AsyncTask<Void, Void, Issue> {
 	
-	public interface IssueLoaderHandler {
-		public abstract void onCompletion(boolean success, Issue issue);
-	}
-
 	private static final String TAG = "IssueLoader";
 
 	private String makeId;
-	private IssueLoaderHandler handler;
 	private Issue issue;
 	
-	public IssueLoader(String makeId, IssueLoaderHandler handler) {
+	public IssueLoader(String makeId) {
 		this.makeId = makeId;
-		this.handler = handler;
 	}
 	
-
-	private class BackgroundTaskAbort extends Exception {
-		private static final long serialVersionUID = 2338278677502562127L;
-	}
-
 	@Override
-	protected Boolean doInBackground(Void... ignored) {
+	protected Issue doInBackground(Void... ignored) {
 		try {
 			String jsonData = downloadJsonData();
 			parseJsonDataToIssue(jsonData);
-			return Boolean.TRUE;
+			return issue;
 		} catch(BackgroundTaskAbort e) {
-			return Boolean.FALSE;
+			return null;
 		}
 	}
 
@@ -98,13 +89,4 @@ public class IssueLoader extends AsyncTask<Void, Void, Boolean> {
 			throw new BackgroundTaskAbort();
 		}
 	}
-
-	@Override
-	protected void onPostExecute(Boolean result) {
-		super.onPostExecute(result);
-		if(handler != null) {
-			handler.onCompletion(result.booleanValue(), issue);
-		}
-	}
-
 }

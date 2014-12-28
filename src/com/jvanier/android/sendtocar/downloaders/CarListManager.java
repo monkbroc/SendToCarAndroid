@@ -23,6 +23,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.jvanier.android.sendtocar.common.Constants;
+import com.jvanier.android.sendtocar.common.BackgroundTaskAbort;
 import com.jvanier.android.sendtocar.models.CarList;
 import com.jvanier.android.sendtocar.models.CarProvider;
 
@@ -96,11 +97,6 @@ public class CarListManager {
 		}
 
 		return success;
-	}
-
-
-	private class BackgroundTaskAbort extends Exception {
-		private static final long serialVersionUID = 2800070333002771844L;
 	}
 
 	private class DownloadCarListTask extends AsyncTask<Void, Void, Boolean> {
