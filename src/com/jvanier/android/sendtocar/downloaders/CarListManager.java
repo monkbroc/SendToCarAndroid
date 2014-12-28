@@ -1,8 +1,8 @@
 package com.jvanier.android.sendtocar.downloaders;
 
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.HttpURLConnection;
@@ -30,10 +30,9 @@ public class CarListManager {
 	private static final String TAG = "CarListLoader";
 
 	private static final String FILENAME = "cars.ser";
+	private static final String DEFAULT_FILENAME = "cars_default.ser";
 
 	private CarList carList;
-
-	private UpdateCarListTask task;
 
 	private static final CarListManager INSTANCE = new CarListManager();
 
@@ -54,32 +53,63 @@ public class CarListManager {
 	}
 
 	public void updateCarList(Context context, String language) {
-		if (task == null) {
-			task = new UpdateCarListTask(context, language);
-			task.execute();
+		// Read cache/default list on main thread to make sure there's at least some date for the UI
+		if(readCarList(context, language) == false) {
+			// Download new list if needed
+			(new DownloadCarListTask(context, language)).execute();
 		}
 	}
 	
-	private void finishTask() {
-		task = null;
+	protected boolean readCarList(Context context, String language) {
+		InputStream in = null;
+		ObjectInputStream objIn = null;
+		boolean success = false;
+		
+		final int READ_CACHE = 0;
+		final int READ_DEFAULT = 1;
+		for(int state = READ_CACHE; state <= READ_DEFAULT; state++) {
+			try {
+				if(state == READ_CACHE) {
+					in = context.openFileInput(FILENAME);
+				} else {
+					in = context.getAssets().open(DEFAULT_FILENAME);
+				}
+
+				objIn = new ObjectInputStream(in);
+				CarList readCarList = (CarList) objIn.readObject();
+				objIn.close();
+
+				Log.d(TAG, "Read car list with " + readCarList.size() + " providers from " + ((state == READ_CACHE) ? "cache" : "default"));
+				setCarList(readCarList);
+
+				if (state == READ_DEFAULT || readCarList.isEmpty() || readCarList.timeToReDownload()
+						|| readCarList.languageChanged(language)) {
+					success = false;
+				} else {
+					success = true;
+				}
+				// If cache was read successfully no need to read the default file
+				break;
+			} catch (Exception e) {
+				success = false;
+			}
+		}
+
+		return success;
 	}
-	
-	
+
 
 	private class BackgroundTaskAbort extends Exception {
 		private static final long serialVersionUID = 2800070333002771844L;
 	}
 
-	private class UpdateCarListTask extends AsyncTask<Void, Void, Boolean> {
+	private class DownloadCarListTask extends AsyncTask<Void, Void, Boolean> {
 		private Context context;
 		private String language;
 
 		private CarList downloadedCarList;
 
-		private DefaultHttpClient client;
-		private HttpGet httpGet;
-
-		public UpdateCarListTask(Context context, String language) {
+		public DownloadCarListTask(Context context, String language) {
 			this.context = context;
 			this.language = language;
 		}
@@ -89,75 +119,22 @@ public class CarListManager {
 			Log.d(TAG, "Starting car download");
 
 			try {
-				if (readCarList() == false) {
-					if (isCancelled())
-						return Boolean.FALSE;
+				downloadedCarList = new CarList(language);
 
-					downloadedCarList = new CarList(language);
+				String carsJson = downloadCarList();
 
-					setupHttp();
-					String carsJson = downloadCarList();
+				if (carsJson.length() == 0)
+					return Boolean.FALSE;
+				parseCarsData(carsJson);
 
-					if (isCancelled() || carsJson.length() == 0)
-						return Boolean.FALSE;
-					parseCarsData(carsJson);
+				setCarList(downloadedCarList);
 
-					setCarList(downloadedCarList);
-
-					if (isCancelled())
-						return Boolean.FALSE;
-
-					writeCarList(downloadedCarList);
-				}
+				writeCarList(downloadedCarList);
 
 				return Boolean.TRUE;
 			} catch (BackgroundTaskAbort e) {
 				return Boolean.FALSE;
 			}
-		}
-
-		protected boolean readCarList() {
-			FileInputStream fis = null;
-			ObjectInputStream in = null;
-			boolean success = false;
-			try {
-				fis = context.openFileInput(FILENAME);
-				in = new ObjectInputStream(fis);
-				CarList readCarList = (CarList) in.readObject();
-				in.close();
-
-				setCarList(readCarList);
-
-				if (readCarList.carsEmpty() || readCarList.timeToReDownload()
-						|| readCarList.languageChanged(language)) {
-					success = false;
-				} else {
-					success = true;
-				}
-			} catch (Exception e) {
-				success = false;
-			}
-
-			return success;
-		}
-
-		public void writeCarList(CarList carList) {
-
-			FileOutputStream fos = null;
-			ObjectOutputStream out = null;
-			try {
-				fos = context.openFileOutput(FILENAME, Context.MODE_PRIVATE);
-				out = new ObjectOutputStream(fos);
-				out.writeObject(carList);
-				out.close();
-			} catch (IOException e) {
-				// do nothing
-			}
-		}
-
-		private void setupHttp() {
-			client = new DefaultHttpClient();
-			httpGet = new HttpGet();
 		}
 
 		private String downloadCarList() throws BackgroundTaskAbort {
@@ -166,8 +143,11 @@ public class CarListManager {
 				URI carsUri = new URI(MessageFormat.format(Constants.CARS_URL, language));
 				Log.d(TAG, "Downloading car list from URL " + carsUri.toString());
 
+
+				HttpGet httpGet = new HttpGet();
 				httpGet.setURI(carsUri);
 
+				DefaultHttpClient client = new DefaultHttpClient();
 				HttpResponse response = client.execute(httpGet);
 
 				Log.d(TAG, "Downloaded cars. Status: " + response.getStatusLine().getStatusCode());
@@ -190,11 +170,10 @@ public class CarListManager {
 			return carsJson;
 		}
 
-		private void parseCarsData(CharSequence carsJson)
-				throws BackgroundTaskAbort {
+		private void parseCarsData(String carsJson) throws BackgroundTaskAbort {
 
 			try {
-				JSONObject carsRaw = new JSONObject(carsJson.toString());
+				JSONObject carsRaw = new JSONObject(carsJson);
 				JSONObject providers = carsRaw.getJSONObject("providers");
 
 				Iterator<String> providerIterator = (Iterator<String>) providers
@@ -235,11 +214,25 @@ public class CarListManager {
 			}
 		}
 
+		public void writeCarList(CarList carList) {
+
+			FileOutputStream fos = null;
+			ObjectOutputStream out = null;
+			try {
+				fos = context.openFileOutput(FILENAME, Context.MODE_PRIVATE);
+				out = new ObjectOutputStream(fos);
+				out.writeObject(carList);
+				out.close();
+				Log.d(TAG, "Wrote car list with " + carList.size() + " providers to cache");
+			} catch (IOException e) {
+				// do nothing
+			}
+		}
+
 		@Override
 		protected void onPostExecute(Boolean result) {
 			super.onPostExecute(result);
 			
-			finishTask();
 		}
 	}
 }

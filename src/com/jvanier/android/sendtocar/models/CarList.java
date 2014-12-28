@@ -4,12 +4,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 
 public class CarList implements Serializable {
 	private static final long serialVersionUID = 8114219603971246792L;
 
 	private HashMap<String, CarProvider> data;
+	private List<CarProvider> list;
 	private long downloadDate;
 	private String language;
 	
@@ -31,10 +33,12 @@ public class CarList implements Serializable {
 		data.put(car.makeId, car);
 	}
 	
-	public ArrayList<CarProvider> getList() {
-		ArrayList<CarProvider> list = new ArrayList<CarProvider>();
-		list.addAll(data.values());
-		Collections.sort(list);
+	public List<CarProvider> asList() {
+		if(list == null) {
+			list = new ArrayList<CarProvider>();
+			list.addAll(data.values());
+			Collections.sort(list);
+		}
 		return list;
 	}
 
@@ -47,7 +51,11 @@ public class CarList implements Serializable {
 		return (this.language == null || !this.language.equals(language));
 	}
 	
-	public boolean carsEmpty() {
+	public boolean isEmpty() {
 		return data.isEmpty();
+	}
+	
+	public int size() {
+		return data.size();
 	}
 }

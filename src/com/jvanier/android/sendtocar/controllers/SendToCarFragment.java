@@ -27,8 +27,6 @@ public class SendToCarFragment extends Fragment {
 	@Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
-        updateCarList();
-
         View rootView = inflater.inflate(R.layout.sendtocar_fragment, container, false);
         
         setupMakeSpinner(rootView);
@@ -37,11 +35,6 @@ public class SendToCarFragment extends Fragment {
         return rootView;
     }
 	
-	private void updateCarList() {
-		CarListManager.sharedInstance().updateCarList(getActivity(), Locale.getDefault().getLanguage());
-		
-	}
-
 	private void setupMakeSpinner(View rootView)
 	{
         Spinner makeSpinner = (Spinner) rootView.findViewById(R.id.makeSpinner);
