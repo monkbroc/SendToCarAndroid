@@ -1,25 +1,24 @@
 package com.jvanier.android.sendtocar.controllers;
 
 import java.text.MessageFormat;
-import java.util.Locale;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Spinner;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.jvanier.android.sendtocar.R;
-import com.jvanier.android.sendtocar.downloaders.CarListManager;
 
 public class SendToCarFragment extends Fragment {
 
-    private TextView helpButton;
+	private TextView helpButton;
 	private TextView issueButton;
-	private View issueGroup;
 
 	private String helpButtonTemplateText;
 	private String issueButtonTemplateText;
@@ -29,38 +28,22 @@ public class SendToCarFragment extends Fragment {
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.sendtocar_fragment, container, false);
         
-        setupMakeSpinner(rootView);
+        setupMakeButton(rootView);
         setupVehicleHelp(rootView);
         
         return rootView;
     }
 	
-	private void setupMakeSpinner(View rootView)
+	private void setupMakeButton(View rootView)
 	{
-        Spinner makeSpinner = (Spinner) rootView.findViewById(R.id.makeSpinner);
-
-		/*
-		ArrayList<CarProvider> carsList = new ArrayList<CarProvider>();
-		CarProvider fake = new CarProvider();
-		fake.make = getString(R.string.choose_make);
-		fake.type = 0;
-		carsList.add(fake);
-		
-
-		ArrayAdapter<CarProvider> adapter = new ArrayAdapter<CarProvider>(this,
-				android.R.layout.simple_spinner_item, carsList.toArray(new CarProvider[carsList.size()]));
-				*/
-
-		String[] carsList = new String[3];
-		carsList[0] = getString(R.string.choose_make);
-		carsList[1] = "Ford";
-		carsList[2] = "Toyota";
-
-		ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
-				R.layout.make_spinner_item, carsList);
-
-		adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-		makeSpinner.setAdapter(adapter);
+        Button makeButton = (Button) rootView.findViewById(R.id.makeButton);
+        makeButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(getActivity(), MakeActivity.class);
+				startActivityForResult(intent, MakeActivity.PICK_MAKE);
+			}
+		});
 	}
 	
 	private void setupVehicleHelp(View rootView) {
@@ -69,10 +52,8 @@ public class SendToCarFragment extends Fragment {
 
 		issueButton = (TextView) rootView.findViewById(R.id.vehicleIssue);
 		issueButtonTemplateText = issueButton.getText().toString();
-		issueGroup = rootView.findViewById(R.id.vehicleIssueGroup);
 		
 		updateVehicleHelpButtons(getResources().getText(R.string.vehicle_lowercase).toString());
-		showVehicleIssueButton(true);
 	}
 	
 	private void updateVehicleHelpButtons(String make) {
@@ -80,7 +61,41 @@ public class SendToCarFragment extends Fragment {
 		issueButton.setText(MessageFormat.format(issueButtonTemplateText, make));
 	}
 	
+	private void showVehicleHelpButton(boolean show) {
+		helpButton.setVisibility(show ? View.VISIBLE : View.GONE);
+	}
+	
 	private void showVehicleIssueButton(boolean show) {
-		issueGroup.setVisibility(show ? View.VISIBLE : View.GONE);
+		issueButton.setVisibility(show ? View.VISIBLE : View.GONE);
+	}
+
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		
+		if(requestCode == MakeActivity.PICK_MAKE && resultCode == Activity.RESULT_OK) {
+			String type = data.getStringExtra(MakeActivity.EXTRA_TYPE);
+			
+			switch(type) {
+				case MakeActivity.TYPE_RECENT_VEHICLE:
+					int position = data.getIntExtra(MakeActivity.EXTRA_RECENT_VEHICLE_POSITION, 0);
+					loadRecentVehicle(position);
+					break;
+				case MakeActivity.TYPE_MAKE:
+					String makeId = data.getStringExtra(MakeActivity.EXTRA_MAKE_ID);
+					loadMake(makeId);
+					break;
+			}
+		}
+	}
+
+	private void loadMake(String makeId) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	private void loadRecentVehicle(int recentId) {
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -29,11 +29,14 @@
 
                 <LinearLayout style="@style/verticalContainer" >
 
-                    <Spinner
-                        android:id="@+id/makeSpinner"
-                        style="@style/cardFirstItem"
+                    <Button
+                        android:id="@+id/makeButton"
+                        style="@style/cardItem"
                         android:layout_marginTop="@dimen/card_padding"
-                        android:prompt="@string/make" />
+                        android:background="?attr/selectableItemBackground"
+                        android:gravity="center_vertical|left"
+                        android:text="@string/choose_make"
+                        android:textAppearance="?android:attr/textAppearanceLarge" />
 
                     <TextView
                         android:id="@+id/accountLabel"
@@ -45,28 +48,20 @@
                         style="@style/cardItem"
                         android:inputType="text" />
 
-                    <View style="@style/horizontalDivider" />
-
                     <Button
                         android:id="@+id/vehicleHelp"
                         style="@style/helpButton"
                         android:drawableLeft="@drawable/ic_button_help"
-                        android:text="@string/help_for_vehicle" />
+                        android:text="@string/help_for_vehicle"
+                        android:visibility="gone" />
 
-                    <LinearLayout
-                        android:id="@+id/vehicleIssueGroup"
-                        style="@style/verticalContainer"
-                        android:visibility="gone" >
-
-                        <View style="@style/horizontalDivider" />
-
-                        <Button
-                            android:id="@+id/vehicleIssue"
-                            style="@style/helpButton"
-                            android:drawableLeft="@drawable/ic_button_warning"
-                            android:text="@string/known_issue_for_vehicle"
-                            android:textStyle="bold" />
-                    </LinearLayout>
+                    <Button
+                        android:id="@+id/vehicleIssue"
+                        style="@style/helpButton"
+                        android:drawableLeft="@drawable/ic_button_warning"
+                        android:text="@string/known_issue_for_vehicle"
+                        android:textStyle="bold"
+                        android:visibility="gone" />
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 

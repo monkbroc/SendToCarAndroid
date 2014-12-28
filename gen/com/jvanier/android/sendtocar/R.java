@@ -2547,8 +2547,8 @@ containing a value of this type.
         public static final int vpi__tab_unselected_pressed_holo=0x7f020082;
     }
     public static final class id {
-        public static final int accountLabel=0x7f08006f;
-        public static final int accountText=0x7f080070;
+        public static final int accountLabel=0x7f080070;
+        public static final int accountText=0x7f080071;
         public static final int action_bar=0x7f080046;
         public static final int action_bar_activity_content=0x7f08002d;
         public static final int action_bar_container=0x7f080045;
@@ -2590,7 +2590,7 @@ containing a value of this type.
         public static final int com_mixpanel_android_notification_title=0x7f080057;
         public static final int com_mixpanel_android_progress_text=0x7f08005d;
         public static final int com_mixpanel_android_question_card_holder=0x7f08005f;
-        public static final int container=0x7f08006a;
+        public static final int container=0x7f08006b;
         public static final int decor_content_parent=0x7f080044;
         public static final int default_activity_button=0x7f080039;
         public static final int destinationCard=0x7f080075;
@@ -2599,9 +2599,9 @@ containing a value of this type.
         public static final int destinationText=0x7f080077;
         public static final int dialog=0x7f080025;
         public static final int disableHome=0x7f08001f;
-        public static final int discardButton=0x7f080068;
+        public static final int discardButton=0x7f080069;
         public static final int done=0x7f080083;
-        public static final int drawer_layout=0x7f080069;
+        public static final int drawer_layout=0x7f08006a;
         public static final int dropdown=0x7f080026;
         public static final int edit_query=0x7f080048;
         public static final int end=0x7f080029;
@@ -2619,7 +2619,7 @@ containing a value of this type.
         public static final int indicator=0x7f080080;
         public static final int listMode=0x7f080018;
         public static final int list_item=0x7f08003a;
-        public static final int makeSpinner=0x7f08006e;
+        public static final int makeButton=0x7f08006f;
         public static final int makesCard=0x7f080066;
         public static final int makesCardContainer=0x7f080067;
         public static final int makesLabel=0x7f080065;
@@ -2627,7 +2627,7 @@ containing a value of this type.
         public static final int messageText=0x7f080081;
         public static final int middle=0x7f080028;
         public static final int monochrome=0x7f080013;
-        public static final int navigation_drawer=0x7f08006b;
+        public static final int navigation_drawer=0x7f08006c;
         public static final int never=0x7f080020;
         public static final int none=0x7f080000;
         public static final int normal=0x7f080001;
@@ -2639,6 +2639,7 @@ containing a value of this type.
         public static final int progress_circular=0x7f080031;
         public static final int progress_horizontal=0x7f080032;
         public static final int radio=0x7f080040;
+        public static final int recentVehicleButton=0x7f080068;
         public static final int recentVehiclesCard=0x7f080063;
         public static final int recentVehiclesCardContainer=0x7f080064;
         public static final int recentVehiclesLabel=0x7f080062;
@@ -2672,11 +2673,10 @@ containing a value of this type.
         public static final int underline=0x7f080015;
         public static final int up=0x7f08002b;
         public static final int useLogo=0x7f08001a;
-        public static final int vehicleCard=0x7f08006d;
-        public static final int vehicleHelp=0x7f080071;
+        public static final int vehicleCard=0x7f08006e;
+        public static final int vehicleHelp=0x7f080072;
         public static final int vehicleIssue=0x7f080073;
-        public static final int vehicleIssueGroup=0x7f080072;
-        public static final int vehicleLabel=0x7f08006c;
+        public static final int vehicleLabel=0x7f08006d;
         public static final int withText=0x7f080023;
         public static final int wrap_content=0x7f08000d;
     }
