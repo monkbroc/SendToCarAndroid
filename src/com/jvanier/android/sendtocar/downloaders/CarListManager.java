@@ -215,12 +215,9 @@ public class CarListManager {
 		}
 
 		public void writeCarList(CarList carList) {
-
-			FileOutputStream fos = null;
-			ObjectOutputStream out = null;
 			try {
-				fos = context.openFileOutput(FILENAME, Context.MODE_PRIVATE);
-				out = new ObjectOutputStream(fos);
+				FileOutputStream fos = context.openFileOutput(FILENAME, Context.MODE_PRIVATE);
+				ObjectOutputStream out = new ObjectOutputStream(fos);
 				out.writeObject(carList);
 				out.close();
 				Log.d(TAG, "Wrote car list with " + carList.size() + " providers to cache");

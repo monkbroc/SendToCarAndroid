@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.jvanier.android.sendtocar.R;
+import com.jvanier.android.sendtocar.models.CarProvider;
+import com.jvanier.android.sendtocar.models.RecentVehicle;
 
 public class SendToCarFragment extends Fragment {
 
@@ -78,23 +80,23 @@ public class SendToCarFragment extends Fragment {
 			
 			switch(type) {
 				case MakeActivity.TYPE_RECENT_VEHICLE:
-					int position = data.getIntExtra(MakeActivity.EXTRA_RECENT_VEHICLE_POSITION, 0);
-					loadRecentVehicle(position);
+					RecentVehicle vehicle = (RecentVehicle) data.getSerializableExtra(MakeActivity.EXTRA_RECENT_VEHICLE);
+					loadRecentVehicle(vehicle);
 					break;
 				case MakeActivity.TYPE_MAKE:
-					String makeId = data.getStringExtra(MakeActivity.EXTRA_MAKE_ID);
-					loadMake(makeId);
+					CarProvider provider = (CarProvider) data.getSerializableExtra(MakeActivity.EXTRA_PROVIDER);
+					loadMake(provider);
 					break;
 			}
 		}
 	}
 
-	private void loadMake(String makeId) {
+	private void loadMake(CarProvider provider) {
 		// TODO Auto-generated method stub
 		
 	}
 
-	private void loadRecentVehicle(int recentId) {
+	private void loadRecentVehicle(RecentVehicle vehicle) {
 		// TODO Auto-generated method stub
 		
 	}

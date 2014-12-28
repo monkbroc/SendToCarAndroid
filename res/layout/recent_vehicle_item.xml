@@ -17,13 +17,13 @@
             android:id="@android:id/text1"
             style="@style/cardItem"
             android:layout_marginTop="8dip"
-            android:text="BMW"
+            android:text="@string/make"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView
             android:id="@android:id/text2"
             style="@style/cardItem"
-            android:text="test@example.com"
+            android:text="@string/account"
             android:textAppearance="?android:attr/textAppearanceSmall" />
     </LinearLayout>
 

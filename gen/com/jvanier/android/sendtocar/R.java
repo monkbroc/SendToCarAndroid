@@ -2745,15 +2745,14 @@ containing a value of this type.
         public static final int com_mixpanel_android_question_card=0x7f03001e;
         public static final int make_activity=0x7f03001f;
         public static final int make_item=0x7f030020;
-        public static final int make_spinner_item=0x7f030021;
-        public static final int navigation_drawer_fragment=0x7f030022;
-        public static final int navigation_item=0x7f030023;
-        public static final int recent_vehicle_item=0x7f030024;
-        public static final int sendtocar_activity=0x7f030025;
-        public static final int sendtocar_fragment=0x7f030026;
-        public static final int support_simple_spinner_dropdown_item=0x7f030027;
-        public static final int tutorial_activity=0x7f030028;
-        public static final int tutorial_page_fragment=0x7f030029;
+        public static final int navigation_drawer_fragment=0x7f030021;
+        public static final int navigation_item=0x7f030022;
+        public static final int recent_vehicle_item=0x7f030023;
+        public static final int sendtocar_activity=0x7f030024;
+        public static final int sendtocar_fragment=0x7f030025;
+        public static final int support_simple_spinner_dropdown_item=0x7f030026;
+        public static final int tutorial_activity=0x7f030027;
+        public static final int tutorial_page_fragment=0x7f030028;
     }
     public static final class menu {
         public static final int tutorial=0x7f0c0000;

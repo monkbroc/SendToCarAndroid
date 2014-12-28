@@ -1,5 +1,8 @@
 package com.jvanier.android.sendtocar.controllers;
 
+import java.util.List;
+import java.util.Locale;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -12,6 +15,11 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jvanier.android.sendtocar.R;
+import com.jvanier.android.sendtocar.downloaders.CarListManager;
+import com.jvanier.android.sendtocar.models.CarList;
+import com.jvanier.android.sendtocar.models.CarProvider;
+import com.jvanier.android.sendtocar.models.RecentVehicle;
+import com.jvanier.android.sendtocar.models.RecentVehicleList;
 
 public class MakeActivity extends ActionBarActivity {
 	public static final int PICK_MAKE = 0;
@@ -20,15 +28,15 @@ public class MakeActivity extends ActionBarActivity {
 	public static final String TYPE_RECENT_VEHICLE = "recentVehicle";
 	public static final String TYPE_MAKE = "make";
 
-	public static final String EXTRA_MAKE_ID = "makeId";
-	public static final String EXTRA_RECENT_VEHICLE_POSITION = "recentVehiclePosition";
+	public static final String EXTRA_PROVIDER = "provider";
+	public static final String EXTRA_RECENT_VEHICLE = "recentVehicle";
 
 	private CardView recentVehiclesCard;
 	private TextView recentVehiclesLabel;
-	private CardView makesCard;
-	private ViewGroup recentVehiclesContainer;
 	private ViewGroup recentVehiclesCardContainer;
 	private ViewGroup makesCardContainer;
+
+	private RecentVehicleList recentList;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,28 +63,28 @@ public class MakeActivity extends ActionBarActivity {
 	}
 
 	private class RecentVehicleClickListener implements OnClickListener {
-		private int position;
+		private RecentVehicle vehicle;
 
-		public RecentVehicleClickListener(int position) {
-			this.position = position;
+		public RecentVehicleClickListener(RecentVehicle vehicle) {
+			this.vehicle = vehicle;
 		}
 
 		@Override
 		public void onClick(View v) {
-			MakeActivity.this.selectRecentVehicle(position);
+			MakeActivity.this.selectRecentVehicle(vehicle);
 		}
 	}
 
 	private class RecentVehicleDiscardClickListener implements OnClickListener {
-		private int position;
+		private RecentVehicle vehicle;
 
-		public RecentVehicleDiscardClickListener(int position) {
-			this.position = position;
+		public RecentVehicleDiscardClickListener(RecentVehicle vehicle) {
+			this.vehicle = vehicle;
 		}
 
 		@Override
 		public void onClick(View v) {
-			MakeActivity.this.discardRecentVehicle(position);
+			MakeActivity.this.discardRecentVehicle(vehicle);
 		}
 	}
 
@@ -85,91 +93,118 @@ public class MakeActivity extends ActionBarActivity {
 		recentVehiclesCard = (CardView) findViewById(R.id.recentVehiclesCard);
 		recentVehiclesCardContainer = (ViewGroup) findViewById(R.id.recentVehiclesCardContainer);
 
-		String makes[] = { "Ford", "BMW" };
-		String accounts[] = { "2484810771", "test@example.com" };
+		recentList = RecentVehicleList.sharedInstance();
 
-		for (int i = 0; i < makes.length; i++) {
-			View recentVehicleItem = getLayoutInflater().inflate(
-					R.layout.recent_vehicle_item, recentVehiclesCardContainer,
-					false);
-			TextView makeView = (TextView) recentVehicleItem
-					.findViewById(android.R.id.text1);
-			TextView accountView = (TextView) recentVehicleItem
-					.findViewById(android.R.id.text2);
-
-			makeView.setText(makes[i]);
-			accountView.setText(accounts[i]);
-
-			recentVehicleItem.findViewById(R.id.recentVehicleButton)
-					.setOnClickListener(new RecentVehicleClickListener(i));
-
-			recentVehicleItem.findViewById(R.id.discardButton)
-					.setOnClickListener(new RecentVehicleDiscardClickListener(i));
-
-			if (i != 0) {
-				recentVehiclesCardContainer.addView(getLayoutInflater()
-						.inflate(R.layout.card_divider,
-								recentVehiclesCardContainer, false));
+		boolean first = true;
+		for (int i = 0; i < recentList.size(); i++) {
+			if (!first) {
+				getLayoutInflater().inflate(R.layout.card_divider, recentVehiclesCardContainer, true);
 			}
+			first = false;
+
+			RecentVehicle vehicle = recentList.getRecentVehicle(i);
+
+			View recentVehicleItem = getLayoutInflater().inflate(R.layout.recent_vehicle_item, recentVehiclesCardContainer, false);
+			TextView makeView = (TextView) recentVehicleItem.findViewById(android.R.id.text1);
+			TextView accountView = (TextView) recentVehicleItem.findViewById(android.R.id.text2);
+
+			makeView.setText(vehicle.make);
+			accountView.setText(vehicle.account);
+
+			recentVehicleItem.findViewById(R.id.recentVehicleButton).setOnClickListener(new RecentVehicleClickListener(vehicle));
+
+			recentVehicleItem.findViewById(R.id.discardButton).setOnClickListener(new RecentVehicleDiscardClickListener(vehicle));
+
 			recentVehiclesCardContainer.addView(recentVehicleItem);
+		}
+
+		// Hide section if there are no recent vehicles
+		if (recentList.size() == 0) {
+			hideRecentVehicles();
 		}
 	}
 
-	private class MakeClickListener implements OnClickListener {
-		private String makeId;
+	private void hideRecentVehicles() {
+		recentVehiclesLabel.setVisibility(View.GONE);
+		recentVehiclesCard.setVisibility(View.GONE);
+	}
 
-		public MakeClickListener(String makeId) {
-			this.makeId = makeId;
+	private class MakeClickListener implements OnClickListener {
+		private CarProvider provider;
+
+		public MakeClickListener(CarProvider provider) {
+			this.provider = provider;
 		}
 
 		@Override
 		public void onClick(View v) {
-			MakeActivity.this.selectMake(makeId);
+			MakeActivity.this.selectMake(provider);
 		}
 	}
 
 	private void setupMakes() {
-		makesCard = (CardView) findViewById(R.id.makesCard);
 		makesCardContainer = (ViewGroup) findViewById(R.id.makesCardContainer);
 
-		String makes[] = { "Ford", "BMW", "Toyota", "Nissan" };
-		for (int i = 0; i < makes.length; i++) {
-			View makeItem = getLayoutInflater().inflate(R.layout.make_item,
-					makesCardContainer, false);
-			TextView makeView = (TextView) makeItem
-					.findViewById(android.R.id.text1);
-			String makeId = makes[i];
-			makeView.setText(makeId);
+		String country = Locale.getDefault().getCountry().toLowerCase(Locale.US);
 
-			makeItem.setOnClickListener(new MakeClickListener(makeId));
+		CarList carList = CarListManager.sharedInstance().getCarList();
+		List<CarProvider> carListDisplayed = carList.asList();
 
-			if (i != 0) {
-				makesCardContainer.addView(getLayoutInflater().inflate(
-						R.layout.card_divider, makesCardContainer, false));
+		boolean first = true;
+		for (int i = 0; i < carListDisplayed.size(); i++) {
+			CarProvider provider = carListDisplayed.get(i);
+
+			if (provider.isCountrySupported(country)) {
+				if (!first) {
+					getLayoutInflater().inflate(R.layout.card_divider, makesCardContainer, true);
+				}
+				first = false;
+
+				View makeItem = getLayoutInflater().inflate(R.layout.make_item, makesCardContainer, false);
+				TextView makeView = (TextView) makeItem.findViewById(android.R.id.text1);
+				makeView.setText(provider.make);
+
+				makeItem.setOnClickListener(new MakeClickListener(provider));
+
+				makesCardContainer.addView(makeItem);
 			}
-			makesCardContainer.addView(makeItem);
 		}
 	}
 
-	public void selectRecentVehicle(int position) {
+	public void selectRecentVehicle(RecentVehicle vehicle) {
 		Intent intent = new Intent();
 		intent.putExtra(EXTRA_TYPE, TYPE_RECENT_VEHICLE);
-		intent.putExtra(EXTRA_RECENT_VEHICLE_POSITION, position);
+		intent.putExtra(EXTRA_RECENT_VEHICLE, vehicle);
 		setResult(RESULT_OK, intent);
 		finish();
 	}
 
-	public void selectMake(String makeId) {
+	public void selectMake(CarProvider provider) {
 		Intent intent = new Intent();
 		intent.putExtra(EXTRA_TYPE, TYPE_MAKE);
-		intent.putExtra(EXTRA_MAKE_ID, makeId);
+		intent.putExtra(EXTRA_PROVIDER, provider);
 		setResult(RESULT_OK, intent);
 		finish();
 	}
 
-	public void discardRecentVehicle(int position) {
-		// TODO Auto-generated method stub
-		
-	}
+	public void discardRecentVehicle(RecentVehicle vehicle) {
+		int oldPosition = recentList.removeRecentVehicle(vehicle);
+		if (oldPosition >= 0) {
+			recentList.saveToCache(this);
 
+			if (recentList.size() == 0) {
+				hideRecentVehicles();
+			} else {
+				// Remove the cell and the divider line below
+				View v1 = recentVehiclesCardContainer.getChildAt(2 * oldPosition);
+				View v2 = recentVehiclesCardContainer.getChildAt(2 * oldPosition + 1);
+				if (v1 != null) {
+					recentVehiclesCardContainer.removeView(v1);
+				}
+				if (v2 != null) {
+					recentVehiclesCardContainer.removeView(v2);
+				}
+			}
+		}
+	}
 }
