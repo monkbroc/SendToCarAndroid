@@ -30,9 +30,15 @@ import com.jvanier.android.sendtocar.common.Utils;
 import com.jvanier.android.sendtocar.models.Address;
 import com.jvanier.android.sendtocar.models.GoogleMapsHosts;
 
-/* Users of this call can override onPostExecute(GoogleMapsAddressLoader.Result result) to receive results */
-public class GoogleMapsAddressLoader extends AsyncTask<String, Void, GoogleMapsAddressLoader.Result>{
+public class GoogleMapsAddressLoader extends AsyncTask<String, Void, GoogleMapsAddressLoader.Result> {
 	private static final String TAG = "GoogleMapsAddressLoader";
+	
+	public interface GoogleMapsAddressLoaderHandler {
+		public void onPreExecute(final GoogleMapsAddressLoader loader);
+		public void onPostExecute(final GoogleMapsAddressLoader loader, Result result);
+	}
+	
+	private GoogleMapsAddressLoaderHandler handler;
 	private HttpGet httpGet;
 	private HttpContext httpContext;
 	private DefaultHttpClient client;
@@ -47,10 +53,26 @@ public class GoogleMapsAddressLoader extends AsyncTask<String, Void, GoogleMapsA
 		public int messageId;
 	}
 	
-	public GoogleMapsAddressLoader()
-	{
+	public GoogleMapsAddressLoader(GoogleMapsAddressLoaderHandler handler) {
+		this.handler = handler;
 	}
 	
+	@Override
+	protected void onPreExecute() {
+		super.onPreExecute();
+		if(handler != null) {
+			handler.onPreExecute(this);
+		}
+	}
+
+	@Override
+	protected void onPostExecute(Result result) {
+		super.onPostExecute(result);
+		if(handler != null) {
+			handler.onPostExecute(this, result);
+		}
+	}
+
 	public void cancelDownload() {
 		cancel(false);
 		httpGet.abort();

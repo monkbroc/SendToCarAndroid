@@ -62,4 +62,8 @@ public class CarList implements Serializable {
 	public int size() {
 		return data.size();
 	}
+	
+	public String getLanguage() {
+		return language;
+	}
 }

@@ -18,18 +18,44 @@ import com.jvanier.android.sendtocar.common.BackgroundTaskAbort;
 import com.jvanier.android.sendtocar.common.Constants;
 import com.jvanier.android.sendtocar.models.Issue;
 
-/* Users of this class can override onPostExecute(Issue issue) to receive the results */
 public class IssueLoader extends AsyncTask<Void, Void, Issue> {
+	public interface IssueLoaderHandler {
+		public void onPreExecute(final IssueLoader loader);
+		public void onPostExecute(final IssueLoader loader, Issue issue);
+	}
 	
 	private static final String TAG = "IssueLoader";
 
 	private String makeId;
 	private Issue issue;
+
+	private IssueLoaderHandler handler;
 	
-	public IssueLoader(String makeId) {
+	public IssueLoader(String makeId, IssueLoaderHandler handler) {
 		this.makeId = makeId;
+		this.handler = handler;
 	}
 	
+	public String getMakeId() {
+		return makeId;
+	}
+
+	@Override
+	protected void onPreExecute() {
+		super.onPreExecute();
+		if(handler != null) {
+			handler.onPreExecute(this);
+		}
+	}
+
+	@Override
+	protected void onPostExecute(Issue issue) {
+		super.onPostExecute(issue);
+		if(handler != null) {
+			handler.onPostExecute(this, issue);
+		}
+	}
+
 	@Override
 	protected Issue doInBackground(Void... ignored) {
 		try {

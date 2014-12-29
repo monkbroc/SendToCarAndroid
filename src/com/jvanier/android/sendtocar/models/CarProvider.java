@@ -7,13 +7,13 @@ import java.util.List;
 
 public class CarProvider implements Comparable<CarProvider>, Serializable {
 	
-	final static int TYPE_CAR = 1;
-	final static int TYPE_GPS = 2;
+	public final static int TYPE_CAR = 1;
+	public final static int TYPE_GPS = 2;
 
-	final static int PROVIDER_GOOGLE_MAPS = 0;
-	final static int PROVIDER_MAPQUEST = 1;
-	final static int PROVIDER_ONSTAR = 2;
-	final static int PROVIDER_HERE_COM = 3;
+	public final static int PROVIDER_GOOGLE_MAPS = 0;
+	public final static int PROVIDER_MAPQUEST = 1;
+	public final static int PROVIDER_ONSTAR = 2;
+	public final static int PROVIDER_HERE_COM = 3;
 
 	private static final long serialVersionUID = 3846464104822731498L;
 	public int provider;

@@ -17,4 +17,9 @@ public class RecentVehicle implements Comparable<RecentVehicle>, Serializable {
 			return makeCompare;
 		}
 	}
+
+	@Override
+	public String toString() {
+		return make + "(" + account + ")"; 
+	}
 }
