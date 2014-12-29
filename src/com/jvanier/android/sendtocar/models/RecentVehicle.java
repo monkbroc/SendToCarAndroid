@@ -2,19 +2,19 @@ package com.jvanier.android.sendtocar.models;
 
 import java.io.Serializable;
 
-public class RecentVehicle implements Comparable<RecentVehicle>, Serializable {
+public class RecentVehicle implements Serializable {
 	private static final long serialVersionUID = -6457983665195220159L;
 	public String makeId;
 	public String make;
 	public String account;
 	
 	@Override
-	public int compareTo(RecentVehicle another) {
-		int makeCompare = makeId.compareTo(another.makeId);
-		if(makeCompare == 0) {
-			return account.compareTo(another.account);
+	public boolean equals(Object other) {
+		if(other instanceof RecentVehicle) {
+			RecentVehicle otherVehicle = (RecentVehicle) other;
+			return makeId.equals(otherVehicle.makeId) && account.equals(otherVehicle.account);
 		} else {
-			return makeCompare;
+			return super.equals(other);
 		}
 	}
 
