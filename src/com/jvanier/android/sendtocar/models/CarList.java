@@ -41,6 +41,10 @@ public class CarList implements Serializable {
 		}
 		return list;
 	}
+	
+	public CarProvider get(String makeId) {
+		return data.get(makeId);
+	}
 
 	public boolean timeToReDownload() {
 		long now = System.currentTimeMillis();

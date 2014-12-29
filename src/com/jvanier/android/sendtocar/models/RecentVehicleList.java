@@ -29,7 +29,7 @@ public class RecentVehicleList {
 	private RecentVehicleList() {
 		createDefaultList();
 	}
-	
+
 	private void createDefaultList() {
 		list = new ArrayList<RecentVehicle>();
 	}
@@ -37,39 +37,41 @@ public class RecentVehicleList {
 	public int size() {
 		return list.size();
 	}
-	
+
 	public RecentVehicle latestVehicle() {
-		if(size() > 0) {
+		if (size() > 0) {
 			return list.get(0);
 		} else {
 			return null;
 		}
 	}
-	
-	public void addRecentVehicle(RecentVehicle vehicle) {
-		if(vehicle == null) {
-			return;
+
+	public RecentVehicleList addRecentVehicle(RecentVehicle vehicle) {
+		if (vehicle == null) {
+			return this;
 		}
-		
-	    // Remove that vehicle from the current list if it is already there
+
+		// Remove that vehicle from the current list if it is already there
 		list.remove(vehicle);
 
 		// Add at the front of the list
 		list.add(0, vehicle);
-		
-	    // Trim the list so it doesn't grow too large
-		if(list.size() > MAX_NUMBER_OF_VEHICLES) {
+
+		// Trim the list so it doesn't grow too large
+		if (list.size() > MAX_NUMBER_OF_VEHICLES) {
 			list.subList(MAX_NUMBER_OF_VEHICLES, list.size()).clear();
 		}
+		
+		return this;
 	}
-	
+
 	public RecentVehicle getRecentVehicle(int position) {
 		return list.get(position);
 	}
-	
+
 	public int removeRecentVehicle(RecentVehicle vehicle) {
 		int position = list.indexOf(vehicle);
-		if(position >= 0) {
+		if (position >= 0) {
 			list.remove(position);
 		}
 		return position;
@@ -89,7 +91,7 @@ public class RecentVehicleList {
 			Log.d(TAG, "Recent vehicles list not loaded from cache");
 		}
 	}
-	
+
 	public void saveToCache(Context context) {
 		try {
 			FileOutputStream fos = context.openFileOutput(FILENAME, Context.MODE_PRIVATE);

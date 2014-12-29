@@ -122,14 +122,14 @@
     </ScrollView>
 
     <LinearLayout
-        style="?android:attr/buttonBarStyle"
+        style="buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal" >
 
         <Button
             android:id="@+id/cancelButton"
-            style="?android:attr/buttonBarButtonStyle"
+            style="buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
@@ -137,7 +137,7 @@
 
         <Button
             android:id="@+id/sendButton"
-            style="?android:attr/buttonBarButtonStyle"
+            style="buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
