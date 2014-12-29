@@ -50,29 +50,12 @@ public class GoogleMapsAddressLoader extends AsyncTask<String, Void, GoogleMapsA
 	public GoogleMapsAddressLoader()
 	{
 	}
-
-	@Override
-	protected void onPreExecute() {					
-		
-		/*
-		// Show progress dialog
-		Context context = SendToCarActivity.this;
-		progressDialog = ProgressDialog.show(context,
-				null, context.getString(R.string.loadingAddress));
-		progressDialog.setCancelable(true);
-		
-		progressDialog.setOnCancelListener(new OnCancelListener() {
-			@Override
-			public void onCancel(DialogInterface dialog) {
-				DownloadAddressTask.this.cancel(false);
-				SendToCarActivity.this.finish();
-				
-				httpGet.abort();
-			}
-		});
-		*/
-	}
 	
+	public void cancelDownload() {
+		cancel(false);
+		httpGet.abort();
+	}
+
 	@Override
 	protected Result doInBackground(String... urls) {
 		try {
@@ -353,40 +336,6 @@ public class GoogleMapsAddressLoader extends AsyncTask<String, Void, GoogleMapsA
 			Log.e(TAG, "Exception while updating address: " + e.toString());
 		}
 	}
-	
-	/*
-
-	@Override
-	protected void onPostExecute(Result result) {
-		if(progressDialog != null) {
-			progressDialog.dismiss();
-			progressDialog = null;
-		}
-
-		if(!isCancelled()) {
-			if(exception != null)
-			{
-				String message;
-				if(exception.message != null) {
-					message = exception.message;
-				} else {
-					message = getString(exception.errorId);
-				}
-				showMessageBoxAndFinish(message);
-			}
-			else
-			{
-				updateUI();
-				
-				if(approximateAddress) {
-					Context context = getApplicationContext();
-					Toast toast = Toast.makeText(context, R.string.approximateAddress, Toast.LENGTH_LONG);
-					toast.show();
-				}
-			}
-		}
-	}
-	*/
 
 	public class JSONMapRedirectHandler extends DefaultRedirectHandler {
 

@@ -29,7 +29,7 @@ public class SendToCarActivity extends ActionBarActivity {
         
         // Set up the main fragment
         fragmentManager.beginTransaction()
-        .replace(R.id.container, new SendToCarFragment())
+        .replace(R.id.container, new SendToCarFragment(getIntent()))
         .commit();        
     }
     

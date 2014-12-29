@@ -1,11 +1,7 @@
 package com.jvanier.android.sendtocar.controllers;
 
-import android.content.ActivityNotFoundException;
-import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
@@ -22,9 +18,13 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.jvanier.android.sendtocar.R;
+import com.jvanier.android.sendtocar.controllers.commands.Command;
+import com.jvanier.android.sendtocar.controllers.commands.ShowAppInGooglePlay;
+import com.jvanier.android.sendtocar.controllers.commands.ShowHelp;
+import com.jvanier.android.sendtocar.controllers.commands.ShowTutorial;
+import com.jvanier.android.sendtocar.controllers.commands.WriteEmailToDeveloper;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -33,9 +33,6 @@ import com.jvanier.android.sendtocar.R;
  */
 public class NavigationDrawerFragment extends Fragment {
 	
-	private interface Command {
-		public abstract void perfrom(Context context);
-	}
 	final private class NavigationItem {
 		public final int stringId;
 		public final int drawableId;
@@ -54,54 +51,6 @@ public class NavigationDrawerFragment extends Fragment {
 		new NavigationItem(R.string.listRateTitle, R.drawable.ic_navigation_star, new ShowAppInGooglePlay()),
 		new NavigationItem(R.string.listEmailTitle, R.drawable.ic_navigation_email, new WriteEmailToDeveloper())
 	};
-	
-	private class ShowTutorial implements Command {
-		@Override
-		public void perfrom(Context context) {
-			Intent intent = new Intent(context, TutorialActivity.class);
-			startActivity(intent);
-		}
-	}
-	
-	private class ShowHelp implements Command {
-		@Override
-		public void perfrom(Context context) {
-			// TODO Auto-generated method stub
-		}
-	}
-	
-	private class ShowAppInGooglePlay implements Command {
-		@Override
-		public void perfrom(Context context) {
-			Intent intent = new Intent(Intent.ACTION_VIEW); 
-			intent.setData(Uri.parse("market://details?id=com.jvanier.android.sendtocar")); 
-    		try {
-    			startActivity(intent);
-    		}
-    		catch(ActivityNotFoundException e)
-    		{
-    			Toast toast = Toast.makeText(context, R.string.errorNoApp, Toast.LENGTH_SHORT);
-    			toast.show();
-    		}
-		}
-	}
-	
-	private class WriteEmailToDeveloper implements Command {
-		@Override
-		public void perfrom(Context context) {
-			Intent intent = new Intent(Intent.ACTION_VIEW); 
-			intent.setData(Uri.parse("mailto:sendtocar.app@gmail.com")); 
-    		try {
-    			startActivity(intent);
-    		}
-    		catch(ActivityNotFoundException e)
-    		{
-    			Toast toast = Toast.makeText(context, R.string.errorNoApp, Toast.LENGTH_SHORT);
-    			toast.show();
-    		}
-		}
-	}
-
 	
     /**
      * Per the design guidelines, you should show the drawer on launch until the user manually

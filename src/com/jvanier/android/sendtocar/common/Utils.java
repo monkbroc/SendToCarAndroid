@@ -2,6 +2,8 @@ package com.jvanier.android.sendtocar.common;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -99,6 +101,21 @@ public class Utils {
             decoded.append(s, current, oldLength);
             return decoded.toString();
         }
+	}
+	
+	public static List<String> findURLs(String string) {
+		List<String> urls = new ArrayList<String>();
+		
+		// match a URL, but try not to grab the punctuation at the end
+		Pattern urlPatt = Pattern.compile("\\bhttps?://[a-z0-9_.\\-,@?^=%&:/~+#!]*[a-z0-9_\\-@^=%&:/~+#]", Pattern.CASE_INSENSITIVE);
+		Matcher matcher = urlPatt.matcher(string);
+			
+		while(matcher.find())
+		{
+			urls.add(matcher.group());
+		}
+
+		return urls;
 	}
 
 }
