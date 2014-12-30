@@ -7,6 +7,7 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.KeyEvent;
 
 import com.jvanier.android.sendtocar.R;
+import com.jvanier.android.sendtocar.common.Mixpanel;
 
 public class SendToCarActivity extends ActionBarActivity {
 
@@ -34,7 +35,7 @@ public class SendToCarActivity extends ActionBarActivity {
 
 		// To preserve battery life, the Mixpanel library will store events rather than send them immediately.
 		// Call flush() to send any unsent events before application is taken out of memory.
-		((SendToCarApp) getApplication()).getMixpanel().flush();
+		Mixpanel.sharedInstance().flush();
 	}
 
 	@Override

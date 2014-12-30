@@ -32,6 +32,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jvanier.android.sendtocar.R;
+import com.jvanier.android.sendtocar.common.Mixpanel;
 import com.jvanier.android.sendtocar.common.Utils;
 import com.jvanier.android.sendtocar.controllers.commands.ShowHelp;
 import com.jvanier.android.sendtocar.controllers.commands.ShowHelpForMake;
@@ -53,12 +54,11 @@ import com.jvanier.android.sendtocar.uploaders.GoogleMapsUploader;
 import com.jvanier.android.sendtocar.uploaders.HereComUploader;
 import com.jvanier.android.sendtocar.uploaders.MapquestUploader;
 import com.jvanier.android.sendtocar.uploaders.OnStarUploader;
-import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 /* TODO:
  * 
+ * - Show tutorial first time
  * - Add "Can't find your make" in MakeActivity
- * - Mixpanel superproperties
  * - Verify all calls to Mixpanel were added
  * - Check that all FIXME and TODO are removed
  * 
@@ -101,6 +101,10 @@ public class SendToCarFragment extends Fragment {
 
 	public SendToCarFragment(Intent intent) {
 		this.intent = intent;
+		
+		// FIXME!
+		//this.intent = new Intent(Intent.ACTION_SEND);
+		//this.intent.putExtra(Intent.EXTRA_TEXT, "http://goo.gl/maps/BQa0f");
 	}
 
 	@Override
@@ -163,7 +167,7 @@ public class SendToCarFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				if (selectedMake != null) {
-					new ShowHelpForMake(selectedMake.makeId);
+					new ShowHelpForMake(selectedMake.makeId).perfrom(getActivity());
 				}
 			}
 		});
@@ -174,7 +178,7 @@ public class SendToCarFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				if (selectedMake != null) {
-					new ShowIssueForMake(selectedMake.makeId);
+					new ShowIssueForMake(selectedMake.makeId).perfrom(getActivity());
 				}
 			}
 		});
@@ -444,7 +448,7 @@ public class SendToCarFragment extends Fragment {
 			props.put("Make", selectedMake.makeId);
 		} catch (JSONException e) {
 		}
-		getMixpanel().track("Sending address", props);
+		Mixpanel.sharedInstance().track("Sending address", props);
 
 		if (loadedAddress.hasAddressDetails()) {
 			// Address is OK, send it
@@ -542,7 +546,7 @@ public class SendToCarFragment extends Fragment {
 				}
 			} catch (JSONException e) {
 			}
-			getMixpanel().track(success ? "Sending successful" : "Sending failed", props);
+			Mixpanel.sharedInstance().track(success ? "Sending successful" : "Sending failed", props);
 		}
 
 	}
@@ -553,19 +557,19 @@ public class SendToCarFragment extends Fragment {
 		switch (selectedMake.provider) {
 		case CarProvider.PROVIDER_MAPQUEST:
 			Log.d(TAG, "Sending address to MapQuest");
-			uploader = new MapquestUploader(handler);
+			uploader = new MapquestUploader(getActivity(), handler);
 			break;
 		case CarProvider.PROVIDER_GOOGLE_MAPS:
 			Log.d(TAG, "Sending address to Google Maps");
-			uploader = new GoogleMapsUploader(handler);
+			uploader = new GoogleMapsUploader(getActivity(), handler);
 			break;
 		case CarProvider.PROVIDER_ONSTAR:
 			Log.d(TAG, "Sending address to OnStar");
-			uploader = new OnStarUploader(handler);
+			uploader = new OnStarUploader(getActivity(), handler);
 			break;
 		case CarProvider.PROVIDER_HERE_COM:
 			Log.d(TAG, "Sending address to Here.com");
-			uploader = new HereComUploader(handler);
+			uploader = new HereComUploader(getActivity(), handler);
 			break;
 		}
 
@@ -692,10 +696,5 @@ public class SendToCarFragment extends Fragment {
 
 	private void showCancelButton(boolean show) {
 		cancelButton.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
-	}
-	
-
-	private MixpanelAPI getMixpanel() {
-		return ((SendToCarApp) getActivity().getApplication()).getMixpanel();
 	}
 }

@@ -30,7 +30,7 @@ public class Credentials {
 	private Credentials() {
 	}
 
-	public void loadCredentials(Context context) {
+	public void loadCredentials(Context context) throws IOException, JSONException {
 		// If you want to use MixPanel for your fork, register with
 		// them and place your API key in /assets/credentials.json
 		// (This prevents me receiving events from forked
@@ -53,9 +53,12 @@ public class Credentials {
 			data = new JSONObject(contents);
 			environmentKey = Utils.isDebug(context) ? DEVELOPMENT_KEY : PRODUCTION_KEY;
 		} catch (IOException e) {
-			Log.d(TAG, "No credentials JSON file found");
+			Log.e(TAG, "No credentials JSON file found!");
+			Log.e(TAG, "Add a JSON file with credentials to the build project in folder /assets/" + ASSET_FILENAME);
+			throw e;
 		} catch (JSONException e) {
-			Log.d(TAG, "Syntax error in credentials JSON file: " + e.toString());
+			Log.e(TAG, "Syntax error in credentials JSON file /assets/" + ASSET_FILENAME, e);
+			throw e;
 		}
 	}
 

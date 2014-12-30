@@ -10,4 +10,8 @@ public class BackgroundTaskAbort extends Exception {
 	public BackgroundTaskAbort(int messageId) {
 		this.messageId = messageId;
 	}
+
+	public BackgroundTaskAbort(String errorMsg) {
+		super(errorMsg);
+	}
 }

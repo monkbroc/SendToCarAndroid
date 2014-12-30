@@ -181,6 +181,7 @@ public class CarListManager {
 					CarProvider c = new CarProvider();
 					c.makeId = name;
 					c.host = provider.getString("host");
+					c.provider = provider.getInt("provider");
 					c.make = provider.getString("make");
 					c.type = provider.getInt("type");
 					c.account = provider.getString("account");
