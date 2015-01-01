@@ -11,12 +11,13 @@ import android.widget.Toast;
 
 import com.jvanier.android.sendtocar.R;
 import com.jvanier.android.sendtocar.common.Mixpanel;
+import com.jvanier.android.sendtocar.common.Constants;
 
 public class WriteEmailToDeveloper implements Command {
 	@Override
 	public void perfrom(Context context) {
 		Intent intent = new Intent(Intent.ACTION_VIEW); 
-		intent.setData(Uri.parse("mailto:sendtocar.app@gmail.com")); 
+		intent.setData(Uri.parse("mailto:" + Constants.DEVELOPER_EMAIL)); 
 		try {
 			context.startActivity(intent);
 			
