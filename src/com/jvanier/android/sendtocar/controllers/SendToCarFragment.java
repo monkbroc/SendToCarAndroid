@@ -48,6 +48,7 @@ import com.jvanier.android.sendtocar.models.CarProvider;
 import com.jvanier.android.sendtocar.models.Issue;
 import com.jvanier.android.sendtocar.models.RecentVehicle;
 import com.jvanier.android.sendtocar.models.RecentVehicleList;
+import com.jvanier.android.sendtocar.models.UserPreferences;
 import com.jvanier.android.sendtocar.uploaders.BaseUploader;
 import com.jvanier.android.sendtocar.uploaders.BaseUploader.BaseUploaderHandler;
 import com.jvanier.android.sendtocar.uploaders.GoogleMapsUploader;
@@ -57,10 +58,10 @@ import com.jvanier.android.sendtocar.uploaders.OnStarUploader;
 
 /* TODO:
  * 
- * - Geocode manual address
  * - Here.com for Volvo
  * - Update tutorial with new Google Maps screenshots
- * - Show tutorial first time
+ * - Implement Debug logging
+ * - Add country picker in MakeActivity
  * - Add "Can't find your make" in MakeActivity
  * - Verify all calls to Mixpanel were added
  * - Check that all FIXME and TODO are removed
@@ -76,6 +77,8 @@ public class SendToCarFragment extends Fragment {
 
 	private static final String ADDRESS_ENTERED_MANUALLY = "AddressEnteredManually";
 	private static final String ADDRESS_FROM_GOOGLE_MAPS = "AddressFromGoogleMaps";
+
+	public static final int PICK_MAKE = 0;
 
 	private Button makeButton;
 	private TextView accountLabel;
@@ -118,14 +121,12 @@ public class SendToCarFragment extends Fragment {
 		setupButtonBarButtons(rootView);
 
 		loadMapFromIntent();
-
+		showTutorialFirstTime();
 		selectLatestVehicle();
 
 		return rootView;
 	}
 	
-	
-
 	private void setupTextWatcher() {
 		textWatcher = new TextWatcher() {
 			@Override
@@ -151,7 +152,7 @@ public class SendToCarFragment extends Fragment {
 			@Override
 			public void onClick(View v) {
 				Intent intent = new Intent(getActivity(), MakeActivity.class);
-				startActivityForResult(intent, MakeActivity.PICK_MAKE);
+				startActivityForResult(intent, PICK_MAKE);
 			}
 		});
 
@@ -317,12 +318,22 @@ public class SendToCarFragment extends Fragment {
 		// display box
 		alertbox.show();
 	}
+	
+	private void showTutorialFirstTime() {
+		UserPreferences prefs = UserPreferences.sharedInstance();
+		if(addressOrigin == ADDRESS_ENTERED_MANUALLY && !prefs.isTutorialShown()) {
+			prefs.setTutorialShown(true).save(getActivity());
+			Intent intent = new Intent(getActivity(), TutorialActivity.class);
+			startActivity(intent);
+		}
+	}
+
 
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		if (requestCode == MakeActivity.PICK_MAKE && resultCode == Activity.RESULT_OK) {
+		if (requestCode == PICK_MAKE && resultCode == Activity.RESULT_OK) {
 			String type = data.getStringExtra(MakeActivity.EXTRA_TYPE);
 
 			switch (type) {
@@ -407,9 +418,7 @@ public class SendToCarFragment extends Fragment {
 		}
 
 		if (showAlertAndAbortSend) {
-			SharedPreferences.Editor settingsEditor = getActivity().getPreferences(Context.MODE_PRIVATE).edit();
-			settingsEditor.putBoolean("debug", debug);
-			settingsEditor.commit();
+			UserPreferences.sharedInstance().setDebug(debug).save(getActivity());
 
 			AlertDialog.Builder alertbox = new AlertDialog.Builder(getActivity());
 			alertbox.setTitle(R.string.debugMode);

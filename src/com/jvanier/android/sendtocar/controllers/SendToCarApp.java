@@ -11,6 +11,7 @@ import com.jvanier.android.sendtocar.common.Mixpanel;
 import com.jvanier.android.sendtocar.downloaders.CarListManager;
 import com.jvanier.android.sendtocar.models.Credentials;
 import com.jvanier.android.sendtocar.models.RecentVehicleList;
+import com.jvanier.android.sendtocar.models.UserPreferences;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 
@@ -20,6 +21,7 @@ public class SendToCarApp extends Application {
 		super.onCreate();
 		
 		loadCredentials();
+		loadPreferences();
 		setupMixpanel();
 		updateCarList();
 		loadRecentVehiclesList();
@@ -34,6 +36,10 @@ public class SendToCarApp extends Application {
 		}
 	}
 	
+	private void loadPreferences() {
+		UserPreferences.sharedInstance().load(getApplicationContext());
+	}
+
 	private void setupMixpanel() {		
 		String mixpanelToken = Credentials.sharedInstance().get("MIXPANEL_TOKEN");
 		MixpanelAPI mixpanel = Mixpanel.initializeSharedInstance(this, mixpanelToken);

@@ -22,8 +22,6 @@ import com.jvanier.android.sendtocar.models.RecentVehicle;
 import com.jvanier.android.sendtocar.models.RecentVehicleList;
 
 public class MakeActivity extends ActionBarActivity {
-	public static final int PICK_MAKE = 0;
-
 	public static final String EXTRA_TYPE = "type";
 	public static final String TYPE_RECENT_VEHICLE = "recentVehicle";
 	public static final String TYPE_MAKE = "make";
