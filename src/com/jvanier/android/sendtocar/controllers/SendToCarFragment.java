@@ -57,10 +57,14 @@ import com.jvanier.android.sendtocar.uploaders.OnStarUploader;
 
 /* TODO:
  * 
+ * - Geocode manual address
+ * - Here.com for Volvo
+ * - Update tutorial with new Google Maps screenshots
  * - Show tutorial first time
  * - Add "Can't find your make" in MakeActivity
  * - Verify all calls to Mixpanel were added
  * - Check that all FIXME and TODO are removed
+ * - Verify that android:textAllCaps doesn't crash on old Android version
  * 
  */
 public class SendToCarFragment extends Fragment {
@@ -101,10 +105,6 @@ public class SendToCarFragment extends Fragment {
 
 	public SendToCarFragment(Intent intent) {
 		this.intent = intent;
-		
-		// FIXME!
-		//this.intent = new Intent(Intent.ACTION_SEND);
-		//this.intent.putExtra(Intent.EXTRA_TEXT, "http://goo.gl/maps/BQa0f");
 	}
 
 	@Override
@@ -450,30 +450,7 @@ public class SendToCarFragment extends Fragment {
 		}
 		Mixpanel.sharedInstance().track("Sending address", props);
 
-		if (loadedAddress.hasAddressDetails()) {
-			// Address is OK, send it
-			doAddressSend();
-		} else {
-			// Address is completely empty, geocode it
-
-			Log.d(TAG, "Geocoding address by name");
-			loadedAddress.latitude = null;
-			loadedAddress.longitude = null;
-
-			/*
-			 * TODO
-			 * 
-			 * self.geocoder = [AddressMaker
-			 * makeAddressByGeocoding:self.loadedAddress completion:^(Address
-			 * *newAddress, NSError *error) {
-			 * 
-			 * if(error != nil) { NSString *errorMessage; errorMessage =
-			 * NSLocalizedString
-			 * (@"Address not found. Please verify and try again.", @""); [self
-			 * errorUploading:errorMessage]; } else { self.loadedAddress =
-			 * newAddress; self.geocoder = nil; [self doAddressSend]; } }];
-			 */
-		}
+		doAddressSend();
 	}
 
 	private class UploaderUIHandler implements BaseUploaderHandler {

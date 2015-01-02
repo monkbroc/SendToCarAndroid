@@ -1,6 +1,6 @@
 package com.jvanier.android.sendtocar.models;
 
-public class Address {
+public class Address implements Cloneable {
 	public String title;
 	public String latitude;
 	public String longitude;
@@ -16,5 +16,9 @@ public class Address {
 	
 	public boolean hasAddressDetails() {
 		return number != null && number.length() > 0 && city != null && city.length() > 0 && province != null && province.length() > 0 && country != null && country.length() > 0;
+	}
+
+	public boolean hasLatitudeLongitude() {
+		return latitude != null && latitude.length() > 0 && longitude != null && longitude.length() > 0;
 	}
 }

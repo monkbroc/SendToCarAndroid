@@ -18,4 +18,32 @@
         android:padding="10dip"
         tools:ignore="MissingRegistered" />
 
+    <View style="@style/horizontalDivider" />
+
+    <LinearLayout
+        style="?attr/buttonBarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="?android:attr/dividerVertical"
+        android:orientation="horizontal"
+        android:showDividers="middle"
+        tools:ignore="UnusedAttribute" >
+
+        <Button
+            android:id="@+id/skipButton"
+            style="?attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/skip" />
+
+        <Button
+            android:id="@+id/nextButton"
+            style="?attr/buttonBarButtonStyle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.5"
+            android:text="@string/next" />
+    </LinearLayout>
+
 </LinearLayout>
