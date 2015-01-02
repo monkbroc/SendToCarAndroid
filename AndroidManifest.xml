@@ -46,7 +46,7 @@
 		<activity
 			android:name="com.jvanier.android.sendtocar.controllers.MakeActivity"
 			android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize"
-			android:label="@string/choose_make" >
+			android:label="@string/chooseVehicle" >
 		</activity>
 	</application>
 

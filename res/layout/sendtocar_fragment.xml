@@ -37,7 +37,7 @@
                         android:background="?attr/selectableItemBackground"
                         android:drawableRight="@drawable/ic_action_next_item"
                         android:gravity="center_vertical|left"
-                        android:text="@string/choose_make"
+                        android:text="@string/chooseMake"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
 
                     <TextView
@@ -56,7 +56,7 @@
                         android:drawableLeft="@drawable/ic_button_help"
                         android:drawablePadding="12dp"
                         android:gravity="center_vertical|left"
-                        android:text="@string/help_for_vehicle" 
+                        android:text="@string/helpForVehicle" 
                         android:visibility="gone" />
 
                     <Button
@@ -65,7 +65,7 @@
                         android:drawableLeft="@drawable/ic_button_warning"
                         android:drawablePadding="12dp"
                         android:gravity="center_vertical|left"
-                        android:text="@string/known_issue_for_vehicle"
+                        android:text="@string/knownIssueForVehicle"
                         android:textStyle="bold" 
                         android:visibility="gone"/>
                 </LinearLayout>

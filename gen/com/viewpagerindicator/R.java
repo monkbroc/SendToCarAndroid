@@ -48,40 +48,40 @@ public final class R {
 		public static final int default_underline_indicator_fades = 0x7f0b0004;
 	}
 	public static final class color {
-		public static final int default_circle_indicator_fill_color = 0x7f080020;
-		public static final int default_circle_indicator_page_color = 0x7f080021;
-		public static final int default_circle_indicator_stroke_color = 0x7f080022;
-		public static final int default_line_indicator_selected_color = 0x7f080023;
-		public static final int default_line_indicator_unselected_color = 0x7f080024;
-		public static final int default_title_indicator_footer_color = 0x7f080025;
-		public static final int default_title_indicator_selected_color = 0x7f080026;
-		public static final int default_title_indicator_text_color = 0x7f080027;
-		public static final int default_underline_indicator_selected_color = 0x7f080028;
-		public static final int vpi__background_holo_dark = 0x7f080018;
-		public static final int vpi__background_holo_light = 0x7f080019;
-		public static final int vpi__bright_foreground_disabled_holo_dark = 0x7f08001c;
-		public static final int vpi__bright_foreground_disabled_holo_light = 0x7f08001d;
-		public static final int vpi__bright_foreground_holo_dark = 0x7f08001a;
-		public static final int vpi__bright_foreground_holo_light = 0x7f08001b;
-		public static final int vpi__bright_foreground_inverse_holo_dark = 0x7f08001e;
-		public static final int vpi__bright_foreground_inverse_holo_light = 0x7f08001f;
-		public static final int vpi__dark_theme = 0x7f08006f;
-		public static final int vpi__light_theme = 0x7f080070;
+		public static final int default_circle_indicator_fill_color = 0x7f070020;
+		public static final int default_circle_indicator_page_color = 0x7f070021;
+		public static final int default_circle_indicator_stroke_color = 0x7f070022;
+		public static final int default_line_indicator_selected_color = 0x7f070023;
+		public static final int default_line_indicator_unselected_color = 0x7f070024;
+		public static final int default_title_indicator_footer_color = 0x7f070025;
+		public static final int default_title_indicator_selected_color = 0x7f070026;
+		public static final int default_title_indicator_text_color = 0x7f070027;
+		public static final int default_underline_indicator_selected_color = 0x7f070028;
+		public static final int vpi__background_holo_dark = 0x7f070018;
+		public static final int vpi__background_holo_light = 0x7f070019;
+		public static final int vpi__bright_foreground_disabled_holo_dark = 0x7f07001c;
+		public static final int vpi__bright_foreground_disabled_holo_light = 0x7f07001d;
+		public static final int vpi__bright_foreground_holo_dark = 0x7f07001a;
+		public static final int vpi__bright_foreground_holo_light = 0x7f07001b;
+		public static final int vpi__bright_foreground_inverse_holo_dark = 0x7f07001e;
+		public static final int vpi__bright_foreground_inverse_holo_light = 0x7f07001f;
+		public static final int vpi__dark_theme = 0x7f07006f;
+		public static final int vpi__light_theme = 0x7f070070;
 	}
 	public static final class dimen {
-		public static final int default_circle_indicator_radius = 0x7f050002;
-		public static final int default_circle_indicator_stroke_width = 0x7f050003;
-		public static final int default_line_indicator_gap_width = 0x7f050005;
-		public static final int default_line_indicator_line_width = 0x7f050004;
-		public static final int default_line_indicator_stroke_width = 0x7f050006;
-		public static final int default_title_indicator_clip_padding = 0x7f050007;
-		public static final int default_title_indicator_footer_indicator_height = 0x7f050009;
-		public static final int default_title_indicator_footer_indicator_underline_padding = 0x7f05000a;
-		public static final int default_title_indicator_footer_line_height = 0x7f050008;
-		public static final int default_title_indicator_footer_padding = 0x7f05000b;
-		public static final int default_title_indicator_text_size = 0x7f05000c;
-		public static final int default_title_indicator_title_padding = 0x7f05000d;
-		public static final int default_title_indicator_top_padding = 0x7f05000e;
+		public static final int default_circle_indicator_radius = 0x7f0a0002;
+		public static final int default_circle_indicator_stroke_width = 0x7f0a0003;
+		public static final int default_line_indicator_gap_width = 0x7f0a0005;
+		public static final int default_line_indicator_line_width = 0x7f0a0004;
+		public static final int default_line_indicator_stroke_width = 0x7f0a0006;
+		public static final int default_title_indicator_clip_padding = 0x7f0a0007;
+		public static final int default_title_indicator_footer_indicator_height = 0x7f0a0009;
+		public static final int default_title_indicator_footer_indicator_underline_padding = 0x7f0a000a;
+		public static final int default_title_indicator_footer_line_height = 0x7f0a0008;
+		public static final int default_title_indicator_footer_padding = 0x7f0a000b;
+		public static final int default_title_indicator_text_size = 0x7f0a000c;
+		public static final int default_title_indicator_title_padding = 0x7f0a000d;
+		public static final int default_title_indicator_top_padding = 0x7f0a000e;
 	}
 	public static final class drawable {
 		public static final int vpi__tab_indicator = 0x7f020177;
@@ -93,25 +93,25 @@ public final class R {
 		public static final int vpi__tab_unselected_pressed_holo = 0x7f02017d;
 	}
 	public static final class id {
-		public static final int bottom = 0x7f090016;
-		public static final int none = 0x7f090000;
-		public static final int top = 0x7f090017;
-		public static final int triangle = 0x7f090014;
-		public static final int underline = 0x7f090015;
+		public static final int bottom = 0x7f080016;
+		public static final int none = 0x7f080000;
+		public static final int top = 0x7f080017;
+		public static final int triangle = 0x7f080014;
+		public static final int underline = 0x7f080015;
 	}
 	public static final class integer {
-		public static final int default_circle_indicator_orientation = 0x7f0a0001;
-		public static final int default_title_indicator_footer_indicator_style = 0x7f0a0002;
-		public static final int default_title_indicator_line_position = 0x7f0a0003;
-		public static final int default_underline_indicator_fade_delay = 0x7f0a0004;
-		public static final int default_underline_indicator_fade_length = 0x7f0a0005;
+		public static final int default_circle_indicator_orientation = 0x7f090001;
+		public static final int default_title_indicator_footer_indicator_style = 0x7f090002;
+		public static final int default_title_indicator_line_position = 0x7f090003;
+		public static final int default_underline_indicator_fade_delay = 0x7f090004;
+		public static final int default_underline_indicator_fade_length = 0x7f090005;
 	}
 	public static final class style {
-		public static final int TextAppearance_TabPageIndicator = 0x7f07000c;
-		public static final int Theme_PageIndicatorDefaults = 0x7f070009;
-		public static final int Widget = 0x7f07000a;
-		public static final int Widget_IconPageIndicator = 0x7f07000d;
-		public static final int Widget_TabPageIndicator = 0x7f07000b;
+		public static final int TextAppearance_TabPageIndicator = 0x7f05000a;
+		public static final int Theme_PageIndicatorDefaults = 0x7f050007;
+		public static final int Widget = 0x7f050008;
+		public static final int Widget_IconPageIndicator = 0x7f05000b;
+		public static final int Widget_TabPageIndicator = 0x7f050009;
 	}
 	public static final class styleable {
 		public static final int[] CirclePageIndicator = { 0x010100c4, 0x010100d4, 0x7f010026, 0x7f010028, 0x7f01002a, 0x7f01002b, 0x7f01002c, 0x7f01002d, 0x7f01002e };

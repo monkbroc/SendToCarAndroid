@@ -31,7 +31,8 @@
     <string name="errorTitle">Error</string>
     <string name="ok">OK</string>
     <string name="showHelp">Show help</string>
-    <string name="choose_make">Choose a make</string>
+    <string name="chooseMake">Choose a make</string>
+    <string name="chooseVehicle">Choose a vehicle</string>
     <string name="skip">Skip</string>
     <string name="next">Next</string>
     <string name="done">Done</string>
@@ -43,9 +44,14 @@
     <string name="redirect">Follow the instructions on this page to finish sending your destination</string>
     <string name="statusInvalidAccount">Invalid account. Check that you entered it correctly and try again</string>
     <string name="statusDestinationNotSent">This destination cannot be sent to your car. Try a different destination</string>
-    <string name="help_for_vehicle">Help for {0}</string>
-    <string name="known_issue_for_vehicle">Known issue for {0}</string>
-    <string name="recent_vehicles">Recent vehicles</string>
+    <string name="helpForVehicle">Help for {0}</string>
+    <string name="knownIssueForVehicle">Known issue for {0}</string>
+    <string name="recentVehicles">Recent vehicles</string>
+    <string name="cantFindYourMake">Can\'t find your make?</string>
+    <string name="showingMakesForCounty">Showing makes for {0}</string>
+    <string name="changeCountry">Change country</string>
+    <string name="seeWhyYourMakeIsMissing">See why your make is missing</string>
+    <string name="selectCountry">Select country</string>
     <string name="discard">Discard</string>
     <string name="errorNoApp">No app is available to do this</string>
     <string name="listTutorialTitle">Tutorial</string>

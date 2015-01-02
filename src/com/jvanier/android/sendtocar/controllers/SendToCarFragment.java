@@ -503,7 +503,7 @@ public class SendToCarFragment extends Fragment {
 				 * Show additional message for Ford since users seem to find it
 				 * difficult to download the destination to the car
 				 */
-				if (uploader.getProvider().type == CarProvider.PROVIDER_MAPQUEST) {
+				if (uploader.getProvider().provider == CarProvider.PROVIDER_MAPQUEST) {
 					msgStr += "\n" + context.getString(R.string.fordDownload);
 				}
 				Toast toast = Toast.makeText(context, msgStr, Toast.LENGTH_LONG);

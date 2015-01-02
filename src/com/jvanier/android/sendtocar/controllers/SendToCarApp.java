@@ -47,7 +47,7 @@ public class SendToCarApp extends Application {
 		JSONObject props = new JSONObject();
 		try {
 			props.put("OS Language", Locale.getDefault().getLanguage().toLowerCase(Locale.US));
-			props.put("OS Country", Locale.getDefault().getCountry().toLowerCase(Locale.US));
+			props.put("OS Country", UserPreferences.sharedInstance().getCountry());
 		} catch (JSONException e) {
 		}
 

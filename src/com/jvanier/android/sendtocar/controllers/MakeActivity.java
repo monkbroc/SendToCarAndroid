@@ -1,5 +1,6 @@
 package com.jvanier.android.sendtocar.controllers;
 
+import java.text.MessageFormat;
 import java.util.List;
 import java.util.Locale;
 
@@ -14,12 +15,16 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.countrypicker.CountryPicker;
+import com.countrypicker.CountryPickerListener;
 import com.jvanier.android.sendtocar.R;
+import com.jvanier.android.sendtocar.controllers.commands.ShowOtherMakes;
 import com.jvanier.android.sendtocar.downloaders.CarListManager;
 import com.jvanier.android.sendtocar.models.CarList;
 import com.jvanier.android.sendtocar.models.CarProvider;
 import com.jvanier.android.sendtocar.models.RecentVehicle;
 import com.jvanier.android.sendtocar.models.RecentVehicleList;
+import com.jvanier.android.sendtocar.models.UserPreferences;
 
 public class MakeActivity extends ActionBarActivity {
 	public static final String EXTRA_TYPE = "type";
@@ -35,6 +40,10 @@ public class MakeActivity extends ActionBarActivity {
 	private ViewGroup makesCardContainer;
 
 	private RecentVehicleList recentList;
+	private View makesCountryContainer;
+	private TextView makesCountryLabel;
+	private String makesCountryLabelTemplate;
+	private TextView missingMakeButton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +56,7 @@ public class MakeActivity extends ActionBarActivity {
 
 		setupRecentVehicles();
 		setupMakes();
+		setupHelp();
 	}
 
 	@Override
@@ -136,8 +146,9 @@ public class MakeActivity extends ActionBarActivity {
 
 	private void setupMakes() {
 		makesCardContainer = (ViewGroup) findViewById(R.id.makesCardContainer);
+		makesCardContainer.removeAllViews();
 
-		String country = Locale.getDefault().getCountry().toLowerCase(Locale.US);
+		String country = UserPreferences.sharedInstance().getCountry();
 
 		CarList carList = CarListManager.sharedInstance().getCarList();
 		List<CarProvider> carListDisplayed = carList.asList();
@@ -155,6 +166,44 @@ public class MakeActivity extends ActionBarActivity {
 				makesCardContainer.addView(makeItem);
 			}
 		}
+	}
+	
+	private void setupHelp() {
+		makesCountryContainer = findViewById(R.id.makesCountryContainer);
+		makesCountryLabel = (TextView) findViewById(R.id.makesCountryLabel);
+		makesCountryLabelTemplate = makesCountryLabel.getText().toString();
+		updateMakesCountryLabel();
+		
+		makesCountryContainer.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				final CountryPicker picker = CountryPicker.newInstance(getString(R.string.selectCountry));
+				picker.show(getSupportFragmentManager(), "COUNTRY_PICKER");
+				picker.setListener(new CountryPickerListener() {
+				    @Override
+				    public void onSelectCountry(String name, String code) {
+						picker.dismiss();
+				    	UserPreferences.sharedInstance().setCountry(code.toLowerCase(Locale.US)).save(MakeActivity.this);
+				    	setupMakes();
+						updateMakesCountryLabel();
+				    }
+				});
+			}
+		});
+		
+		missingMakeButton = (TextView) findViewById(R.id.missingMakeButton);
+		missingMakeButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				new ShowOtherMakes().perfrom(MakeActivity.this);
+			}
+		});
+	}
+
+	private void updateMakesCountryLabel() {
+		Locale currentCountry = new Locale("", UserPreferences.sharedInstance().getCountry());
+		
+		makesCountryLabel.setText(MessageFormat.format(makesCountryLabelTemplate, currentCountry.getDisplayCountry()));
 	}
 
 	public void selectRecentVehicle(RecentVehicle vehicle) {

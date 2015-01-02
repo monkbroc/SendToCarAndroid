@@ -8,8 +8,8 @@ package com.countrypicker;
 
 public final class R {
 	public static final class dimen {
-		public static final int cp_dialog_height = 0x7f050001;
-		public static final int cp_dialog_width = 0x7f050000;
+		public static final int cp_dialog_height = 0x7f0a0001;
+		public static final int cp_dialog_width = 0x7f0a0000;
 	}
 	public static final class drawable {
 		public static final int flag_ac = 0x7f020069;
@@ -265,22 +265,18 @@ public final class R {
 		public static final int search_icon = 0x7f020176;
 	}
 	public static final class id {
-		public static final int country_picker_listview = 0x7f090063;
-		public static final int country_picker_search = 0x7f090062;
-		public static final int row_icon = 0x7f09006c;
-		public static final int row_title = 0x7f09006d;
+		public static final int country_picker_listview = 0x7f080063;
+		public static final int country_picker_search = 0x7f080062;
+		public static final int row_icon = 0x7f080073;
+		public static final int row_title = 0x7f080074;
 	}
 	public static final class layout {
-		public static final int country_picker = 0x7f03001f;
-		public static final int row = 0x7f030025;
+		public static final int country_picker = 0x7f03001e;
+		public static final int row = 0x7f030024;
 	}
 	public static final class string {
-		public static final int app_name = 0x7f060000;
-		public static final int countries = 0x7f060002;
-		public static final int search = 0x7f060001;
-	}
-	public static final class style {
-		public static final int AppBaseTheme = 0x7f070000;
-		public static final int AppTheme = 0x7f070001;
+		public static final int app_name = 0x7f06002a;
+		public static final int countries = 0x7f06002c;
+		public static final int search = 0x7f06002b;
 	}
 }
