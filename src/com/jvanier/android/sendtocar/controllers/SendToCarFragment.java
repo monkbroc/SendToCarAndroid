@@ -26,6 +26,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -432,6 +433,7 @@ public class SendToCarFragment extends Fragment {
 
 	private void updateAddressFromUIAndSend() {
 		saveProviderToRecentVehicleList();
+		hideKeyboard();
 
 		String updatedName = destinationText.getText().toString();
 		String updatedAddress = addressText.getText().toString();
@@ -460,6 +462,14 @@ public class SendToCarFragment extends Fragment {
 		Mixpanel.sharedInstance().track("Sending address", props);
 
 		doAddressSend();
+	}
+
+	private void hideKeyboard() {
+		View focusedView = getActivity().getCurrentFocus();
+		if(focusedView != null) {
+			InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+			imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
+		}
 	}
 
 	private class UploaderUIHandler implements BaseUploaderHandler {

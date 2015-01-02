@@ -14,7 +14,7 @@ public class ShowIssueForMake extends OpenURL {
 	private String makeId;
 
 	public ShowIssueForMake(String makeId) {
-		super(MessageFormat.format(Constants.ISSUE_URL, makeId));
+		super(MessageFormat.format(Constants.ISSUE_VIEW_URL, makeId));
 		this.makeId = makeId;
 	}
 
