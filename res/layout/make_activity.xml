@@ -25,7 +25,10 @@
 
             <LinearLayout
                 android:id="@+id/recentVehiclesCardContainer"
-                style="@style/verticalContainer" >
+                style="@style/verticalContainer"
+                android:divider="?android:attr/dividerHorizontal"
+                android:showDividers="middle"
+                tools:ignore="UnusedAttribute" >
             </LinearLayout>
         </android.support.v7.widget.CardView>
 
@@ -40,7 +43,10 @@
 
             <LinearLayout
                 android:id="@+id/makesCardContainer"
-                style="@style/verticalContainer" >
+                style="@style/verticalContainer"
+                android:divider="?android:attr/dividerHorizontal"
+                android:showDividers="middle"
+                tools:ignore="UnusedAttribute" >
             </LinearLayout>
         </android.support.v7.widget.CardView>
     </LinearLayout>

@@ -60,18 +60,5 @@ public class SendToCarApp extends Application {
 	
 	private void loadRecentVehiclesList() {
 		RecentVehicleList.sharedInstance().loadFromCache(this);
-		// FIXME: remove
-		/*
-		RecentVehicle vehicle = new RecentVehicle();
-		vehicle.make = "Ford";
-		vehicle.makeId = "car_ford";
-		vehicle.account = "2484810771";
-		RecentVehicleList.sharedInstance().addRecentVehicle(vehicle);
-		vehicle = new RecentVehicle();
-		vehicle.make = "BMW";
-		vehicle.makeId = "car_bmw";
-		vehicle.account = "test@example.com";
-		RecentVehicleList.sharedInstance().addRecentVehicle(vehicle);
-		*/
 	}
 }

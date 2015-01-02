@@ -93,13 +93,7 @@ public class MakeActivity extends ActionBarActivity {
 
 		recentList = RecentVehicleList.sharedInstance();
 
-		boolean first = true;
 		for (int i = 0; i < recentList.size(); i++) {
-			if (!first) {
-				getLayoutInflater().inflate(R.layout.card_divider, recentVehiclesCardContainer, true);
-			}
-			first = false;
-
 			RecentVehicle vehicle = recentList.getRecentVehicle(i);
 
 			View recentVehicleItem = getLayoutInflater().inflate(R.layout.recent_vehicle_item, recentVehiclesCardContainer, false);
@@ -148,16 +142,10 @@ public class MakeActivity extends ActionBarActivity {
 		CarList carList = CarListManager.sharedInstance().getCarList();
 		List<CarProvider> carListDisplayed = carList.asList();
 
-		boolean first = true;
 		for (int i = 0; i < carListDisplayed.size(); i++) {
 			CarProvider provider = carListDisplayed.get(i);
 
 			if (provider.isCountrySupported(country)) {
-				if (!first) {
-					getLayoutInflater().inflate(R.layout.card_divider, makesCardContainer, true);
-				}
-				first = false;
-
 				View makeItem = getLayoutInflater().inflate(R.layout.make_item, makesCardContainer, false);
 				TextView makeView = (TextView) makeItem.findViewById(android.R.id.text1);
 				makeView.setText(provider.make);
@@ -193,14 +181,9 @@ public class MakeActivity extends ActionBarActivity {
 			if (recentList.size() == 0) {
 				hideRecentVehicles();
 			} else {
-				// Remove the cell and the divider line below
-				View v1 = recentVehiclesCardContainer.getChildAt(2 * oldPosition);
-				View v2 = recentVehiclesCardContainer.getChildAt(2 * oldPosition + 1);
-				if (v1 != null) {
-					recentVehiclesCardContainer.removeView(v1);
-				}
-				if (v2 != null) {
-					recentVehiclesCardContainer.removeView(v2);
+				View recentVehicleItem = recentVehiclesCardContainer.getChildAt(oldPosition);
+				if (recentVehicleItem != null) {
+					recentVehiclesCardContainer.removeView(recentVehicleItem);
 				}
 			}
 		}
