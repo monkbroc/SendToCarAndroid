@@ -1,8 +1,10 @@
 package com.jvanier.android.sendtocar.uploaders;
 
+import java.io.IOException;
 import java.io.InterruptedIOException;
 import java.net.HttpURLConnection;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -184,7 +186,7 @@ public class GoogleMapsUploader extends BaseUploader {
 		}
 	}
 
-	private String sendToCar(String post) throws BackgroundTaskAbort {
+	private String sendToCar(String post) throws BackgroundTaskAbort  {
 		String sendToCarHtml = "";
 		try
 		{
@@ -214,7 +216,7 @@ public class GoogleMapsUploader extends BaseUploader {
 		} catch(InterruptedIOException e) {
 			Log.w(TAG, "Upload to car aborted");
 			return null;
-		} catch(Exception e) {
+		} catch(IOException|URISyntaxException e) {
 			Log.e(TAG, "Exception while sending to car", e);
 			throw new BackgroundTaskAbort(R.string.errorSendToCar);
 		}

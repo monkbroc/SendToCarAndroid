@@ -10,7 +10,6 @@ import javax.net.ssl.SSLException;
 import javax.net.ssl.SSLPeerUnverifiedException;
 
 import org.apache.http.HttpResponse;
-import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.entity.ByteArrayEntity;
 import org.apache.http.util.EntityUtils;
@@ -125,7 +124,7 @@ public class MapquestUploader extends BaseUploader {
 		} catch(SSLException e) {
 			Log.e(TAG, "SSLException while sending to MapQuest. Trying again without HTTPS.");
 			return sendToCarNoSSL(post);
-		} catch(Exception e) {
+		} catch(IOException|URISyntaxException e) {
 			Log.e(TAG, "Exception while sending to Mapquest", e);
 			throw new BackgroundTaskAbort(R.string.errorSendToCar);
 		}
@@ -161,7 +160,7 @@ public class MapquestUploader extends BaseUploader {
 		} catch(InterruptedIOException e) {
 			Log.w(TAG, "Upload to Mapquest aborted");
 			return null;
-		} catch(Exception e) {
+		} catch(IOException|URISyntaxException e) {
 			Log.e(TAG, "Exception while sending to Mapquest (fallback mode)", e);
 			throw new BackgroundTaskAbort(R.string.errorSendToCar);
 		}
@@ -169,7 +168,7 @@ public class MapquestUploader extends BaseUploader {
 		return sendToCarHtml;
 	}
 	
-	private String sendToCarCore(String post, boolean useSSL, boolean trustAllCertificates) throws URISyntaxException, ClientProtocolException, IOException, BackgroundTaskAbort {
+	private String sendToCarCore(String post, boolean useSSL, boolean trustAllCertificates) throws URISyntaxException, IOException, BackgroundTaskAbort {
 		String sendToCarHtml;
 		
 		URI postUri = new URI(useSSL ? "https" : "http", provider.host, "/FordSyncServlet/submit", null, null);
@@ -229,7 +228,7 @@ public class MapquestUploader extends BaseUploader {
 				return;
 			}
 			
-		} catch(Exception e) {
+		} catch(JSONException e) {
 			Log.e(TAG, "Exception while parsing Mapquest resposne JSON", e);
 			throw new BackgroundTaskAbort(R.string.errorSendToCar); 
 		}

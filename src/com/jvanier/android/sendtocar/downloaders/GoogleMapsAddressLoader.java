@@ -26,6 +26,7 @@ import android.util.Log;
 
 import com.jvanier.android.sendtocar.R;
 import com.jvanier.android.sendtocar.common.BackgroundTaskAbort;
+import com.jvanier.android.sendtocar.common.SniHttpClient;
 import com.jvanier.android.sendtocar.common.Utils;
 import com.jvanier.android.sendtocar.models.Address;
 import com.jvanier.android.sendtocar.models.GoogleMapsHosts;
@@ -105,7 +106,7 @@ public class GoogleMapsAddressLoader extends AsyncTask<String, Void, GoogleMapsA
 	private void setupHttp() {
 		httpContext = new BasicHttpContext();
 
-		client = new DefaultHttpClient();
+		client = new SniHttpClient();
 
 		RedirectHandler jsonMapRedirectHandler = new JSONMapRedirectHandler();
 		client.setRedirectHandler(jsonMapRedirectHandler);
@@ -313,7 +314,7 @@ public class GoogleMapsAddressLoader extends AsyncTask<String, Void, GoogleMapsA
 			Log.d(TAG, "Response: " + Utils.htmlSnippet(geoHtml));
 
 
-		} catch(Exception e) {
+		} catch(IOException|URISyntaxException e) {
 			Log.d(TAG, "Exception while geocoding address: " + e.toString());
 		}
 		

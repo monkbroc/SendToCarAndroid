@@ -22,8 +22,9 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.jvanier.android.sendtocar.common.Constants;
 import com.jvanier.android.sendtocar.common.BackgroundTaskAbort;
+import com.jvanier.android.sendtocar.common.Constants;
+import com.jvanier.android.sendtocar.common.SniHttpClient;
 import com.jvanier.android.sendtocar.models.CarList;
 import com.jvanier.android.sendtocar.models.CarProvider;
 
@@ -143,7 +144,7 @@ public class CarListManager {
 				HttpGet httpGet = new HttpGet();
 				httpGet.setURI(carsUri);
 
-				DefaultHttpClient client = new DefaultHttpClient();
+				DefaultHttpClient client = new SniHttpClient();
 				HttpResponse response = client.execute(httpGet);
 
 				Log.d(TAG, "Downloaded cars. Status: " + response.getStatusLine().getStatusCode());

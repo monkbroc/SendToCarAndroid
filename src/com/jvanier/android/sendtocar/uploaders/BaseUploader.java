@@ -11,6 +11,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.jvanier.android.sendtocar.common.BackgroundTaskAbort;
+import com.jvanier.android.sendtocar.common.SniHttpClient;
 import com.jvanier.android.sendtocar.downloaders.GoogleMapsGeocoder;
 import com.jvanier.android.sendtocar.downloaders.GoogleMapsGeocoder.GoogleMapsGeocoderHandler;
 import com.jvanier.android.sendtocar.models.Address;
@@ -81,8 +82,12 @@ public abstract class BaseUploader extends AsyncTask<Void, Void, Boolean> {
 	}
 	public void cancelUpload() {
 		cancel(false);
-		httpPost.abort();
-		httpGet.abort();
+		if(httpPost != null) {
+			httpPost.abort();
+		}
+		if(httpGet != null) {
+			httpGet.abort();
+		}
 		
 		if(geocoder != null) {
 			geocoder.cancelGeocode();
@@ -96,8 +101,6 @@ public abstract class BaseUploader extends AsyncTask<Void, Void, Boolean> {
 		this.provider = provider;
 		this.language = language;
 		this.notes = notes;
-		
-		setupHttp();
 		
 		// Run onPreExecute now otherwise the busy dialog doesn't show up during the geocoding 
 		if(handler != null) {
@@ -138,6 +141,7 @@ public abstract class BaseUploader extends AsyncTask<Void, Void, Boolean> {
 	@Override
 	protected Boolean doInBackground(Void... ignored) {
 		try {
+			setupHttp();
 			return doUpload();
 		} catch (BackgroundTaskAbort e) {
 			errorStringId = e.messageId;
@@ -165,8 +169,9 @@ public abstract class BaseUploader extends AsyncTask<Void, Void, Boolean> {
 		httpContext = new BasicHttpContext();
 		cookieStore = new BasicCookieStore();
 		httpContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
+		
+		client = new SniHttpClient();
 
-		client = new DefaultHttpClient();
 		httpPost = new HttpPost();
 		httpGet = new HttpGet();
 	}

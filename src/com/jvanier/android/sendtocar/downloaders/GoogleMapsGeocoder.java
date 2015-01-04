@@ -18,6 +18,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.jvanier.android.sendtocar.common.BackgroundTaskAbort;
+import com.jvanier.android.sendtocar.common.SniHttpClient;
 import com.jvanier.android.sendtocar.common.Utils;
 import com.jvanier.android.sendtocar.models.Address;
 
@@ -134,7 +135,7 @@ public class GoogleMapsGeocoder extends AsyncTask<Address, Void, Address> {
 		try {
 			Log.d(TAG, "Updating latitude/longitude  " + geoURI);
 			httpGet.setURI(new URI(geoURI));
-			DefaultHttpClient client = new DefaultHttpClient();
+			DefaultHttpClient client = new SniHttpClient();
 			HttpResponse response = client.execute(httpGet);
 
 			Log.d(TAG, "Updating lat/long. Status: " + response.getStatusLine().getStatusCode());

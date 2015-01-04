@@ -57,8 +57,10 @@ import com.jvanier.android.sendtocar.uploaders.MapquestUploader;
 import com.jvanier.android.sendtocar.uploaders.OnStarUploader;
 
 /* TODO:
- * 
- * - Here.com for Volvo
+ *
+ * - Popup for updating BMW Assist
+ * - BMW Assist update instructions on the website
+ * - Verify all makes have some instructions on the website
  * - Update tutorial with new Google Maps screenshots
  * - Implement Debug logging
  * - Verify all calls to Mixpanel were added

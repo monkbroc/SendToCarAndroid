@@ -16,6 +16,7 @@ import android.util.Log;
 
 import com.jvanier.android.sendtocar.common.BackgroundTaskAbort;
 import com.jvanier.android.sendtocar.common.Constants;
+import com.jvanier.android.sendtocar.common.SniHttpClient;
 import com.jvanier.android.sendtocar.models.Issue;
 
 public class IssueLoader extends AsyncTask<Void, Void, Issue> {
@@ -77,7 +78,7 @@ public class IssueLoader extends AsyncTask<Void, Void, Issue> {
 			HttpGet httpGet = new HttpGet();
 			httpGet.setURI(issueUri);
 
-			DefaultHttpClient client = new DefaultHttpClient();
+			DefaultHttpClient client = new SniHttpClient();
 			HttpResponse response = client.execute(httpGet);
 
 			Log.d(TAG, "Downloaded issue. Status: " + response.getStatusLine().getStatusCode());
