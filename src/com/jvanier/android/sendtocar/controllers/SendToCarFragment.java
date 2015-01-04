@@ -14,7 +14,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
@@ -62,11 +61,10 @@ import com.jvanier.android.sendtocar.uploaders.OnStarUploader;
  * - Here.com for Volvo
  * - Update tutorial with new Google Maps screenshots
  * - Implement Debug logging
- * - Add country picker in MakeActivity
- * - Add "Can't find your make" in MakeActivity
  * - Verify all calls to Mixpanel were added
  * - Check that all FIXME and TODO are removed
  * - Verify that android:textAllCaps doesn't crash on old Android version
+ * - Set up Proguard
  * 
  */
 public class SendToCarFragment extends Fragment {
@@ -352,7 +350,7 @@ public class SendToCarFragment extends Fragment {
 
 	private void selectLatestVehicle() {
 		if (!latestVehicleSelectedAlready) {
-			migrateLatestVehicleFromPreferences();
+			RecentVehicleList.sharedInstance().migrateLatestVehicleFromPreferences(getActivity());
 
 			RecentVehicle latestVehicle = RecentVehicleList.sharedInstance().latestVehicle();
 
@@ -367,29 +365,6 @@ public class SendToCarFragment extends Fragment {
 					updateSendButtonEnabled();
 					latestVehicleSelectedAlready = true;
 				}
-			}
-		}
-	}
-
-	private void migrateLatestVehicleFromPreferences() {
-		SharedPreferences settings = getActivity().getPreferences(Context.MODE_PRIVATE);
-		String makeId = settings.getString("make", null);
-		String account = settings.getString("account", null);
-
-		if (makeId != null && account != null) {
-			CarProvider p = CarListManager.sharedInstance().getCarList().get(makeId);
-
-			if (p != null) {
-				RecentVehicle latestVehicle = new RecentVehicle();
-				latestVehicle.makeId = makeId;
-				latestVehicle.make = p.make;
-				latestVehicle.account = account;
-				RecentVehicleList.sharedInstance().addRecentVehicle(latestVehicle).saveToCache(getActivity());
-
-				SharedPreferences.Editor settingsEditor = settings.edit();
-				settingsEditor.remove("make");
-				settingsEditor.remove("account");
-				settingsEditor.commit();
 			}
 		}
 	}

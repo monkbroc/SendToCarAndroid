@@ -4,6 +4,7 @@ import java.util.Locale;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 public class UserPreferences {
 	private boolean debug;
@@ -43,8 +44,6 @@ public class UserPreferences {
 
 	private static final UserPreferences INSTANCE = new UserPreferences();
 
-	private static final String TAG = "UserPreferences";
-
 	private static final String KEY_DEBUG = "debug";
 	private static final String KEY_TUTORIAL_SHOWN = "tutorialShown";
 	private static final String KEY_COUNTRY = "country";
@@ -58,20 +57,24 @@ public class UserPreferences {
 	}
 	
 	public void load(Context context) {
-		SharedPreferences settings = context.getSharedPreferences(TAG, Context.MODE_PRIVATE);
+		SharedPreferences settings = getPreferences(context);
 		debug = settings.getBoolean(KEY_DEBUG, false);
 		tutorialShown = settings.getBoolean(KEY_TUTORIAL_SHOWN, false);
 		country = settings.getString(KEY_COUNTRY, null);
 	}
 	
 	public void save(Context context) {
-		SharedPreferences.Editor settingsEditor = context.getSharedPreferences(TAG, Context.MODE_PRIVATE).edit();
+		SharedPreferences.Editor settingsEditor = getPreferences(context).edit();
 		settingsEditor.putBoolean(KEY_DEBUG, debug);
 		settingsEditor.putBoolean(KEY_TUTORIAL_SHOWN, tutorialShown);
 		if(country != null) {
 			settingsEditor.putString(KEY_COUNTRY, country);
 		}
 		settingsEditor.commit();
+	}
+	
+	private SharedPreferences getPreferences(Context context) {
+		return PreferenceManager.getDefaultSharedPreferences(context);
 	}
 
 }

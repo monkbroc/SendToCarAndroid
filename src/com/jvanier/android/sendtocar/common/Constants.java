@@ -10,4 +10,6 @@ public class Constants {
 	public static final String MESSAGE_URL = BASE_URL + "issues#{0}";
 	public static final String CARS_URL = BASE_URL + "sendtocardata?hl={0}";
 	public static final String DEVELOPER_EMAIL = "sendtocar.app+android@gmail.com";
+
+	public static final String SENDTOCAR_USERAGENT = "Mozilla/5.0 (SendToCar)";
 }

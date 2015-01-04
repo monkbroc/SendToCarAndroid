@@ -8,7 +8,10 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.jvanier.android.sendtocar.downloaders.CarListManager;
+
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.util.Log;
 
 public class RecentVehicleList {
@@ -20,6 +23,7 @@ public class RecentVehicleList {
 	private List<RecentVehicle> list;
 
 	private static final RecentVehicleList INSTANCE = new RecentVehicleList();
+	private static final String LEGACY_PREFERENCES_NAME = "SendToCarActivity";
 
 	public static RecentVehicleList sharedInstance() {
 		return INSTANCE;
@@ -103,4 +107,28 @@ public class RecentVehicleList {
 			// do nothing
 		}
 	}
+	
+	public void migrateLatestVehicleFromPreferences(Context context) {
+		SharedPreferences settings = context.getSharedPreferences(LEGACY_PREFERENCES_NAME, Context.MODE_PRIVATE);
+		String makeId = settings.getString("make", "");
+		String account = settings.getString("account", "");
+
+		if (makeId.length() > 0 && account.length() > 0) {
+			CarProvider p = CarListManager.sharedInstance().getCarList().get(makeId);
+
+			if (p != null) {
+				RecentVehicle latestVehicle = new RecentVehicle();
+				latestVehicle.makeId = makeId;
+				latestVehicle.make = p.make;
+				latestVehicle.account = account;
+				RecentVehicleList.sharedInstance().addRecentVehicle(latestVehicle).saveToCache(context);
+
+				SharedPreferences.Editor settingsEditor = settings.edit();
+				settingsEditor.remove("make");
+				settingsEditor.remove("account");
+				settingsEditor.commit();
+			}
+		}
+	}
+
 }
