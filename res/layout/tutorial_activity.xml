@@ -24,7 +24,7 @@
         style="?attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="?android:attr/dividerVertical"
+        android:divider="?attr/dividerVertical"
         android:orientation="horizontal"
         android:showDividers="middle"
         tools:ignore="UnusedAttribute" >

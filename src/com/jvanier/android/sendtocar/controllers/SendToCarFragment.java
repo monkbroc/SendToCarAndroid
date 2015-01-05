@@ -60,11 +60,7 @@ import com.jvanier.android.sendtocar.uploaders.OnStarUploader;
  *
  * - Popup for updating BMW Assist
  * - Update tutorial with new Google Maps screenshots
- * - Implement Debug logging
- * - Verify all calls to Mixpanel were added
  * - Check that all FIXME and TODO are removed
- * - Verify that android:textAllCaps doesn't crash on old Android version
- * - Set up Proguard
  * 
  */
 public class SendToCarFragment extends Fragment {

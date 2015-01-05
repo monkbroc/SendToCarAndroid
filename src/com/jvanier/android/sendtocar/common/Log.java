@@ -49,15 +49,14 @@ public final class Log {
 		}
 	}
 
-	public static int println(String tag, String msg) {
+	public static void printToFile(String tag, String msg) {
 		String currentDateTimeString = DateFormat.getDateTimeInstance().format(new Date());
-		String line = "[" + currentDateTimeString + " - " + tag + "] " + msg;
+		String line = "[" + currentDateTimeString + " - " + tag + "] " + msg + "\n";
 		try {
 			mLogFileOut.write(line.getBytes());
 		} catch(IOException e) {
-			return -1;
+			// do nothing
 		}
-		return 0;
 	}
 
 	public static String readLog(Context context) {
@@ -90,7 +89,7 @@ public final class Log {
 		if(sb != null) {
 			return sb.toString();
 		} else {
-			return null;
+			return "";
 		}
 	}
 
@@ -112,109 +111,98 @@ public final class Log {
 		if(!mEnabled)
 			return 0;
 		if(mLogFileOut != null) {
-			return println(tag, msg);
-		} else {
-			return android.util.Log.v(tag, msg);
+			printToFile(tag, msg);
 		}
+		return android.util.Log.v(tag, msg);
 	}
 
 	public static int v(String tag, String msg, Throwable tr) {
 		if(!mEnabled)
 			return 0;
 		if(mLogFileOut != null) {
-			return println(tag, msg + '\n' + android.util.Log.getStackTraceString(tr));
-		} else {
-			return android.util.Log.v(tag, msg, tr);
+			printToFile(tag, msg + '\n' + android.util.Log.getStackTraceString(tr));
 		}
+		return android.util.Log.v(tag, msg, tr);
 	}
 
 	public static int d(String tag, String msg) {
 		if(!mEnabled)
 			return 0;
 		if(mLogFileOut != null) {
-			return println(tag, msg);
-		} else {
-			return android.util.Log.d(tag, msg);
+			printToFile(tag, msg);
 		}
+		return android.util.Log.d(tag, msg);
 	}
 
 	public static int d(String tag, String msg, Throwable tr) {
 		if(!mEnabled)
 			return 0;
 		if(mLogFileOut != null) {
-			return println(tag, msg + '\n' + android.util.Log.getStackTraceString(tr));
-		} else {
-			return android.util.Log.d(tag, msg, tr);
+			printToFile(tag, msg + '\n' + android.util.Log.getStackTraceString(tr));
 		}
+		return android.util.Log.d(tag, msg, tr);
 	}
 
 	public static int i(String tag, String msg) {
 		if(!mEnabled)
 			return 0;
 		if(mLogFileOut != null) {
-			return println(tag, msg);
-		} else {
-			return android.util.Log.d(tag, msg);
+			printToFile(tag, msg);
 		}
+		return android.util.Log.d(tag, msg);
 	}
 
 	public static int i(String tag, String msg, Throwable tr) {
 		if(!mEnabled)
 			return 0;
 		if(mLogFileOut != null) {
-			return println(tag, msg + '\n' + android.util.Log.getStackTraceString(tr));
-		} else {
-			return android.util.Log.i(tag, msg, tr);
+			printToFile(tag, msg + '\n' + android.util.Log.getStackTraceString(tr));
 		}
+		return android.util.Log.i(tag, msg, tr);
 	}
 
 	public static int w(String tag, String msg) {
 		if(!mEnabled)
 			return 0;
 		if(mLogFileOut != null) {
-			return println(tag, msg);
-		} else {
-			return android.util.Log.w(tag, msg);
+			printToFile(tag, msg);
 		}
+		return android.util.Log.w(tag, msg);
 	}
 
 	public static int w(String tag, String msg, Throwable tr) {
 		if(!mEnabled)
 			return 0;
 		if(mLogFileOut != null) {
-			return println(tag, msg + '\n' + android.util.Log.getStackTraceString(tr));
-		} else {
-			return android.util.Log.w(tag, msg, tr);
+			printToFile(tag, msg + '\n' + android.util.Log.getStackTraceString(tr));
 		}
+		return android.util.Log.w(tag, msg, tr);
 	}
 
 	public static int w(String tag, Throwable tr) {
 		if(!mEnabled)
 			return 0;
 		if(mLogFileOut != null) {
-			return println(tag, android.util.Log.getStackTraceString(tr));
-		} else {
-			return android.util.Log.w(tag, tr);
+			printToFile(tag, android.util.Log.getStackTraceString(tr));
 		}
+		return android.util.Log.w(tag, tr);
 	}
 
 	public static int e(String tag, String msg) {
 		if(!mEnabled)
 			return 0;
 		if(mLogFileOut != null) {
-			return println(tag, msg);
-		} else {
-			return android.util.Log.e(tag, msg);
+			printToFile(tag, msg);
 		}
+		return android.util.Log.e(tag, msg);
 	}
 
 	public static int e(String tag, String msg, Throwable tr) {
 		if(!mEnabled)
 			return 0;
 		if(mLogFileOut != null) {
-			return println(tag, msg + '\n' + android.util.Log.getStackTraceString(tr));
-		} else {
-			return android.util.Log.e(tag, msg, tr);
+			printToFile(tag, msg + '\n' + android.util.Log.getStackTraceString(tr));
 		}
+		return android.util.Log.e(tag, msg, tr);
 	}
 }

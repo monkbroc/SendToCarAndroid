@@ -1,8 +1,8 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:card_view="http://schemas.android.com/apk/res-auto" xmlns:tools="http://schemas.android.com/tools">
 
     <style name="CustomCirclePageIndicator">
-        <item name="fillColor">#FF666666</item>
-        <item name="strokeColor">#FFAAAAAA</item>
+        <item name="fillColor">@color/circle_indicator_fill</item>
+        <item name="strokeColor">@color/circle_indicator_stroke</item>
         <item name="radius">5dp</item>
     </style>
 
@@ -57,20 +57,20 @@
         <item name="android:background">?attr/selectableItemBackground</item>
         <item name="android:paddingLeft">@dimen/card_padding</item>
         <item name="android:paddingRight">@dimen/card_padding</item>
-        <item name="android:textColor">@color/grey</item>
+        <item name="android:textColor">@color/icon_grey</item>
         <item name="android:textAllCaps" tools:ignore="NewApi">false</item>
     </style>
 
     <style name="horizontalDivider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
-        <item name="android:background">?android:attr/dividerHorizontal</item>
+        <item name="android:background">?attr/dividerHorizontal</item>
     </style>
 
     <style name="verticalDivider">
         <item name="android:layout_width">1dp</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:background">?android:attr/dividerVertical</item>
+        <item name="android:background">?attr/dividerVertical</item>
     </style>
 
 </resources>

@@ -61,8 +61,9 @@
     <string name="listSendLog">Send debug log</string>
     <string name="infoHowTo">How to Use</string>
     <string name="infoStart">Start Google Maps, find a place and slide the white address box up</string>
-    <string name="infoShare">Press "Share"</string>
+    <string name="infoShare">Press the "Share" button or select "Share" from the 3-dots menu</string>
     <string name="infoSend">Select "Send To Car"</string>
     <string name="infoEnter">Select your car and hit "Send"</string>
-
+    <string name="infoHelp">The account could be your email, username, VIN or phone number. See the help for more info.</string>
+    
 </resources>

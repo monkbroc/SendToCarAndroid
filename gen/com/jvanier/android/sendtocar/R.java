@@ -2102,20 +2102,20 @@ containing a value of this type.
         public static final int default_underline_indicator_fades=0x7f0b0004;
     }
     public static final class color {
-        public static final int abc_background_cache_hint_selector_material_dark=0x7f070064;
-        public static final int abc_background_cache_hint_selector_material_light=0x7f070065;
+        public static final int abc_background_cache_hint_selector_material_dark=0x7f070066;
+        public static final int abc_background_cache_hint_selector_material_light=0x7f070067;
         public static final int abc_input_method_navigation_guard=0x7f070030;
-        public static final int abc_primary_text_disable_only_material_dark=0x7f070066;
-        public static final int abc_primary_text_disable_only_material_light=0x7f070067;
-        public static final int abc_primary_text_material_dark=0x7f070068;
-        public static final int abc_primary_text_material_light=0x7f070069;
-        public static final int abc_search_url_text=0x7f07006a;
+        public static final int abc_primary_text_disable_only_material_dark=0x7f070068;
+        public static final int abc_primary_text_disable_only_material_light=0x7f070069;
+        public static final int abc_primary_text_material_dark=0x7f07006a;
+        public static final int abc_primary_text_material_light=0x7f07006b;
+        public static final int abc_search_url_text=0x7f07006c;
         public static final int abc_search_url_text_normal=0x7f07002d;
         public static final int abc_search_url_text_pressed=0x7f07002f;
         public static final int abc_search_url_text_selected=0x7f07002e;
-        public static final int abc_secondary_text_material_dark=0x7f07006b;
-        public static final int abc_secondary_text_material_light=0x7f07006c;
-        public static final int accent=0x7f070063;
+        public static final int abc_secondary_text_material_dark=0x7f07006d;
+        public static final int abc_secondary_text_material_light=0x7f07006e;
+        public static final int accent=0x7f070065;
         public static final int accent_material_dark=0x7f07003c;
         public static final int accent_material_light=0x7f07003b;
         public static final int background_floating_material_dark=0x7f070033;
@@ -2146,6 +2146,8 @@ containing a value of this type.
         /**  Shadow color for the first pixels around CardView. 
          */
         public static final int cardview_shadow_start_color=0x7f07002b;
+        public static final int circle_indicator_fill=0x7f070061;
+        public static final int circle_indicator_stroke=0x7f070062;
         public static final int com_mixpanel_android_selected=0x7f070017;
         public static final int common_action_bar_splitter=0x7f070009;
         /**  Sign-in Button Colors 
@@ -2159,8 +2161,8 @@ containing a value of this type.
         public static final int common_signin_btn_light_text_disabled=0x7f070006;
         public static final int common_signin_btn_light_text_focused=0x7f070007;
         public static final int common_signin_btn_light_text_pressed=0x7f070005;
-        public static final int common_signin_btn_text_dark=0x7f07006d;
-        public static final int common_signin_btn_text_light=0x7f07006e;
+        public static final int common_signin_btn_text_dark=0x7f07006f;
+        public static final int common_signin_btn_text_light=0x7f070070;
         public static final int default_circle_indicator_fill_color=0x7f070020;
         public static final int default_circle_indicator_page_color=0x7f070021;
         public static final int default_circle_indicator_stroke_color=0x7f070022;
@@ -2175,7 +2177,6 @@ containing a value of this type.
         public static final int dim_foreground_material_dark=0x7f070047;
         public static final int dim_foreground_material_light=0x7f070048;
         public static final int green=0x7f07005f;
-        public static final int grey=0x7f07005e;
         /**  TODO: This is 40% alpha on the default accent color. 
          */
         public static final int highlighted_text_material_dark=0x7f07004d;
@@ -2184,6 +2185,7 @@ containing a value of this type.
         public static final int highlighted_text_material_light=0x7f07004e;
         public static final int hint_foreground_material_dark=0x7f07004b;
         public static final int hint_foreground_material_light=0x7f07004c;
+        public static final int icon_grey=0x7f07005e;
         public static final int link_text_material_dark=0x7f07004f;
         public static final int link_text_material_light=0x7f070050;
         public static final int material_blue_grey_800=0x7f07005b;
@@ -2194,8 +2196,8 @@ containing a value of this type.
         public static final int navigation_primary=0x7f070060;
         /**  Material Theme colors for action bar and widgets 
          */
-        public static final int primary=0x7f070061;
-        public static final int primaryDark=0x7f070062;
+        public static final int primary=0x7f070063;
+        public static final int primaryDark=0x7f070064;
         public static final int primary_dark_material_dark=0x7f070037;
         public static final int primary_dark_material_light=0x7f070038;
         public static final int primary_material_dark=0x7f070035;
@@ -2224,8 +2226,8 @@ containing a value of this type.
         public static final int vpi__bright_foreground_holo_light=0x7f07001b;
         public static final int vpi__bright_foreground_inverse_holo_dark=0x7f07001e;
         public static final int vpi__bright_foreground_inverse_holo_light=0x7f07001f;
-        public static final int vpi__dark_theme=0x7f07006f;
-        public static final int vpi__light_theme=0x7f070070;
+        public static final int vpi__dark_theme=0x7f070071;
+        public static final int vpi__light_theme=0x7f070072;
         public static final int wallet_bright_foreground_disabled_holo_light=0x7f07000f;
         /** 
          Wallet colors to support consistent Wallet fragment holo dark UI in client application
@@ -2244,8 +2246,8 @@ containing a value of this type.
         public static final int wallet_hint_foreground_holo_light=0x7f070011;
         public static final int wallet_holo_blue_light=0x7f070015;
         public static final int wallet_link_text_light=0x7f070016;
-        public static final int wallet_primary_text_holo_light=0x7f070071;
-        public static final int wallet_secondary_text_holo_dark=0x7f070072;
+        public static final int wallet_primary_text_holo_light=0x7f070073;
+        public static final int wallet_secondary_text_holo_dark=0x7f070074;
     }
     public static final class dimen {
         /**  Default height of an action bar. 
@@ -2790,14 +2792,15 @@ containing a value of this type.
         public static final int screenshot2=0x7f020173;
         public static final int screenshot3=0x7f020174;
         public static final int screenshot4=0x7f020175;
-        public static final int search_icon=0x7f020176;
-        public static final int vpi__tab_indicator=0x7f020177;
-        public static final int vpi__tab_selected_focused_holo=0x7f020178;
-        public static final int vpi__tab_selected_holo=0x7f020179;
-        public static final int vpi__tab_selected_pressed_holo=0x7f02017a;
-        public static final int vpi__tab_unselected_focused_holo=0x7f02017b;
-        public static final int vpi__tab_unselected_holo=0x7f02017c;
-        public static final int vpi__tab_unselected_pressed_holo=0x7f02017d;
+        public static final int screenshot5=0x7f020176;
+        public static final int search_icon=0x7f020177;
+        public static final int vpi__tab_indicator=0x7f020178;
+        public static final int vpi__tab_selected_focused_holo=0x7f020179;
+        public static final int vpi__tab_selected_holo=0x7f02017a;
+        public static final int vpi__tab_selected_pressed_holo=0x7f02017b;
+        public static final int vpi__tab_unselected_focused_holo=0x7f02017c;
+        public static final int vpi__tab_unselected_holo=0x7f02017d;
+        public static final int vpi__tab_unselected_pressed_holo=0x7f02017e;
     }
     public static final class id {
         public static final int accountLabel=0x7f08007b;
@@ -3215,6 +3218,7 @@ containing a value of this type.
         public static final int fordDownload=0x7f060063;
         public static final int helpForVehicle=0x7f060067;
         public static final int infoEnter=0x7f06007a;
+        public static final int infoHelp=0x7f06007b;
         public static final int infoHowTo=0x7f060076;
         public static final int infoSend=0x7f060079;
         public static final int infoShare=0x7f060078;
