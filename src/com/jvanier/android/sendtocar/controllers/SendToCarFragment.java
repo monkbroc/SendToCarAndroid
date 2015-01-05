@@ -59,8 +59,9 @@ import com.jvanier.android.sendtocar.uploaders.OnStarUploader;
 /* TODO:
  *
  * - Popup for updating BMW Assist
- * - Update tutorial with new Google Maps screenshots
- * - Check that all FIXME and TODO are removed
+ * - Grey send button when disabled and green when enabled
+ *   http://stackoverflow.com/questions/14042866/state-list-drawable-and-disabled-state
+ * - Translation
  * 
  */
 public class SendToCarFragment extends Fragment {
