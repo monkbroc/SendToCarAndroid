@@ -2347,10 +2347,10 @@ containing a value of this type.
          */
         public static final int activity_horizontal_margin=0x7f0a003d;
         public static final int activity_vertical_margin=0x7f0a003e;
-        public static final int card_header_margin_top=0x7f0a0042;
-        public static final int card_item_spacing=0x7f0a0043;
-        public static final int card_margin_top=0x7f0a0041;
-        public static final int card_padding=0x7f0a0040;
+        public static final int card_header_margin_top=0x7f0a0043;
+        public static final int card_item_spacing=0x7f0a0044;
+        public static final int card_margin_top=0x7f0a0042;
+        public static final int card_padding=0x7f0a0041;
         /**  Inset shadow for RoundRectDrawableWithShadow. It is used to avoid gaps between the card
      and the shadow. 
          */
@@ -2416,6 +2416,7 @@ containing a value of this type.
     
          */
         public static final int navigation_drawer_width=0x7f0a003f;
+        public static final int navigation_item_padding=0x7f0a0040;
     }
     public static final class drawable {
         public static final int abc_ab_share_pack_holo_dark=0x7f020000;

@@ -64,13 +64,13 @@
     <style name="horizontalDivider">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">1dp</item>
-        <item name="android:background">?attr/dividerHorizontal</item>
+        <item name="android:background">@color/icon_grey</item>
     </style>
 
     <style name="verticalDivider">
         <item name="android:layout_width">1dp</item>
         <item name="android:layout_height">match_parent</item>
-        <item name="android:background">?attr/dividerVertical</item>
+        <item name="android:background">@color/icon_grey</item>
     </style>
 
 </resources>

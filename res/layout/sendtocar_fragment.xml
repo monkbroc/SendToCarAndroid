@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:divider="?attr/dividerHorizontal"
+    android:divider="?android:attr/dividerHorizontal"
     android:orientation="vertical"
     tools:context=".ui.SendToCarFragment" >
 
@@ -133,7 +133,7 @@
         style="?attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:divider="?attr/dividerVertical"
+        android:divider="?android:attr/dividerVertical"
         android:orientation="horizontal"
         android:showDividers="middle"
         tools:ignore="UnusedAttribute" >
