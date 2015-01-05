@@ -7,8 +7,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.util.Log;
 
+import com.jvanier.android.sendtocar.common.Log;
 import com.jvanier.android.sendtocar.common.Utils;
 
 
@@ -51,7 +51,7 @@ public class Credentials {
 			InputStream inputStream = context.getAssets().open(ASSET_FILENAME);
 			String contents = Utils.ReadInputStream(inputStream);
 			data = new JSONObject(contents);
-			environmentKey = Utils.isDebug(context) ? DEVELOPMENT_KEY : PRODUCTION_KEY;
+			environmentKey = Utils.isDevelopment(context) ? DEVELOPMENT_KEY : PRODUCTION_KEY;
 		} catch (IOException e) {
 			Log.e(TAG, "No credentials JSON file found!");
 			Log.e(TAG, "Add a JSON file with credentials to the build project in folder /assets/" + ASSET_FILENAME);

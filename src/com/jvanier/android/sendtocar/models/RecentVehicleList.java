@@ -8,11 +8,11 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.jvanier.android.sendtocar.downloaders.CarListManager;
-
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
+
+import com.jvanier.android.sendtocar.common.Log;
+import com.jvanier.android.sendtocar.downloaders.CarListManager;
 
 public class RecentVehicleList {
 	private static final String TAG = "RecentVehicleList";

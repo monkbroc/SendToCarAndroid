@@ -6,8 +6,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.app.Application;
+import android.content.Context;
 
+import com.jvanier.android.sendtocar.common.Log;
 import com.jvanier.android.sendtocar.common.Mixpanel;
+import com.jvanier.android.sendtocar.common.Utils;
 import com.jvanier.android.sendtocar.downloaders.CarListManager;
 import com.jvanier.android.sendtocar.models.Credentials;
 import com.jvanier.android.sendtocar.models.RecentVehicleList;
@@ -20,13 +23,28 @@ public class SendToCarApp extends Application {
 	public void onCreate() {
 		super.onCreate();
 		
-		loadCredentials();
 		loadPreferences();
+		setupLog();
+		
+		loadCredentials();
 		setupMixpanel();
 		updateCarList();
 		loadRecentVehiclesList();
 	}
 	
+	private void loadPreferences() {
+		UserPreferences.sharedInstance().load(getApplicationContext());
+	}
+	
+	private void setupLog() {
+		Context context = getApplicationContext();
+		if(Utils.isDevelopment(context)) {
+			Log.enableToLogCat();
+		} else if(UserPreferences.sharedInstance().isDebug()) {
+			Log.enableToFile(context);
+		}
+	}
+
 	private void loadCredentials() {
 		try {
 			Credentials.sharedInstance().loadCredentials(this);
@@ -36,10 +54,6 @@ public class SendToCarApp extends Application {
 		}
 	}
 	
-	private void loadPreferences() {
-		UserPreferences.sharedInstance().load(getApplicationContext());
-	}
-
 	private void setupMixpanel() {		
 		String mixpanelToken = Credentials.sharedInstance().get("MIXPANEL_TOKEN");
 		MixpanelAPI mixpanel = Mixpanel.initializeSharedInstance(this, mixpanelToken);

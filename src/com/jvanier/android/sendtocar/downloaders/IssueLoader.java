@@ -12,10 +12,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import com.jvanier.android.sendtocar.common.BackgroundTaskAbort;
 import com.jvanier.android.sendtocar.common.Constants;
+import com.jvanier.android.sendtocar.common.Log;
 import com.jvanier.android.sendtocar.common.SniHttpClient;
 import com.jvanier.android.sendtocar.models.Issue;
 

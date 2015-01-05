@@ -18,11 +18,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.content.Context;
-import android.util.Log;
 
 import com.jvanier.android.sendtocar.R;
 import com.jvanier.android.sendtocar.common.BackgroundTaskAbort;
 import com.jvanier.android.sendtocar.common.HttpClientTrustAll;
+import com.jvanier.android.sendtocar.common.Log;
 import com.jvanier.android.sendtocar.common.Utils;
 
 public class MapquestUploader extends BaseUploader {

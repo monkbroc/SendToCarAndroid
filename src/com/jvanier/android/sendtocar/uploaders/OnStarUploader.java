@@ -5,10 +5,10 @@ import java.net.URLEncoder;
 
 import android.content.Context;
 import android.text.format.Time;
-import android.util.Log;
 
 import com.jvanier.android.sendtocar.R;
 import com.jvanier.android.sendtocar.common.BackgroundTaskAbort;
+import com.jvanier.android.sendtocar.common.Log;
 import com.jvanier.android.sendtocar.controllers.commands.OpenURL;
 
 public class OnStarUploader extends BaseUploader {

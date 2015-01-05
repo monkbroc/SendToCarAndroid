@@ -1,5 +1,7 @@
 package com.jvanier.android.sendtocar.controllers;
 
+import java.util.ArrayList;
+
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -20,7 +22,9 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.jvanier.android.sendtocar.R;
+import com.jvanier.android.sendtocar.common.Log;
 import com.jvanier.android.sendtocar.controllers.commands.Command;
+import com.jvanier.android.sendtocar.controllers.commands.SendDebugLogToDeveloper;
 import com.jvanier.android.sendtocar.controllers.commands.ShowAppInGooglePlay;
 import com.jvanier.android.sendtocar.controllers.commands.ShowHelp;
 import com.jvanier.android.sendtocar.controllers.commands.ShowTutorial;
@@ -47,12 +51,6 @@ public class NavigationDrawerFragment extends Fragment {
 		}
 	}
 
-	private NavigationItem items[] = {
-			new NavigationItem(R.string.listTutorialTitle, R.drawable.ic_navigation_lightbulb, new ShowTutorial()),
-			new NavigationItem(R.string.listHelpTitle, R.drawable.ic_navigation_help, new ShowHelp()),
-			new NavigationItem(R.string.listRateTitle, R.drawable.ic_navigation_star, new ShowAppInGooglePlay()),
-			new NavigationItem(R.string.listEmailTitle, R.drawable.ic_navigation_email, new WriteEmailToDeveloper()) };
-
 	/**
 	 * Per the design guidelines, you should show the drawer on launch once.
 	 * This shared preference tracks this.
@@ -71,12 +69,16 @@ public class NavigationDrawerFragment extends Fragment {
 	private boolean mFromSavedInstanceState;
 	private boolean mUserShownDrawer;
 
+	private ArrayList<NavigationItem> itemsList;
+
 	public NavigationDrawerFragment() {
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		setupItems();
 
 		// Read in the flag indicating whether or not the user has demonstrated
 		// awareness of the
@@ -86,6 +88,19 @@ public class NavigationDrawerFragment extends Fragment {
 
 		if (savedInstanceState != null) {
 			mFromSavedInstanceState = true;
+		}
+	}
+
+	private void setupItems() {
+		itemsList = new ArrayList<>();
+
+		itemsList.add(new NavigationItem(R.string.listTutorialTitle, R.drawable.ic_navigation_lightbulb, new ShowTutorial()));
+		itemsList.add(new NavigationItem(R.string.listHelpTitle, R.drawable.ic_navigation_help, new ShowHelp()));
+		itemsList.add(new NavigationItem(R.string.listRateTitle, R.drawable.ic_navigation_star, new ShowAppInGooglePlay()));
+		itemsList.add(new NavigationItem(R.string.listEmailTitle, R.drawable.ic_navigation_email, new WriteEmailToDeveloper()));
+
+		if (Log.hasLogFile()) {
+			itemsList.add(new NavigationItem(R.string.listSendLog, R.drawable.ic_navigation_email, new SendDebugLogToDeveloper()));
 		}
 	}
 
@@ -107,9 +122,8 @@ public class NavigationDrawerFragment extends Fragment {
 			}
 		});
 
-		// FIXME: maybe replace ArrayAdapter by SimpleAdapter
 		mDrawerListView.setAdapter(new ArrayAdapter<NavigationItem>(getActionBar().getThemedContext(), R.layout.navigation_item,
-				android.R.id.text1, items) {
+				android.R.id.text1, (NavigationItem[]) itemsList.toArray()) {
 
 			@Override
 			public View getView(int position, View convertView, ViewGroup parent) {
@@ -224,7 +238,7 @@ public class NavigationDrawerFragment extends Fragment {
 		if (mDrawerLayout != null) {
 			mDrawerLayout.closeDrawer(mFragmentContainerView);
 		}
-		Command handler = items[position].handler;
+		Command handler = itemsList.get(position).handler;
 		if (handler != null) {
 			handler.perfrom(getActivity());
 		}

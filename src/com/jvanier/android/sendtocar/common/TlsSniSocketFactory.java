@@ -17,7 +17,6 @@ import org.apache.http.params.HttpParams;
 import android.annotation.TargetApi;
 import android.net.SSLCertificateSocketFactory;
 import android.os.Build;
-import android.util.Log;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 public class TlsSniSocketFactory implements LayeredSocketFactory {

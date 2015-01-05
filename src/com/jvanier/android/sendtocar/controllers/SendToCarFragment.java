@@ -20,7 +20,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -32,6 +31,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jvanier.android.sendtocar.R;
+import com.jvanier.android.sendtocar.common.Log;
 import com.jvanier.android.sendtocar.common.Mixpanel;
 import com.jvanier.android.sendtocar.common.Utils;
 import com.jvanier.android.sendtocar.controllers.commands.ShowHelp;
@@ -59,8 +59,6 @@ import com.jvanier.android.sendtocar.uploaders.OnStarUploader;
 /* TODO:
  *
  * - Popup for updating BMW Assist
- * - BMW Assist update instructions on the website
- * - Verify all makes have some instructions on the website
  * - Update tutorial with new Google Maps screenshots
  * - Implement Debug logging
  * - Verify all calls to Mixpanel were added
@@ -397,6 +395,11 @@ public class SendToCarFragment extends Fragment {
 
 		if (showAlertAndAbortSend) {
 			UserPreferences.sharedInstance().setDebug(debug).save(getActivity());
+			if(debug) {
+				Log.enableToFile(getActivity());
+			} else {
+				Log.disableAndDeleteFile(getActivity());
+			}
 
 			AlertDialog.Builder alertbox = new AlertDialog.Builder(getActivity());
 			alertbox.setTitle(R.string.debugMode);

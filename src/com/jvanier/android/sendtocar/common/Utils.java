@@ -14,7 +14,8 @@ import android.content.pm.PackageManager;
 import android.text.TextUtils;
 
 public class Utils {
-	public static boolean isDebug(Context c) {
+	// True if the app build is for development, not Google Play
+	public static boolean isDevelopment(Context c) {
 		try {
 			PackageManager pm = c.getPackageManager();
 			PackageInfo pi = pm.getPackageInfo(c.getPackageName(), 0);

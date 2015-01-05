@@ -58,6 +58,7 @@
     <string name="listHelpTitle">Show more help</string>
     <string name="listRateTitle">Rate app</string>
     <string name="listEmailTitle">Contact developer</string>
+    <string name="listSendLog">Send debug log</string>
     <string name="infoHowTo">How to Use</string>
     <string name="infoStart">Start Google Maps, find a place and slide the white address box up</string>
     <string name="infoShare">Press "Share"</string>

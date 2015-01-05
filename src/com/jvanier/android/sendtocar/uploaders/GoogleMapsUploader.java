@@ -21,10 +21,10 @@ import org.json.JSONObject;
 import android.content.Context;
 import android.net.Uri;
 import android.text.TextUtils;
-import android.util.Log;
 
 import com.jvanier.android.sendtocar.R;
 import com.jvanier.android.sendtocar.common.BackgroundTaskAbort;
+import com.jvanier.android.sendtocar.common.Log;
 import com.jvanier.android.sendtocar.common.Utils;
 import com.jvanier.android.sendtocar.controllers.commands.OpenURL;
 
