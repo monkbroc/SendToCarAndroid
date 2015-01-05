@@ -2,3 +2,4 @@
 Thumbs.db
 Browse.plb
 *.swp
+/proguard/
