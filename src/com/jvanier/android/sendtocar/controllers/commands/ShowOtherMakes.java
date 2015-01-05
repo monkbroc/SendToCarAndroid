@@ -16,11 +16,11 @@ public class ShowOtherMakes extends OpenURL {
 	@Override
 	public void perfrom(Context context) {
 		super.perfrom(context);
-		
+
 		JSONObject props = new JSONObject();
 		try {
 			props.put("Action", "Show other makes");
-		} catch (JSONException e) {
+		} catch(JSONException e) {
 		}
 		Mixpanel.sharedInstance().track("Perform info dialog action", props);
 	}

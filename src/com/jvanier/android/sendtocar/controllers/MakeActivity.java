@@ -61,7 +61,7 @@ public class MakeActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
+		switch(item.getItemId()) {
 		case android.R.id.home:
 			finish();
 			return true;
@@ -103,7 +103,7 @@ public class MakeActivity extends ActionBarActivity {
 
 		recentList = RecentVehicleList.sharedInstance();
 
-		for (int i = 0; i < recentList.size(); i++) {
+		for(int i = 0; i < recentList.size(); i++) {
 			RecentVehicle vehicle = recentList.getRecentVehicle(i);
 
 			View recentVehicleItem = getLayoutInflater().inflate(R.layout.recent_vehicle_item, recentVehiclesCardContainer, false);
@@ -121,7 +121,7 @@ public class MakeActivity extends ActionBarActivity {
 		}
 
 		// Hide section if there are no recent vehicles
-		if (recentList.size() == 0) {
+		if(recentList.size() == 0) {
 			hideRecentVehicles();
 		}
 	}
@@ -153,10 +153,10 @@ public class MakeActivity extends ActionBarActivity {
 		CarList carList = CarListManager.sharedInstance().getCarList();
 		List<CarProvider> carListDisplayed = carList.asList();
 
-		for (int i = 0; i < carListDisplayed.size(); i++) {
+		for(int i = 0; i < carListDisplayed.size(); i++) {
 			CarProvider provider = carListDisplayed.get(i);
 
-			if (provider.isCountrySupported(country)) {
+			if(provider.isCountrySupported(country)) {
 				View makeItem = getLayoutInflater().inflate(R.layout.make_item, makesCardContainer, false);
 				TextView makeView = (TextView) makeItem.findViewById(android.R.id.text1);
 				makeView.setText(provider.make);
@@ -167,30 +167,30 @@ public class MakeActivity extends ActionBarActivity {
 			}
 		}
 	}
-	
+
 	private void setupHelp() {
 		makesCountryContainer = findViewById(R.id.makesCountryContainer);
 		makesCountryLabel = (TextView) findViewById(R.id.makesCountryLabel);
 		makesCountryLabelTemplate = makesCountryLabel.getText().toString();
 		updateMakesCountryLabel();
-		
+
 		makesCountryContainer.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				final CountryPicker picker = CountryPicker.newInstance(getString(R.string.selectCountry));
 				picker.show(getSupportFragmentManager(), "COUNTRY_PICKER");
 				picker.setListener(new CountryPickerListener() {
-				    @Override
-				    public void onSelectCountry(String name, String code) {
+					@Override
+					public void onSelectCountry(String name, String code) {
 						picker.dismiss();
-				    	UserPreferences.sharedInstance().setCountry(code.toLowerCase(Locale.US)).save(MakeActivity.this);
-				    	setupMakes();
+						UserPreferences.sharedInstance().setCountry(code.toLowerCase(Locale.US)).save(MakeActivity.this);
+						setupMakes();
 						updateMakesCountryLabel();
-				    }
+					}
 				});
 			}
 		});
-		
+
 		missingMakeButton = (TextView) findViewById(R.id.missingMakeButton);
 		missingMakeButton.setOnClickListener(new OnClickListener() {
 			@Override
@@ -202,7 +202,7 @@ public class MakeActivity extends ActionBarActivity {
 
 	private void updateMakesCountryLabel() {
 		Locale currentCountry = new Locale("", UserPreferences.sharedInstance().getCountry());
-		
+
 		makesCountryLabel.setText(MessageFormat.format(makesCountryLabelTemplate, currentCountry.getDisplayCountry()));
 	}
 
@@ -224,14 +224,14 @@ public class MakeActivity extends ActionBarActivity {
 
 	public void discardRecentVehicle(RecentVehicle vehicle) {
 		int oldPosition = recentList.removeRecentVehicle(vehicle);
-		if (oldPosition >= 0) {
+		if(oldPosition >= 0) {
 			recentList.saveToCache(this);
 
-			if (recentList.size() == 0) {
+			if(recentList.size() == 0) {
 				hideRecentVehicles();
 			} else {
 				View recentVehicleItem = recentVehiclesCardContainer.getChildAt(oldPosition);
-				if (recentVehicleItem != null) {
+				if(recentVehicleItem != null) {
 					recentVehiclesCardContainer.removeView(recentVehicleItem);
 				}
 			}

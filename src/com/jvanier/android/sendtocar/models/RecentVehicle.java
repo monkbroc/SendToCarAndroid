@@ -7,7 +7,7 @@ public class RecentVehicle implements Serializable {
 	public String makeId;
 	public String make;
 	public String account;
-	
+
 	@Override
 	public boolean equals(Object other) {
 		if(other instanceof RecentVehicle) {
@@ -20,6 +20,6 @@ public class RecentVehicle implements Serializable {
 
 	@Override
 	public String toString() {
-		return make + "(" + account + ")"; 
+		return make + "(" + account + ")";
 	}
 }

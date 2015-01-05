@@ -14,43 +14,43 @@ import com.viewpagerindicator.PageIndicator;
 
 public class TutorialActivity extends ActionBarActivity implements OnPageChangeListener {
 	TutorialPagesFragmentAdapter mAdapter;
-    ViewPager mPager;
-    PageIndicator mIndicator;
+	ViewPager mPager;
+	PageIndicator mIndicator;
 	private Button mSkip;
 	private Button mNext;
-    
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.tutorial_activity);
-        
-        setupViewPager();
-        setupButtons();
-    }
-    
-    private void setupViewPager() {
-        mAdapter = new TutorialPagesFragmentAdapter(getSupportFragmentManager());
 
-        mPager = (ViewPager)findViewById(R.id.pager);
-        mPager.setAdapter(mAdapter);
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.tutorial_activity);
 
-        mIndicator = (CirclePageIndicator)findViewById(R.id.indicator);
-        mIndicator.setViewPager(mPager);
-        mIndicator.setOnPageChangeListener(this);
-    }
-    
-    private void setupButtons() {
-        mSkip = (Button) findViewById(R.id.skipButton);
-        mSkip.setOnClickListener(new OnClickListener() {
+		setupViewPager();
+		setupButtons();
+	}
+
+	private void setupViewPager() {
+		mAdapter = new TutorialPagesFragmentAdapter(getSupportFragmentManager());
+
+		mPager = (ViewPager) findViewById(R.id.pager);
+		mPager.setAdapter(mAdapter);
+
+		mIndicator = (CirclePageIndicator) findViewById(R.id.indicator);
+		mIndicator.setViewPager(mPager);
+		mIndicator.setOnPageChangeListener(this);
+	}
+
+	private void setupButtons() {
+		mSkip = (Button) findViewById(R.id.skipButton);
+		mSkip.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-            	// close tutorial activity
-            	finish();
+				// close tutorial activity
+				finish();
 			}
 		});
 
-        mNext = (Button) findViewById(R.id.nextButton);
-        mNext.setOnClickListener(new OnClickListener() {
+		mNext = (Button) findViewById(R.id.nextButton);
+		mNext.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				int current = mPager.getCurrentItem();
@@ -58,14 +58,13 @@ public class TutorialActivity extends ActionBarActivity implements OnPageChangeL
 					// Go to next with smooth scrolling
 					mPager.setCurrentItem(current + 1, true);
 				} else {
-	            	// close tutorial activity
-	            	finish();
+					// close tutorial activity
+					finish();
 				}
 			}
 		});
 
-    }
-    
+	}
 
 	@Override
 	public void onPageSelected(int position) {
@@ -77,14 +76,14 @@ public class TutorialActivity extends ActionBarActivity implements OnPageChangeL
 			mSkip.setVisibility(View.VISIBLE);
 		}
 	}
-	
+
 	@Override
-    public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+	public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 		// Do nothing
 	}
-	
+
 	@Override
-    public void onPageScrollStateChanged(int state) {
+	public void onPageScrollStateChanged(int state) {
 		// Do nothing
 	}
 }

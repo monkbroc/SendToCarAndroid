@@ -21,12 +21,12 @@ public class ShowHelpForMake extends OpenURL {
 	@Override
 	public void perfrom(Context context) {
 		super.perfrom(context);
-		
+
 		JSONObject props = new JSONObject();
 		try {
 			props.put("Button", "Help");
 			props.put("Make", makeId);
-		} catch (JSONException e) {
+		} catch(JSONException e) {
 		}
 		Mixpanel.sharedInstance().track("Showing make info", props);
 	}

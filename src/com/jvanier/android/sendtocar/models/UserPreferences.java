@@ -10,7 +10,7 @@ public class UserPreferences {
 	private boolean debug;
 	private boolean tutorialShown;
 	private String country;
-	
+
 	public boolean isDebug() {
 		return debug;
 	}
@@ -55,14 +55,14 @@ public class UserPreferences {
 	// Make singleton constructor private
 	private UserPreferences() {
 	}
-	
+
 	public void load(Context context) {
 		SharedPreferences settings = getPreferences(context);
 		debug = settings.getBoolean(KEY_DEBUG, false);
 		tutorialShown = settings.getBoolean(KEY_TUTORIAL_SHOWN, false);
 		country = settings.getString(KEY_COUNTRY, null);
 	}
-	
+
 	public void save(Context context) {
 		SharedPreferences.Editor settingsEditor = getPreferences(context).edit();
 		settingsEditor.putBoolean(KEY_DEBUG, debug);
@@ -72,7 +72,7 @@ public class UserPreferences {
 		}
 		settingsEditor.commit();
 	}
-	
+
 	private SharedPreferences getPreferences(Context context) {
 		return PreferenceManager.getDefaultSharedPreferences(context);
 	}

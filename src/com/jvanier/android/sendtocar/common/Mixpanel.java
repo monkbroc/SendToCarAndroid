@@ -5,7 +5,7 @@ import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 public class Mixpanel {
 	private static MixpanelAPI MIXPANEL_API_INSTANCE;
-	
+
 	public static MixpanelAPI initializeSharedInstance(Context context, String token) {
 		MIXPANEL_API_INSTANCE = MixpanelAPI.getInstance(context, token);
 		return sharedInstance();

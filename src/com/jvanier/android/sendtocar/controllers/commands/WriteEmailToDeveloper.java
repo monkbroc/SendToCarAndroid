@@ -16,20 +16,18 @@ import com.jvanier.android.sendtocar.common.Constants;
 public class WriteEmailToDeveloper implements Command {
 	@Override
 	public void perfrom(Context context) {
-		Intent intent = new Intent(Intent.ACTION_VIEW); 
-		intent.setData(Uri.parse("mailto:" + Constants.DEVELOPER_EMAIL)); 
+		Intent intent = new Intent(Intent.ACTION_VIEW);
+		intent.setData(Uri.parse("mailto:" + Constants.DEVELOPER_EMAIL));
 		try {
 			context.startActivity(intent);
-			
+
 			JSONObject props = new JSONObject();
 			try {
 				props.put("Action", "Email developer");
-			} catch (JSONException e) {
+			} catch(JSONException e) {
 			}
 			Mixpanel.sharedInstance().track("Perform info dialog action", props);
-		}
-		catch(ActivityNotFoundException e)
-		{
+		} catch(ActivityNotFoundException e) {
 			Toast toast = Toast.makeText(context, R.string.errorNoApp, Toast.LENGTH_SHORT);
 			toast.show();
 		}

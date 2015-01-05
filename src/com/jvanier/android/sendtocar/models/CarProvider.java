@@ -1,12 +1,11 @@
 package com.jvanier.android.sendtocar.models;
 
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 public class CarProvider implements Comparable<CarProvider>, Serializable {
-	
+
 	public final static int TYPE_CAR = 1;
 	public final static int TYPE_GPS = 2;
 
@@ -27,27 +26,27 @@ public class CarProvider implements Comparable<CarProvider>, Serializable {
 	public boolean showPhone;
 	public boolean showNotes;
 	public List<String> supportedCountries;
-	
+
 	public CarProvider() {
 		supportedCountries = new ArrayList<String>();
 	}
-	
+
 	public boolean isCountrySupported(String country) {
 		return supportedCountries.contains("all") || supportedCountries.contains(country);
 	}
-	
+
 	@Override
 	public String toString() {
 		return make + ((type == 2) ? " (GPS)" : "");
 	}
-	
-    @Override
-    public int compareTo(CarProvider other) {
-    	int typediff = (this.type - other.type);
-        return (typediff == 0) ? this.make.compareTo(other.make) : typediff;
-    }
+
+	@Override
+	public int compareTo(CarProvider other) {
+		int typediff = (this.type - other.type);
+		return (typediff == 0) ? this.make.compareTo(other.make) : typediff;
+	}
 
 	public void addSupportedCountry(String country) {
-		supportedCountries.add(country);		
+		supportedCountries.add(country);
 	}
 }

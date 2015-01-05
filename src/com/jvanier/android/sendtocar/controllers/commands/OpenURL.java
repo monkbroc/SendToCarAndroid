@@ -10,17 +10,18 @@ import com.jvanier.android.sendtocar.R;
 
 public class OpenURL implements Command {
 	private String url;
+
 	public OpenURL(String url) {
 		this.url = url;
 	}
-	
+
 	@Override
 	public void perfrom(Context context) {
 		Intent intent = new Intent(Intent.ACTION_VIEW);
 		intent.setData(Uri.parse(url));
 		try {
 			context.startActivity(intent);
-		} catch (ActivityNotFoundException e) {
+		} catch(ActivityNotFoundException e) {
 			Toast toast = Toast.makeText(context, R.string.errorNoApp, Toast.LENGTH_SHORT);
 			toast.show();
 		}

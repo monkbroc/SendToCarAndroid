@@ -1,4 +1,5 @@
 package com.jvanier.android.sendtocar.common;
+
 import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
@@ -29,48 +30,45 @@ import org.apache.http.params.HttpProtocolParams;
 import org.apache.http.protocol.HTTP;
 
 public class HttpClientTrustAll {
-	
+
 	public static HttpClient getNewHttpClient() {
-	    try {
-	        KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
-	        trustStore.load(null, null);
-	        
-	        HttpClientTrustAll tmp = new HttpClientTrustAll();
+		try {
+			KeyStore trustStore = KeyStore.getInstance(KeyStore.getDefaultType());
+			trustStore.load(null, null);
 
-	        SSLSocketFactory sf = tmp.new MySSLSocketFactory(trustStore);
-	        sf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
+			HttpClientTrustAll tmp = new HttpClientTrustAll();
 
-	        HttpParams params = new BasicHttpParams();
-	        HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
-	        HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
+			SSLSocketFactory sf = tmp.new MySSLSocketFactory(trustStore);
+			sf.setHostnameVerifier(SSLSocketFactory.ALLOW_ALL_HOSTNAME_VERIFIER);
 
-	        SchemeRegistry registry = new SchemeRegistry();
-	        registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
-	        registry.register(new Scheme("https", sf, 443));
+			HttpParams params = new BasicHttpParams();
+			HttpProtocolParams.setVersion(params, HttpVersion.HTTP_1_1);
+			HttpProtocolParams.setContentCharset(params, HTTP.UTF_8);
 
-	        ClientConnectionManager ccm = new ThreadSafeClientConnManager(params, registry);
+			SchemeRegistry registry = new SchemeRegistry();
+			registry.register(new Scheme("http", PlainSocketFactory.getSocketFactory(), 80));
+			registry.register(new Scheme("https", sf, 443));
 
-	        return new DefaultHttpClient(ccm, params);
-	    } catch (Exception e) {
-	        return new DefaultHttpClient();
-	    }
+			ClientConnectionManager ccm = new ThreadSafeClientConnManager(params, registry);
+
+			return new DefaultHttpClient(ccm, params);
+		} catch(Exception e) {
+			return new DefaultHttpClient();
+		}
 	}
 
 	private class MySSLSocketFactory extends SSLSocketFactory {
 		SSLContext sslContext = SSLContext.getInstance("TLS");
 
-		public MySSLSocketFactory(KeyStore truststore)
-				throws NoSuchAlgorithmException, KeyManagementException,
-				KeyStoreException, UnrecoverableKeyException {
+		public MySSLSocketFactory(KeyStore truststore) throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException,
+				UnrecoverableKeyException {
 			super(truststore);
 
 			TrustManager tm = new X509TrustManager() {
-				public void checkClientTrusted(X509Certificate[] chain,
-						String authType) throws CertificateException {
+				public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {
 				}
 
-				public void checkServerTrusted(X509Certificate[] chain,
-						String authType) throws CertificateException {
+				public void checkServerTrusted(X509Certificate[] chain, String authType) throws CertificateException {
 				}
 
 				public X509Certificate[] getAcceptedIssuers() {
@@ -82,10 +80,8 @@ public class HttpClientTrustAll {
 		}
 
 		@Override
-		public Socket createSocket(Socket socket, String host, int port,
-				boolean autoClose) throws IOException, UnknownHostException {
-			return sslContext.getSocketFactory().createSocket(socket, host,
-					port, autoClose);
+		public Socket createSocket(Socket socket, String host, int port, boolean autoClose) throws IOException, UnknownHostException {
+			return sslContext.getSocketFactory().createSocket(socket, host, port, autoClose);
 		}
 
 		@Override

@@ -55,18 +55,19 @@ public class CarListManager {
 	}
 
 	public void updateCarList(Context context, String language) {
-		// Read cache/default list on main thread to make sure there's at least some date for the UI
+		// Read cache/default list on main thread to make sure there's at least
+		// some date for the UI
 		if(readCarList(context, language) == false) {
 			// Download new list if needed
 			(new DownloadCarListTask(context, language)).execute();
 		}
 	}
-	
+
 	protected boolean readCarList(Context context, String language) {
 		InputStream in = null;
 		ObjectInputStream objIn = null;
 		boolean success = false;
-		
+
 		final int READ_CACHE = 0;
 		final int READ_DEFAULT = 1;
 		for(int state = READ_CACHE; state <= READ_DEFAULT; state++) {
@@ -81,18 +82,21 @@ public class CarListManager {
 				CarList readCarList = (CarList) objIn.readObject();
 				objIn.close();
 
-				if(Log.isEnabled()) Log.d(TAG, "Read car list with " + readCarList.size() + " providers from " + ((state == READ_CACHE) ? "cache" : "default"));
+				if(Log.isEnabled())
+					Log.d(TAG, "Read car list with " + readCarList.size() + " providers from "
+							+ ((state == READ_CACHE) ? "cache" : "default"));
 				setCarList(readCarList);
 
-				if (state == READ_DEFAULT || readCarList.isEmpty() || readCarList.timeToReDownload()
+				if(state == READ_DEFAULT || readCarList.isEmpty() || readCarList.timeToReDownload()
 						|| readCarList.languageChanged(language)) {
 					success = false;
 				} else {
 					success = true;
 				}
-				// If cache was read successfully no need to read the default file
+				// If cache was read successfully no need to read the default
+				// file
 				break;
-			} catch (Exception e) {
+			} catch(Exception e) {
 				success = false;
 			}
 		}
@@ -113,14 +117,15 @@ public class CarListManager {
 
 		@Override
 		protected Boolean doInBackground(Void... ignored) {
-			if(Log.isEnabled()) Log.d(TAG, "Starting car download");
+			if(Log.isEnabled())
+				Log.d(TAG, "Starting car download");
 
 			try {
 				downloadedCarList = new CarList(language);
 
 				String carsJson = downloadCarList();
 
-				if (carsJson.length() == 0)
+				if(carsJson.length() == 0)
 					return Boolean.FALSE;
 				parseCarsData(carsJson);
 
@@ -129,7 +134,7 @@ public class CarListManager {
 				writeCarList(downloadedCarList);
 
 				return Boolean.TRUE;
-			} catch (BackgroundTaskAbort e) {
+			} catch(BackgroundTaskAbort e) {
 				return Boolean.FALSE;
 			}
 		}
@@ -138,8 +143,8 @@ public class CarListManager {
 			String carsJson = "";
 			try {
 				URI carsUri = new URI(MessageFormat.format(Constants.CARS_URL, language));
-				if(Log.isEnabled()) Log.d(TAG, "Downloading car list from URL " + carsUri.toString());
-
+				if(Log.isEnabled())
+					Log.d(TAG, "Downloading car list from URL " + carsUri.toString());
 
 				HttpGet httpGet = new HttpGet();
 				httpGet.setURI(carsUri);
@@ -147,9 +152,10 @@ public class CarListManager {
 				DefaultHttpClient client = new SniHttpClient();
 				HttpResponse response = client.execute(httpGet);
 
-				if(Log.isEnabled()) Log.d(TAG, "Downloaded cars. Status: " + response.getStatusLine().getStatusCode());
+				if(Log.isEnabled())
+					Log.d(TAG, "Downloaded cars. Status: " + response.getStatusLine().getStatusCode());
 
-				switch (response.getStatusLine().getStatusCode()) {
+				switch(response.getStatusLine().getStatusCode()) {
 				case HttpURLConnection.HTTP_OK:
 					break;
 				default:
@@ -157,10 +163,12 @@ public class CarListManager {
 				}
 
 				carsJson = EntityUtils.toString(response.getEntity());
-				if(Log.isEnabled()) Log.d(TAG, "Response: " + carsJson);
+				if(Log.isEnabled())
+					Log.d(TAG, "Response: " + carsJson);
 
-			} catch (Exception e) {
-				if(Log.isEnabled()) Log.e(TAG, "Exception while downloading cars: " + e.toString());
+			} catch(Exception e) {
+				if(Log.isEnabled())
+					Log.e(TAG, "Exception while downloading cars: " + e.toString());
 				throw new BackgroundTaskAbort();
 			}
 
@@ -173,9 +181,8 @@ public class CarListManager {
 				JSONObject carsRaw = new JSONObject(carsJson);
 				JSONObject providers = carsRaw.getJSONObject("providers");
 
-				Iterator<String> providerIterator = (Iterator<String>) providers
-						.keys();
-				while (providerIterator.hasNext()) {
+				Iterator<String> providerIterator = (Iterator<String>) providers.keys();
+				while(providerIterator.hasNext()) {
 					String name = providerIterator.next();
 					JSONObject provider = providers.getJSONObject(name);
 
@@ -192,10 +199,9 @@ public class CarListManager {
 					c.showPhone = !provider.optBoolean("suppress_extra_phone", false);
 					c.showNotes = !provider.optBoolean("suppress_notes", false);
 
-					JSONArray supportedCountries = provider
-							.optJSONArray("countries");
-					if (supportedCountries != null) {
-						for (int countryIndex = 0; countryIndex < supportedCountries.length(); countryIndex++) {
+					JSONArray supportedCountries = provider.optJSONArray("countries");
+					if(supportedCountries != null) {
+						for(int countryIndex = 0; countryIndex < supportedCountries.length(); countryIndex++) {
 							String country = supportedCountries.getString(countryIndex);
 							c.addSupportedCountry(country);
 						}
@@ -204,10 +210,12 @@ public class CarListManager {
 					downloadedCarList.addCarProvider(c);
 				}
 
-				if(Log.isEnabled()) Log.d(TAG, "Cars JSON parsed OK.");
+				if(Log.isEnabled())
+					Log.d(TAG, "Cars JSON parsed OK.");
 
-			} catch (JSONException e) {
-				if(Log.isEnabled()) Log.e(TAG, "Exception while parsing cars JSON: " + e.toString());
+			} catch(JSONException e) {
+				if(Log.isEnabled())
+					Log.e(TAG, "Exception while parsing cars JSON: " + e.toString());
 				throw new BackgroundTaskAbort();
 			}
 		}
@@ -218,8 +226,9 @@ public class CarListManager {
 				ObjectOutputStream out = new ObjectOutputStream(fos);
 				out.writeObject(carList);
 				out.close();
-				if(Log.isEnabled()) Log.d(TAG, "Wrote car list with " + carList.size() + " providers to cache");
-			} catch (IOException e) {
+				if(Log.isEnabled())
+					Log.d(TAG, "Wrote car list with " + carList.size() + " providers to cache");
+			} catch(IOException e) {
 				// do nothing
 			}
 		}
@@ -227,7 +236,7 @@ public class CarListManager {
 		@Override
 		protected void onPostExecute(Boolean result) {
 			super.onPostExecute(result);
-			
+
 		}
 	}
 }

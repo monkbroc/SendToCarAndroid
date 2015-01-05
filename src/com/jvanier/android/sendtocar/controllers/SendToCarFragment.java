@@ -125,7 +125,7 @@ public class SendToCarFragment extends Fragment {
 
 		return rootView;
 	}
-	
+
 	private void setupTextWatcher() {
 		textWatcher = new TextWatcher() {
 			@Override
@@ -166,7 +166,7 @@ public class SendToCarFragment extends Fragment {
 		helpButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (selectedMake != null) {
+				if(selectedMake != null) {
 					new ShowHelpForMake(selectedMake.makeId).perfrom(getActivity());
 				}
 			}
@@ -177,7 +177,7 @@ public class SendToCarFragment extends Fragment {
 		issueButton.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (selectedMake != null) {
+				if(selectedMake != null) {
 					new ShowIssueForMake(selectedMake.makeId).perfrom(getActivity());
 				}
 			}
@@ -204,7 +204,7 @@ public class SendToCarFragment extends Fragment {
 			}
 		});
 		updateSendButtonEnabled();
-		
+
 		cancelButton = (Button) rootView.findViewById(R.id.cancelButton);
 	}
 
@@ -236,12 +236,12 @@ public class SendToCarFragment extends Fragment {
 
 		@Override
 		public void onPostExecute(final GoogleMapsAddressLoader loader, Result result) {
-			if (progressDialog != null) {
+			if(progressDialog != null) {
 				progressDialog.dismiss();
 				progressDialog = null;
 			}
 
-			if (result.success) {
+			if(result.success) {
 				updateUIWithAddress(result.address);
 			} else {
 				String message = getString(result.messageId);
@@ -254,24 +254,26 @@ public class SendToCarFragment extends Fragment {
 		addressOrigin = ADDRESS_ENTERED_MANUALLY;
 
 		try {
-			if(Log.isEnabled()) 
+			if(Log.isEnabled())
 				Log.d(TAG, "Intent. Action: " + intent.getAction() + ", Text: "
 						+ intent.getExtras().getCharSequence(Intent.EXTRA_TEXT).toString());
-			if (intent.getAction().equals(Intent.ACTION_SEND)) {
+			if(intent.getAction().equals(Intent.ACTION_SEND)) {
 				List<String> urls = Utils.findURLs(intent.getExtras().getCharSequence(Intent.EXTRA_TEXT).toString());
-				
-				// Show the cancel button when loading an address from Google Maps to go back to the Maps app
+
+				// Show the cancel button when loading an address from Google
+				// Maps to go back to the Maps app
 				showCancelButton(true);
 
 				String url = (urls.size() > 0) ? urls.get(urls.size() - 1) : null;
 
-				if(Log.isEnabled()) Log.d(TAG, "URL: " + url);
+				if(Log.isEnabled())
+					Log.d(TAG, "URL: " + url);
 
-				if (url == null) {
+				if(url == null) {
 					// Show message about the Google Maps long press bug
 					showMessageBoxAndFinish(getString(R.string.errorGoogleMapsLongPressBug));
 				} else {
-					if (checkNetworkReachabilityAndAlert(R.string.noInternetLoadingAddress)) {
+					if(checkNetworkReachabilityAndAlert(R.string.noInternetLoadingAddress)) {
 						// Download address details from Google Maps
 						addressOrigin = ADDRESS_FROM_GOOGLE_MAPS;
 						new GoogleMapsAddressLoader(new GoogleMapsAddressLoaderUIHandler()).execute(new String[] { url });
@@ -283,7 +285,7 @@ public class SendToCarFragment extends Fragment {
 			} else {
 				showMessageBoxAndFinish(getString(R.string.errorIntent));
 			}
-		} catch (NullPointerException e) {
+		} catch(NullPointerException e) {
 			// not started from Google Maps, just allow the user to manually
 			// enter the address
 		}
@@ -318,7 +320,7 @@ public class SendToCarFragment extends Fragment {
 		// display box
 		alertbox.show();
 	}
-	
+
 	private void showTutorialFirstTime() {
 		UserPreferences prefs = UserPreferences.sharedInstance();
 		if(addressOrigin == ADDRESS_ENTERED_MANUALLY && !prefs.isTutorialShown()) {
@@ -328,15 +330,14 @@ public class SendToCarFragment extends Fragment {
 		}
 	}
 
-
 	@Override
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 
-		if (requestCode == PICK_MAKE && resultCode == Activity.RESULT_OK) {
+		if(requestCode == PICK_MAKE && resultCode == Activity.RESULT_OK) {
 			String type = data.getStringExtra(MakeActivity.EXTRA_TYPE);
 
-			switch (type) {
+			switch(type) {
 			case MakeActivity.TYPE_RECENT_VEHICLE:
 				RecentVehicle vehicle = (RecentVehicle) data.getSerializableExtra(MakeActivity.EXTRA_RECENT_VEHICLE);
 				loadRecentVehicle(vehicle);
@@ -350,17 +351,18 @@ public class SendToCarFragment extends Fragment {
 	}
 
 	private void selectLatestVehicle() {
-		if (!latestVehicleSelectedAlready) {
+		if(!latestVehicleSelectedAlready) {
 			RecentVehicleList.sharedInstance().migrateLatestVehicleFromPreferences(getActivity());
 
 			RecentVehicle latestVehicle = RecentVehicleList.sharedInstance().latestVehicle();
 
-			if (latestVehicle != null && latestVehicle.makeId != null && latestVehicle.account != null) {
+			if(latestVehicle != null && latestVehicle.makeId != null && latestVehicle.account != null) {
 
 				CarProvider p = CarListManager.sharedInstance().getCarList().get(latestVehicle.makeId);
 
-				if (p != null) {
-					if(Log.isEnabled()) Log.d(TAG, p.make + " loaded");
+				if(p != null) {
+					if(Log.isEnabled())
+						Log.d(TAG, p.make + " loaded");
 
 					updateMake(p, latestVehicle.account);
 					updateSendButtonEnabled();
@@ -372,11 +374,11 @@ public class SendToCarFragment extends Fragment {
 
 	private void sendDestination() {
 		// Parse the account field for a special keyword to turn debug on/off
-		if (updateDebugState()) {
+		if(updateDebugState()) {
 			return;
 		}
 
-		if (checkNetworkReachabilityAndAlert(R.string.noInternetSendingDestination)) {
+		if(checkNetworkReachabilityAndAlert(R.string.noInternetSendingDestination)) {
 			updateAddressFromUIAndSend();
 		}
 	}
@@ -386,15 +388,15 @@ public class SendToCarFragment extends Fragment {
 
 		boolean showAlertAndAbortSend = false;
 		boolean debug = false;
-		if (txt.equals(DEBUG_ON1) || txt.equals(DEBUG_ON2)) {
+		if(txt.equals(DEBUG_ON1) || txt.equals(DEBUG_ON2)) {
 			showAlertAndAbortSend = true;
 			debug = true;
-		} else if (txt.equals(DEBUG_OFF)) {
+		} else if(txt.equals(DEBUG_OFF)) {
 			showAlertAndAbortSend = true;
 			debug = false;
 		}
 
-		if (showAlertAndAbortSend) {
+		if(showAlertAndAbortSend) {
 			UserPreferences.sharedInstance().setDebug(debug).save(getActivity());
 			if(debug) {
 				Log.enableToFile(getActivity());
@@ -419,8 +421,9 @@ public class SendToCarFragment extends Fragment {
 		String updatedName = destinationText.getText().toString();
 		String updatedAddress = addressText.getText().toString();
 
-		if (loadedAddress != null && loadedAddress.title.equals(updatedName) && loadedAddress.displayAddress.equals(updatedAddress)) {
-			if(Log.isEnabled()) Log.d(TAG, "Don't update address from fields");
+		if(loadedAddress != null && loadedAddress.title.equals(updatedName) && loadedAddress.displayAddress.equals(updatedAddress)) {
+			if(Log.isEnabled())
+				Log.d(TAG, "Don't update address from fields");
 		} else {
 			// User modified address or entered one manually
 			addressOrigin = ADDRESS_ENTERED_MANUALLY;
@@ -440,7 +443,7 @@ public class SendToCarFragment extends Fragment {
 		try {
 			props.put("AddressOrigin", addressOrigin);
 			props.put("Make", selectedMake.makeId);
-		} catch (JSONException e) {
+		} catch(JSONException e) {
 		}
 		Mixpanel.sharedInstance().track("Sending address", props);
 
@@ -450,7 +453,7 @@ public class SendToCarFragment extends Fragment {
 	private void hideKeyboard() {
 		View focusedView = getActivity().getCurrentFocus();
 		if(focusedView != null) {
-			InputMethodManager imm = (InputMethodManager)getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+			InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
 			imm.hideSoftInputFromWindow(focusedView.getWindowToken(), 0);
 		}
 	}
@@ -478,10 +481,10 @@ public class SendToCarFragment extends Fragment {
 		public void onPostExecute(final BaseUploader uploader, Boolean result) {
 			boolean success = result.booleanValue();
 
-			if (progressDialog != null) {
+			if(progressDialog != null) {
 				try {
 					progressDialog.dismiss();
-				} catch (Exception e) {
+				} catch(Exception e) {
 					/* Dismissing dialog might fail if view is already gone */
 				}
 				progressDialog = null;
@@ -489,14 +492,14 @@ public class SendToCarFragment extends Fragment {
 
 			Context context = getActivity();
 			String message = "";
-			if (success) {
+			if(success) {
 				String msgStr = context.getString(R.string.successCar);
 
 				/*
 				 * Show additional message for Ford since users seem to find it
 				 * difficult to download the destination to the car
 				 */
-				if (uploader.getProvider().provider == CarProvider.PROVIDER_MAPQUEST) {
+				if(uploader.getProvider().provider == CarProvider.PROVIDER_MAPQUEST) {
 					msgStr += "\n" + context.getString(R.string.fordDownload);
 				}
 				Toast toast = Toast.makeText(context, msgStr, Toast.LENGTH_LONG);
@@ -506,7 +509,7 @@ public class SendToCarFragment extends Fragment {
 				getActivity().finish();
 			} else {
 				message = uploader.getErrorMessage();
-				if (message == null) {
+				if(message == null) {
 					message = getString(uploader.getErrorStringId());
 				}
 				Toast toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
@@ -520,10 +523,10 @@ public class SendToCarFragment extends Fragment {
 			try {
 				props.put("AddressOrigin", addressOrigin);
 				props.put("Make", uploader.getProvider().makeId);
-				if (!success) {
+				if(!success) {
 					props.put("Message", message);
 				}
-			} catch (JSONException e) {
+			} catch(JSONException e) {
 			}
 			Mixpanel.sharedInstance().track(success ? "Sending successful" : "Sending failed", props);
 		}
@@ -533,21 +536,25 @@ public class SendToCarFragment extends Fragment {
 	private void doAddressSend() {
 		BaseUploader uploader = null;
 		UploaderUIHandler handler = new UploaderUIHandler();
-		switch (selectedMake.provider) {
+		switch(selectedMake.provider) {
 		case CarProvider.PROVIDER_MAPQUEST:
-			if(Log.isEnabled()) Log.d(TAG, "Sending address to MapQuest");
+			if(Log.isEnabled())
+				Log.d(TAG, "Sending address to MapQuest");
 			uploader = new MapquestUploader(getActivity(), handler);
 			break;
 		case CarProvider.PROVIDER_GOOGLE_MAPS:
-			if(Log.isEnabled()) Log.d(TAG, "Sending address to Google Maps");
+			if(Log.isEnabled())
+				Log.d(TAG, "Sending address to Google Maps");
 			uploader = new GoogleMapsUploader(getActivity(), handler);
 			break;
 		case CarProvider.PROVIDER_ONSTAR:
-			if(Log.isEnabled()) Log.d(TAG, "Sending address to OnStar");
+			if(Log.isEnabled())
+				Log.d(TAG, "Sending address to OnStar");
 			uploader = new OnStarUploader(getActivity(), handler);
 			break;
 		case CarProvider.PROVIDER_HERE_COM:
-			if(Log.isEnabled()) Log.d(TAG, "Sending address to Here.com");
+			if(Log.isEnabled())
+				Log.d(TAG, "Sending address to Here.com");
 			uploader = new HereComUploader(getActivity(), handler);
 			break;
 		}
@@ -572,7 +579,7 @@ public class SendToCarFragment extends Fragment {
 
 		NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
 		boolean isConnected = activeNetwork != null && activeNetwork.isConnected();
-		
+
 		if(!isConnected) {
 			AlertDialog.Builder alertbox = new AlertDialog.Builder(getActivity());
 			alertbox.setTitle(R.string.noInternet);
@@ -591,24 +598,26 @@ public class SendToCarFragment extends Fragment {
 		addressText.setText(address.displayAddress);
 		notesText.setText("");
 	}
-	
+
 	private void loadMake(CarProvider provider) {
 		if(provider != null) {
-			if(Log.isEnabled()) Log.d(TAG, "Selected make " + provider.make);
+			if(Log.isEnabled())
+				Log.d(TAG, "Selected make " + provider.make);
 			updateMake(provider, "");
 		}
 	}
 
 	private void loadRecentVehicle(RecentVehicle vehicle) {
 		if(vehicle != null) {
-			if(Log.isEnabled()) Log.d(TAG, "Selected recent vehicle " + vehicle.toString());
+			if(Log.isEnabled())
+				Log.d(TAG, "Selected recent vehicle " + vehicle.toString());
 			CarProvider provider = CarListManager.sharedInstance().getCarList().get(vehicle.makeId);
 			if(provider != null) {
 				updateMake(provider, vehicle.account);
 			}
 		}
 	}
-	
+
 	private class IssueLoaderUIHandler implements IssueLoaderHandler {
 
 		@Override
@@ -623,33 +632,34 @@ public class SendToCarFragment extends Fragment {
 			}
 		}
 	}
-	
+
 	private void updateMake(CarProvider provider, String account) {
 		if(provider == null) {
 			return;
 		}
-		
+
 		selectedMake = provider;
 		makeButton.setText(selectedMake.make);
-			
-		// set account name when selecting new make or recent vehicle, but not when reloading
-        if(account != null) {
-            accountText.setText(account);
-        }
-        accountLabel.setText(selectedMake.account);
-        updateVehicleHelpButtons(selectedMake.make);
-        
-        showVehicleHelpButton(true);
-        
-	    // Load the know issue with the selected make
-	    if(oldMakeId != selectedMake.makeId) {
-	    	showVehicleIssueButton(false);
-	    	
-	    	new IssueLoader(selectedMake.makeId, new IssueLoaderUIHandler()).execute((Void)null);
-	        
-	    	showAndClearNotes(selectedMake.showNotes);
-	        
-	        oldMakeId = selectedMake.makeId;
+
+		// set account name when selecting new make or recent vehicle, but not
+		// when reloading
+		if(account != null) {
+			accountText.setText(account);
+		}
+		accountLabel.setText(selectedMake.account);
+		updateVehicleHelpButtons(selectedMake.make);
+
+		showVehicleHelpButton(true);
+
+		// Load the know issue with the selected make
+		if(oldMakeId != selectedMake.makeId) {
+			showVehicleIssueButton(false);
+
+			new IssueLoader(selectedMake.makeId, new IssueLoaderUIHandler()).execute((Void) null);
+
+			showAndClearNotes(selectedMake.showNotes);
+
+			oldMakeId = selectedMake.makeId;
 		}
 	}
 
@@ -657,11 +667,11 @@ public class SendToCarFragment extends Fragment {
 		helpButton.setText(MessageFormat.format(helpButtonTemplateText, make));
 		issueButton.setText(MessageFormat.format(issueButtonTemplateText, make));
 	}
-	
+
 	private void showVehicleHelpButton(boolean show) {
 		helpButton.setVisibility(show ? View.VISIBLE : View.GONE);
 	}
-	
+
 	private void showVehicleIssueButton(boolean show) {
 		issueButton.setVisibility(show ? View.VISIBLE : View.GONE);
 	}

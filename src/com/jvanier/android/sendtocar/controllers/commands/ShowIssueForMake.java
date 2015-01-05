@@ -26,7 +26,7 @@ public class ShowIssueForMake extends OpenURL {
 		try {
 			props.put("Button", "Message");
 			props.put("Make", makeId);
-		} catch (JSONException e) {
+		} catch(JSONException e) {
 		}
 		Mixpanel.sharedInstance().track("Showing make info", props);
 	}

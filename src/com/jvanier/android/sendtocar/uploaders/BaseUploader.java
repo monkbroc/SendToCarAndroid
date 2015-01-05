@@ -17,11 +17,11 @@ import com.jvanier.android.sendtocar.downloaders.GoogleMapsGeocoder.GoogleMapsGe
 import com.jvanier.android.sendtocar.models.Address;
 import com.jvanier.android.sendtocar.models.CarProvider;
 
-
 public abstract class BaseUploader extends AsyncTask<Void, Void, Boolean> {
-	
+
 	public interface BaseUploaderHandler {
 		public void onPreExecute(final BaseUploader self);
+
 		public void onPostExecute(final BaseUploader self, Boolean result);
 	}
 
@@ -29,13 +29,13 @@ public abstract class BaseUploader extends AsyncTask<Void, Void, Boolean> {
 	private BaseUploaderHandler handler;
 	private String errorMessage;
 	private int errorStringId;
-	
+
 	protected Address address;
 	protected String account;
 	protected CarProvider provider;
 	protected String language;
 	protected String notes;
-	
+
 	protected BasicHttpContext httpContext;
 	protected BasicCookieStore cookieStore;
 	protected DefaultHttpClient client;
@@ -80,6 +80,7 @@ public abstract class BaseUploader extends AsyncTask<Void, Void, Boolean> {
 	public String getNotes() {
 		return notes;
 	}
+
 	public void cancelUpload() {
 		cancel(false);
 		if(httpPost != null) {
@@ -88,25 +89,26 @@ public abstract class BaseUploader extends AsyncTask<Void, Void, Boolean> {
 		if(httpGet != null) {
 			httpGet.abort();
 		}
-		
+
 		if(geocoder != null) {
 			geocoder.cancelGeocode();
 			geocoder = null;
 		}
 	}
-	
+
 	public void sendDestination(Address address, String account, CarProvider provider, String language, String notes) {
 		this.address = address;
 		this.account = account;
 		this.provider = provider;
 		this.language = language;
 		this.notes = notes;
-		
-		// Run onPreExecute now otherwise the busy dialog doesn't show up during the geocoding 
+
+		// Run onPreExecute now otherwise the busy dialog doesn't show up during
+		// the geocoding
 		if(handler != null) {
 			handler.onPreExecute(this);
 		}
-		
+
 		if(!address.hasAddressDetails() || !address.hasLatitudeLongitude()) {
 			// Geocode first
 			geocoder = new GoogleMapsGeocoder(new GoogleMapsGeocoderUploaderHandler());
@@ -119,7 +121,7 @@ public abstract class BaseUploader extends AsyncTask<Void, Void, Boolean> {
 			execute((Void) null);
 		}
 	}
-	
+
 	private class GoogleMapsGeocoderUploaderHandler implements GoogleMapsGeocoderHandler {
 
 		@Override
@@ -137,13 +139,13 @@ public abstract class BaseUploader extends AsyncTask<Void, Void, Boolean> {
 			execute((Void) null);
 		}
 	}
-	
+
 	@Override
 	protected Boolean doInBackground(Void... ignored) {
 		try {
 			setupHttp();
 			return doUpload();
-		} catch (BackgroundTaskAbort e) {
+		} catch(BackgroundTaskAbort e) {
 			errorStringId = e.messageId;
 			errorMessage = e.getMessage();
 			return Boolean.FALSE;
@@ -169,7 +171,7 @@ public abstract class BaseUploader extends AsyncTask<Void, Void, Boolean> {
 		httpContext = new BasicHttpContext();
 		cookieStore = new BasicCookieStore();
 		httpContext.setAttribute(ClientContext.COOKIE_STORE, cookieStore);
-		
+
 		client = new SniHttpClient();
 
 		httpPost = new HttpPost();

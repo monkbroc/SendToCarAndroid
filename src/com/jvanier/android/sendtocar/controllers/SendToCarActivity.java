@@ -33,14 +33,16 @@ public class SendToCarActivity extends ActionBarActivity {
 	protected void onDestroy() {
 		super.onDestroy();
 
-		// To preserve battery life, the Mixpanel library will store events rather than send them immediately.
-		// Call flush() to send any unsent events before application is taken out of memory.
+		// To preserve battery life, the Mixpanel library will store events
+		// rather than send them immediately.
+		// Call flush() to send any unsent events before application is taken
+		// out of memory.
 		Mixpanel.sharedInstance().flush();
 	}
 
 	@Override
 	public boolean onKeyUp(int keyCode, KeyEvent event) {
-		if (keyCode == KeyEvent.KEYCODE_MENU) {
+		if(keyCode == KeyEvent.KEYCODE_MENU) {
 			mNavigationDrawerFragment.handleMenuKey();
 			return true;
 		}

@@ -17,25 +17,24 @@ import com.jvanier.android.sendtocar.models.RecentVehicleList;
 import com.jvanier.android.sendtocar.models.UserPreferences;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
-
 public class SendToCarApp extends Application {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		
+
 		loadPreferences();
 		setupLog();
-		
+
 		loadCredentials();
 		setupMixpanel();
 		updateCarList();
 		loadRecentVehiclesList();
 	}
-	
+
 	private void loadPreferences() {
 		UserPreferences.sharedInstance().load(getApplicationContext());
 	}
-	
+
 	private void setupLog() {
 		Context context = getApplicationContext();
 		if(Utils.isDevelopment(context)) {
@@ -48,30 +47,31 @@ public class SendToCarApp extends Application {
 	private void loadCredentials() {
 		try {
 			Credentials.sharedInstance().loadCredentials(this);
-		} catch (Exception e) {
-			// Crash the program early if the credentials are not supplied at build time
+		} catch(Exception e) {
+			// Crash the program early if the credentials are not supplied at
+			// build time
 			throw new RuntimeException(e);
 		}
 	}
-	
-	private void setupMixpanel() {		
+
+	private void setupMixpanel() {
 		String mixpanelToken = Credentials.sharedInstance().get("MIXPANEL_TOKEN");
 		MixpanelAPI mixpanel = Mixpanel.initializeSharedInstance(this, mixpanelToken);
-		
+
 		JSONObject props = new JSONObject();
 		try {
 			props.put("OS Language", Locale.getDefault().getLanguage().toLowerCase(Locale.US));
 			props.put("OS Country", UserPreferences.sharedInstance().getCountry());
-		} catch (JSONException e) {
+		} catch(JSONException e) {
 		}
 
 		mixpanel.registerSuperProperties(props);
 	}
 
 	private void updateCarList() {
-		CarListManager.sharedInstance().updateCarList(this, Locale.getDefault().getLanguage().toLowerCase(Locale.US));		
+		CarListManager.sharedInstance().updateCarList(this, Locale.getDefault().getLanguage().toLowerCase(Locale.US));
 	}
-	
+
 	private void loadRecentVehiclesList() {
 		RecentVehicleList.sharedInstance().loadFromCache(this);
 	}

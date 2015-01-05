@@ -86,7 +86,7 @@ public class NavigationDrawerFragment extends Fragment {
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getActivity());
 		mUserShownDrawer = sp.getBoolean(PREF_USER_SHOWN_DRAWER, false);
 
-		if (savedInstanceState != null) {
+		if(savedInstanceState != null) {
 			mFromSavedInstanceState = true;
 		}
 	}
@@ -99,7 +99,7 @@ public class NavigationDrawerFragment extends Fragment {
 		itemsList.add(new NavigationItem(R.string.listRateTitle, R.drawable.ic_navigation_star, new ShowAppInGooglePlay()));
 		itemsList.add(new NavigationItem(R.string.listEmailTitle, R.drawable.ic_navigation_email, new WriteEmailToDeveloper()));
 
-		if (Log.hasLogFile()) {
+		if(Log.hasLogFile()) {
 			itemsList.add(new NavigationItem(R.string.listSendLog, R.drawable.ic_navigation_email, new SendDebugLogToDeveloper()));
 		}
 	}
@@ -123,7 +123,7 @@ public class NavigationDrawerFragment extends Fragment {
 		});
 
 		mDrawerListView.setAdapter(new ArrayAdapter<NavigationItem>(getActionBar().getThemedContext(), R.layout.navigation_item,
-				android.R.id.text1, (NavigationItem[]) itemsList.toArray()) {
+				android.R.id.text1, (NavigationItem[]) itemsList.toArray(new NavigationItem[itemsList.size()])) {
 
 			@Override
 			public View getView(int position, View convertView, ViewGroup parent) {
@@ -184,7 +184,7 @@ public class NavigationDrawerFragment extends Fragment {
 		// If the user hasn't 'learned' about the drawer, open it to introduce
 		// them to the drawer,
 		// per the navigation drawer design guidelines.
-		if (!mUserShownDrawer && !mFromSavedInstanceState) {
+		if(!mUserShownDrawer && !mFromSavedInstanceState) {
 			mDrawerLayout.openDrawer(mFragmentContainerView);
 
 			// The user manually opened the drawer; store this flag to prevent
@@ -216,7 +216,7 @@ public class NavigationDrawerFragment extends Fragment {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		// Let the drawer toggle component handle the hamburger button
-		if (mDrawerToggle.onOptionsItemSelected(item)) {
+		if(mDrawerToggle.onOptionsItemSelected(item)) {
 			return true;
 		}
 		return super.onOptionsItemSelected(item);
@@ -227,7 +227,7 @@ public class NavigationDrawerFragment extends Fragment {
 	}
 
 	public void handleMenuKey() {
-		if (mDrawerLayout.isDrawerOpen(mFragmentContainerView)) {
+		if(mDrawerLayout.isDrawerOpen(mFragmentContainerView)) {
 			mDrawerLayout.closeDrawer(mFragmentContainerView);
 		} else {
 			mDrawerLayout.openDrawer(mFragmentContainerView);
@@ -235,11 +235,11 @@ public class NavigationDrawerFragment extends Fragment {
 	}
 
 	private void selectItem(int position) {
-		if (mDrawerLayout != null) {
+		if(mDrawerLayout != null) {
 			mDrawerLayout.closeDrawer(mFragmentContainerView);
 		}
 		Command handler = itemsList.get(position).handler;
-		if (handler != null) {
+		if(handler != null) {
 			handler.perfrom(getActivity());
 		}
 	}

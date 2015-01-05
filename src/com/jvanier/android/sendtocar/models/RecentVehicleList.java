@@ -43,7 +43,7 @@ public class RecentVehicleList {
 	}
 
 	public RecentVehicle latestVehicle() {
-		if (size() > 0) {
+		if(size() > 0) {
 			return list.get(0);
 		} else {
 			return null;
@@ -51,7 +51,7 @@ public class RecentVehicleList {
 	}
 
 	public RecentVehicleList addRecentVehicle(RecentVehicle vehicle) {
-		if (vehicle == null) {
+		if(vehicle == null) {
 			return this;
 		}
 
@@ -62,10 +62,10 @@ public class RecentVehicleList {
 		list.add(0, vehicle);
 
 		// Trim the list so it doesn't grow too large
-		if (list.size() > MAX_NUMBER_OF_VEHICLES) {
+		if(list.size() > MAX_NUMBER_OF_VEHICLES) {
 			list.subList(MAX_NUMBER_OF_VEHICLES, list.size()).clear();
 		}
-		
+
 		return this;
 	}
 
@@ -75,7 +75,7 @@ public class RecentVehicleList {
 
 	public int removeRecentVehicle(RecentVehicle vehicle) {
 		int position = list.indexOf(vehicle);
-		if (position >= 0) {
+		if(position >= 0) {
 			list.remove(position);
 		}
 		return position;
@@ -90,9 +90,11 @@ public class RecentVehicleList {
 			list = (List<RecentVehicle>) objIn.readObject();
 			objIn.close();
 
-			if(Log.isEnabled()) Log.d(TAG, "Read recent vehicles list with " + list.size() + " vehicles");
-		} catch (Exception e) {
-			if(Log.isEnabled()) Log.d(TAG, "Recent vehicles list not loaded from cache");
+			if(Log.isEnabled())
+				Log.d(TAG, "Read recent vehicles list with " + list.size() + " vehicles");
+		} catch(Exception e) {
+			if(Log.isEnabled())
+				Log.d(TAG, "Recent vehicles list not loaded from cache");
 		}
 	}
 
@@ -102,21 +104,22 @@ public class RecentVehicleList {
 			ObjectOutputStream out = new ObjectOutputStream(fos);
 			out.writeObject(list);
 			out.close();
-			if(Log.isEnabled()) Log.d(TAG, "Wrote recent vehicles list with " + list.size() + " vechiles to cache");
-		} catch (IOException e) {
+			if(Log.isEnabled())
+				Log.d(TAG, "Wrote recent vehicles list with " + list.size() + " vechiles to cache");
+		} catch(IOException e) {
 			// do nothing
 		}
 	}
-	
+
 	public void migrateLatestVehicleFromPreferences(Context context) {
 		SharedPreferences settings = context.getSharedPreferences(LEGACY_PREFERENCES_NAME, Context.MODE_PRIVATE);
 		String makeId = settings.getString("make", "");
 		String account = settings.getString("account", "");
 
-		if (makeId.length() > 0 && account.length() > 0) {
+		if(makeId.length() > 0 && account.length() > 0) {
 			CarProvider p = CarListManager.sharedInstance().getCarList().get(makeId);
 
-			if (p != null) {
+			if(p != null) {
 				RecentVehicle latestVehicle = new RecentVehicle();
 				latestVehicle.makeId = makeId;
 				latestVehicle.make = p.make;

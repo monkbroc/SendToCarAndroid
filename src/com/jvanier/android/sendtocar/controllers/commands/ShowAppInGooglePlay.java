@@ -15,20 +15,18 @@ import com.jvanier.android.sendtocar.common.Mixpanel;
 public class ShowAppInGooglePlay implements Command {
 	@Override
 	public void perfrom(Context context) {
-		Intent intent = new Intent(Intent.ACTION_VIEW); 
-		intent.setData(Uri.parse("market://details?id=com.jvanier.android.sendtocar")); 
+		Intent intent = new Intent(Intent.ACTION_VIEW);
+		intent.setData(Uri.parse("market://details?id=com.jvanier.android.sendtocar"));
 		try {
 			context.startActivity(intent);
-			
+
 			JSONObject props = new JSONObject();
 			try {
 				props.put("Action", "Rate app");
-			} catch (JSONException e) {
+			} catch(JSONException e) {
 			}
 			Mixpanel.sharedInstance().track("Perform info dialog action", props);
-		}
-		catch(ActivityNotFoundException e)
-		{
+		} catch(ActivityNotFoundException e) {
 			Toast toast = Toast.makeText(context, R.string.errorNoApp, Toast.LENGTH_SHORT);
 			toast.show();
 		}
