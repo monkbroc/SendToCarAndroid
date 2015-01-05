@@ -1,0 +1,9 @@
+Update the serialUID for model classes that changed?
+
+Export the application for production.
+Run on the phone.
+Extract cars.ser using adb pull.
+Add to Eclipse project.
+Re-export the application.
+Clear the app data and check if the default list can be loaded.
+

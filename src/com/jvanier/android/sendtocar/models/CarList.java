@@ -7,10 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 
 public class CarList implements Serializable {
-	private static final long serialVersionUID = 8114219603971246792L;
-
+	private static final long serialVersionUID = 5770890347425138359L;
+	
 	private HashMap<String, CarProvider> data;
-	private List<CarProvider> list;
 	private long downloadDate;
 	private String language;
 
@@ -33,11 +32,9 @@ public class CarList implements Serializable {
 	}
 
 	public List<CarProvider> asList() {
-		if(list == null) {
-			list = new ArrayList<CarProvider>();
-			list.addAll(data.values());
-			Collections.sort(list);
-		}
+		ArrayList<CarProvider> list = new ArrayList<>();
+		list.addAll(data.values());
+		Collections.sort(list);
 		return list;
 	}
 

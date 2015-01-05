@@ -3,7 +3,6 @@ package com.jvanier.android.sendtocar.controllers.commands;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.text.Html;
 import android.widget.Toast;
 
 import com.jvanier.android.sendtocar.R;
@@ -20,7 +19,7 @@ public class SendDebugLogToDeveloper implements Command {
 		String aEmailList[] = { Constants.DEVELOPER_EMAIL };
 		intent.putExtra(android.content.Intent.EXTRA_EMAIL, aEmailList);
 		intent.putExtra(android.content.Intent.EXTRA_SUBJECT, "Send To Car Debug Log");
-		intent.putExtra(android.content.Intent.EXTRA_TEXT, Html.fromHtml(logContents));
+		intent.putExtra(android.content.Intent.EXTRA_TEXT, "<pre><![CDATA[" + logContents + "]]></pre>");
 
 		try {
 			context.startActivity(intent);

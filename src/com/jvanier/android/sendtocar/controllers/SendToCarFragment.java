@@ -249,58 +249,66 @@ public class SendToCarFragment extends Fragment {
 	private void loadMapFromIntent() {
 		addressOrigin = ADDRESS_ENTERED_MANUALLY;
 
-		try {
+		String action = intent.getAction();
+		String text = intent.hasExtra(Intent.EXTRA_TEXT) ? intent.getExtras().getCharSequence(Intent.EXTRA_TEXT).toString() : null;
+
+		if(Log.isEnabled())
+			Log.d(TAG, "Intent. Action: " + action + ", Text: " + text);
+
+		if(action.equals(Intent.ACTION_SEND)) {
+			List<String> urls = Utils.findURLs(intent.getExtras().getCharSequence(Intent.EXTRA_TEXT).toString());
+
+			// Show the cancel button when loading an address from Google
+			// Maps to go back to the Maps app
+			showCancelButton(true);
+
+			String url = (urls.size() > 0) ? urls.get(urls.size() - 1) : null;
+
 			if(Log.isEnabled())
-				Log.d(TAG, "Intent. Action: " + intent.getAction() + ", Text: "
-						+ intent.getExtras().getCharSequence(Intent.EXTRA_TEXT).toString());
-			if(intent.getAction().equals(Intent.ACTION_SEND)) {
-				List<String> urls = Utils.findURLs(intent.getExtras().getCharSequence(Intent.EXTRA_TEXT).toString());
+				Log.d(TAG, "URL: " + url);
 
-				// Show the cancel button when loading an address from Google
-				// Maps to go back to the Maps app
-				showCancelButton(true);
-
-				String url = (urls.size() > 0) ? urls.get(urls.size() - 1) : null;
-
-				if(Log.isEnabled())
-					Log.d(TAG, "URL: " + url);
-
-				if(url == null) {
-					// Show message about the Google Maps long press bug
-					showMessageBoxAndFinish(getString(R.string.errorGoogleMapsLongPressBug));
-				} else {
-					if(checkNetworkReachabilityAndAlert(R.string.noInternetLoadingAddress)) {
-						// Download address details from Google Maps
-						addressOrigin = ADDRESS_FROM_GOOGLE_MAPS;
-						new GoogleMapsAddressLoader(new GoogleMapsAddressLoaderUIHandler()).execute(new String[] { url });
-					} else {
-						// No internet, give up
-						getActivity().finish();
-					}
-				}
+			if(url == null) {
+				// Share -> Send To Car was selected from another app than
+				// Google Maps
+				showMessageBoxAndFinish(getString(R.string.errorIntent), false);
 			} else {
-				showMessageBoxAndFinish(getString(R.string.errorIntent));
+				if(checkNetworkReachabilityAndAlert(R.string.noInternetLoadingAddress)) {
+					// Download address details from Google Maps
+					addressOrigin = ADDRESS_FROM_GOOGLE_MAPS;
+					new GoogleMapsAddressLoader(new GoogleMapsAddressLoaderUIHandler()).execute(new String[] { url });
+				} else {
+					// No internet, give up
+					getActivity().finish();
+				}
 			}
-		} catch(NullPointerException e) {
+		} else {
 			// not started from Google Maps, just allow the user to manually
 			// enter the address
 		}
 	}
 
 	private void showMessageBoxAndFinish(String message) {
+		showMessageBoxAndFinish(message, true);
+	}
+
+	private void showMessageBoxAndFinish(String message, final boolean finishOnOk) {
 		AlertDialog.Builder alertbox = new AlertDialog.Builder(getActivity());
 		alertbox.setTitle(R.string.errorTitle);
 		alertbox.setMessage(message);
 		alertbox.setOnCancelListener(new OnCancelListener() {
 			@Override
 			public void onCancel(DialogInterface dialog) {
-				getActivity().finish();
+				if(finishOnOk) {
+					getActivity().finish();
+				}
 			}
 		});
 		alertbox.setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface arg0, int arg1) {
-				getActivity().finish();
+				if(finishOnOk) {
+					getActivity().finish();
+				}
 			}
 		});
 
@@ -308,7 +316,9 @@ public class SendToCarFragment extends Fragment {
 		alertbox.setNegativeButton(R.string.showHelp, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface arg0, int arg1) {
-				getActivity().finish();
+				if(finishOnOk) {
+					getActivity().finish();
+				}
 				(new ShowHelp()).perfrom(getActivity());
 			}
 		});

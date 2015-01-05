@@ -68,6 +68,9 @@ public class CarListManager {
 		ObjectInputStream objIn = null;
 		boolean success = false;
 
+		if(Log.isEnabled())
+			Log.d(TAG, "Reading car list");
+
 		final int READ_CACHE = 0;
 		final int READ_DEFAULT = 1;
 		for(int state = READ_CACHE; state <= READ_DEFAULT; state++) {
@@ -97,6 +100,9 @@ public class CarListManager {
 				// file
 				break;
 			} catch(Exception e) {
+				if(Log.isEnabled())
+					Log.d(TAG, "Exception while reading "
+							+ ((state == READ_CACHE) ? "cache" : "default"), e);
 				success = false;
 			}
 		}

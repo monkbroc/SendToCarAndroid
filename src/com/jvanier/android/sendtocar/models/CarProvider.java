@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class CarProvider implements Comparable<CarProvider>, Serializable {
+	private static final long serialVersionUID = 2510316148371117429L;
 
 	public final static int TYPE_CAR = 1;
 	public final static int TYPE_GPS = 2;
@@ -14,7 +15,6 @@ public class CarProvider implements Comparable<CarProvider>, Serializable {
 	public final static int PROVIDER_ONSTAR = 2;
 	public final static int PROVIDER_HERE_COM = 3;
 
-	private static final long serialVersionUID = 3846464104822731498L;
 	public int provider;
 	public String host;
 	public String makeId;

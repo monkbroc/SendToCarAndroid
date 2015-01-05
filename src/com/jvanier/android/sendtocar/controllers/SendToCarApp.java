@@ -18,6 +18,8 @@ import com.jvanier.android.sendtocar.models.UserPreferences;
 import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 public class SendToCarApp extends Application {
+	private static final String TAG = "SendToCarApp";
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -42,6 +44,9 @@ public class SendToCarApp extends Application {
 		} else if(UserPreferences.sharedInstance().isDebug()) {
 			Log.enableToFile(context);
 		}
+
+		if(Log.isEnabled())
+			Log.d(TAG, "Application started");
 	}
 
 	private void loadCredentials() {

@@ -43,6 +43,8 @@ public class RecentVehicleList {
 	}
 
 	public RecentVehicle latestVehicle() {
+		Log.d(TAG, "latestVehicle list="+list);
+
 		if(size() > 0) {
 			return list.get(0);
 		} else {
@@ -95,6 +97,8 @@ public class RecentVehicleList {
 		} catch(Exception e) {
 			if(Log.isEnabled())
 				Log.d(TAG, "Recent vehicles list not loaded from cache");
+			
+			createDefaultList();
 		}
 	}
 

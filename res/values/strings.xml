@@ -27,7 +27,7 @@
     <string name="debugMode" translatable="false">Debug mode</string>
     <string name="debugOn" translatable="false">Debug messages turned on.</string>
     <string name="debugOff" translatable="false">Debug messages turned off.</string>
-    <string name="errorIntent">App not started from the Google Maps share menu. See help for details.</string>
+    <string name="errorIntent">App not started from the Google Maps share menu. See tutorial for details.</string>
     <string name="errorTitle">Error</string>
     <string name="ok">OK</string>
     <string name="showHelp">Show help</string>
