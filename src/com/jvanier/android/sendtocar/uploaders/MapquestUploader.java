@@ -96,15 +96,15 @@ public class MapquestUploader extends BaseUploader {
 
 			String post = payload.toString();
 			
-			Log.d(TAG, "Sending to MapQuest. Post data <pre>" + post + "</pre>");
+			if(Log.isEnabled()) Log.d(TAG, "Sending to MapQuest. Post data <pre>" + post + "</pre>");
 			
 			return post;
 			
 		} catch(JSONException e) {
-			Log.e(TAG, "JSON exception while preparing MapQuest post data", e);
+			if(Log.isEnabled()) Log.e(TAG, "JSON exception while preparing MapQuest post data", e);
 			throw new BackgroundTaskAbort(R.string.errorSendToCar);
 		} catch(NullPointerException e) {
-			Log.e(TAG, "Null pointer exception while preparing MapQuest post data", e);
+			if(Log.isEnabled()) Log.e(TAG, "Null pointer exception while preparing MapQuest post data", e);
 			throw new BackgroundTaskAbort(R.string.errorSendToCar);
 		}
 	}
@@ -116,16 +116,16 @@ public class MapquestUploader extends BaseUploader {
 		{
 			sendToCarHtml = sendToCarCore(post, true, false);
 		} catch(InterruptedIOException e) {
-			Log.w(TAG, "Upload to Mapquest aborted");
+			if(Log.isEnabled()) Log.w(TAG, "Upload to Mapquest aborted");
 			return null;
 		} catch(SSLPeerUnverifiedException e) {
-			Log.e(TAG, "SSLPeerUnverifiedException while sending to MapQuest. Trying again in fallback mode.");
+			if(Log.isEnabled()) Log.e(TAG, "SSLPeerUnverifiedException while sending to MapQuest. Trying again in fallback mode.");
 			return sendToCarTrustAll(post);
 		} catch(SSLException e) {
-			Log.e(TAG, "SSLException while sending to MapQuest. Trying again without HTTPS.");
+			if(Log.isEnabled()) Log.e(TAG, "SSLException while sending to MapQuest. Trying again without HTTPS.");
 			return sendToCarNoSSL(post);
 		} catch(IOException|URISyntaxException e) {
-			Log.e(TAG, "Exception while sending to Mapquest", e);
+			if(Log.isEnabled()) Log.e(TAG, "Exception while sending to Mapquest", e);
 			throw new BackgroundTaskAbort(R.string.errorSendToCar);
 		}
 		
@@ -140,10 +140,10 @@ public class MapquestUploader extends BaseUploader {
 		{
 			sendToCarHtml = sendToCarCore(post, true, true);
 		} catch(InterruptedIOException e) {
-			Log.w(TAG, "Upload to Mapquest aborted");
+			if(Log.isEnabled()) Log.w(TAG, "Upload to Mapquest aborted");
 			return null;
 		} catch(Exception e) {
-			Log.e(TAG, "Exception while sending to Mapquest (fallback mode)", e);
+			if(Log.isEnabled()) Log.e(TAG, "Exception while sending to Mapquest (fallback mode)", e);
 			throw new BackgroundTaskAbort(R.string.errorSendToCar);
 		}
 		
@@ -158,10 +158,10 @@ public class MapquestUploader extends BaseUploader {
 		{
 			sendToCarHtml = sendToCarCore(post, false, false);
 		} catch(InterruptedIOException e) {
-			Log.w(TAG, "Upload to Mapquest aborted");
+			if(Log.isEnabled()) Log.w(TAG, "Upload to Mapquest aborted");
 			return null;
 		} catch(IOException|URISyntaxException e) {
-			Log.e(TAG, "Exception while sending to Mapquest (fallback mode)", e);
+			if(Log.isEnabled()) Log.e(TAG, "Exception while sending to Mapquest (fallback mode)", e);
 			throw new BackgroundTaskAbort(R.string.errorSendToCar);
 		}
 		
@@ -177,7 +177,7 @@ public class MapquestUploader extends BaseUploader {
 		httpPost.addHeader("Content-Type", "application/json; charset=UTF-8");
 		httpPost.setEntity(new ByteArrayEntity(post.getBytes()));
 		
-		Log.d(TAG, "Uploading to " + postUri.toString());
+		if(Log.isEnabled()) Log.d(TAG, "Uploading to " + postUri.toString());
 
 		if(isCancelled() || httpPost.isAborted()) return null;
 		
@@ -191,7 +191,7 @@ public class MapquestUploader extends BaseUploader {
 		
 		HttpResponse response = c.execute(httpPost, httpContext);
 		
-		Log.d(TAG, "Uploaded to Mapquest. Status: " + response.getStatusLine().getStatusCode());
+		if(Log.isEnabled()) Log.d(TAG, "Uploaded to Mapquest. Status: " + response.getStatusLine().getStatusCode());
 		
 		if(isCancelled()) return null;
 
@@ -201,7 +201,7 @@ public class MapquestUploader extends BaseUploader {
 		}
 		
 		sendToCarHtml = EntityUtils.toString(response.getEntity());
-		Log.d(TAG, "Response: " + Utils.htmlSnippet(sendToCarHtml));
+		if(Log.isEnabled()) Log.d(TAG, "Response: " + Utils.htmlSnippet(sendToCarHtml));
 		
 		return sendToCarHtml;
 	}
@@ -221,7 +221,7 @@ public class MapquestUploader extends BaseUploader {
 
 			String result = response.getString("result");
 
-			Log.d(TAG, "Mapquest response JSON parsed OK. Status: " + result);
+			if(Log.isEnabled()) Log.d(TAG, "Mapquest response JSON parsed OK. Status: " + result);
 
 			if(result.equals("OK")) {
 				// success
@@ -229,12 +229,12 @@ public class MapquestUploader extends BaseUploader {
 			}
 			
 		} catch(JSONException e) {
-			Log.e(TAG, "Exception while parsing Mapquest resposne JSON", e);
+			if(Log.isEnabled()) Log.e(TAG, "Exception while parsing Mapquest resposne JSON", e);
 			throw new BackgroundTaskAbort(R.string.errorSendToCar); 
 		}
 
 		String errorMsg = response.optString("message");
-		Log.e(TAG, "Could not send to Mapquest. Error: " + errorMsg);
+		if(Log.isEnabled()) Log.e(TAG, "Could not send to Mapquest. Error: " + errorMsg);
 		throw new BackgroundTaskAbort(errorMsg);
 
 	}

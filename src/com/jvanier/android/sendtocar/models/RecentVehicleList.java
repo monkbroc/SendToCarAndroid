@@ -90,9 +90,9 @@ public class RecentVehicleList {
 			list = (List<RecentVehicle>) objIn.readObject();
 			objIn.close();
 
-			Log.d(TAG, "Read recent vehicles list with " + list.size() + " vehicles");
+			if(Log.isEnabled()) Log.d(TAG, "Read recent vehicles list with " + list.size() + " vehicles");
 		} catch (Exception e) {
-			Log.d(TAG, "Recent vehicles list not loaded from cache");
+			if(Log.isEnabled()) Log.d(TAG, "Recent vehicles list not loaded from cache");
 		}
 	}
 
@@ -102,7 +102,7 @@ public class RecentVehicleList {
 			ObjectOutputStream out = new ObjectOutputStream(fos);
 			out.writeObject(list);
 			out.close();
-			Log.d(TAG, "Wrote recent vehicles list with " + list.size() + " vechiles to cache");
+			if(Log.isEnabled()) Log.d(TAG, "Wrote recent vehicles list with " + list.size() + " vechiles to cache");
 		} catch (IOException e) {
 			// do nothing
 		}

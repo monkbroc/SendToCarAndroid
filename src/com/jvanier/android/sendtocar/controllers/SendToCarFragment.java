@@ -254,8 +254,9 @@ public class SendToCarFragment extends Fragment {
 		addressOrigin = ADDRESS_ENTERED_MANUALLY;
 
 		try {
-			Log.d(TAG, "Intent. Action: " + intent.getAction() + ", Text: "
-					+ intent.getExtras().getCharSequence(Intent.EXTRA_TEXT).toString());
+			if(Log.isEnabled()) 
+				Log.d(TAG, "Intent. Action: " + intent.getAction() + ", Text: "
+						+ intent.getExtras().getCharSequence(Intent.EXTRA_TEXT).toString());
 			if (intent.getAction().equals(Intent.ACTION_SEND)) {
 				List<String> urls = Utils.findURLs(intent.getExtras().getCharSequence(Intent.EXTRA_TEXT).toString());
 				
@@ -264,7 +265,7 @@ public class SendToCarFragment extends Fragment {
 
 				String url = (urls.size() > 0) ? urls.get(urls.size() - 1) : null;
 
-				Log.d(TAG, "URL: " + url);
+				if(Log.isEnabled()) Log.d(TAG, "URL: " + url);
 
 				if (url == null) {
 					// Show message about the Google Maps long press bug
@@ -359,7 +360,7 @@ public class SendToCarFragment extends Fragment {
 				CarProvider p = CarListManager.sharedInstance().getCarList().get(latestVehicle.makeId);
 
 				if (p != null) {
-					Log.d(TAG, p.make + " loaded");
+					if(Log.isEnabled()) Log.d(TAG, p.make + " loaded");
 
 					updateMake(p, latestVehicle.account);
 					updateSendButtonEnabled();
@@ -419,7 +420,7 @@ public class SendToCarFragment extends Fragment {
 		String updatedAddress = addressText.getText().toString();
 
 		if (loadedAddress != null && loadedAddress.title.equals(updatedName) && loadedAddress.displayAddress.equals(updatedAddress)) {
-			Log.d(TAG, "Don't update address from fields");
+			if(Log.isEnabled()) Log.d(TAG, "Don't update address from fields");
 		} else {
 			// User modified address or entered one manually
 			addressOrigin = ADDRESS_ENTERED_MANUALLY;
@@ -428,9 +429,11 @@ public class SendToCarFragment extends Fragment {
 			address.displayAddress = updatedAddress;
 			loadedAddress = address;
 
-			Log.d(TAG, "Address updated from fields");
-			Log.d(TAG, "Title: " + address.title);
-			Log.d(TAG, "Address: " + address.displayAddress);
+			if(Log.isEnabled()) {
+				Log.d(TAG, "Address updated from fields");
+				Log.d(TAG, "Title: " + address.title);
+				Log.d(TAG, "Address: " + address.displayAddress);
+			}
 		}
 
 		JSONObject props = new JSONObject();
@@ -532,19 +535,19 @@ public class SendToCarFragment extends Fragment {
 		UploaderUIHandler handler = new UploaderUIHandler();
 		switch (selectedMake.provider) {
 		case CarProvider.PROVIDER_MAPQUEST:
-			Log.d(TAG, "Sending address to MapQuest");
+			if(Log.isEnabled()) Log.d(TAG, "Sending address to MapQuest");
 			uploader = new MapquestUploader(getActivity(), handler);
 			break;
 		case CarProvider.PROVIDER_GOOGLE_MAPS:
-			Log.d(TAG, "Sending address to Google Maps");
+			if(Log.isEnabled()) Log.d(TAG, "Sending address to Google Maps");
 			uploader = new GoogleMapsUploader(getActivity(), handler);
 			break;
 		case CarProvider.PROVIDER_ONSTAR:
-			Log.d(TAG, "Sending address to OnStar");
+			if(Log.isEnabled()) Log.d(TAG, "Sending address to OnStar");
 			uploader = new OnStarUploader(getActivity(), handler);
 			break;
 		case CarProvider.PROVIDER_HERE_COM:
-			Log.d(TAG, "Sending address to Here.com");
+			if(Log.isEnabled()) Log.d(TAG, "Sending address to Here.com");
 			uploader = new HereComUploader(getActivity(), handler);
 			break;
 		}
@@ -591,14 +594,14 @@ public class SendToCarFragment extends Fragment {
 	
 	private void loadMake(CarProvider provider) {
 		if(provider != null) {
-			Log.d(TAG, "Selected make " + provider.make);
+			if(Log.isEnabled()) Log.d(TAG, "Selected make " + provider.make);
 			updateMake(provider, "");
 		}
 	}
 
 	private void loadRecentVehicle(RecentVehicle vehicle) {
 		if(vehicle != null) {
-			Log.d(TAG, "Selected recent vehicle " + vehicle.toString());
+			if(Log.isEnabled()) Log.d(TAG, "Selected recent vehicle " + vehicle.toString());
 			CarProvider provider = CarListManager.sharedInstance().getCarList().get(vehicle.makeId);
 			if(provider != null) {
 				updateMake(provider, vehicle.account);

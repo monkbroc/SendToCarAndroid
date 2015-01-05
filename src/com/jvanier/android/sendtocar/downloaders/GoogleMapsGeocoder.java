@@ -133,12 +133,12 @@ public class GoogleMapsGeocoder extends AsyncTask<Address, Void, Address> {
 
 		String geoHtml = "";
 		try {
-			Log.d(TAG, "Updating latitude/longitude  " + geoURI);
+			if(Log.isEnabled()) Log.d(TAG, "Updating latitude/longitude  " + geoURI);
 			httpGet.setURI(new URI(geoURI));
 			DefaultHttpClient client = new SniHttpClient();
 			HttpResponse response = client.execute(httpGet);
 
-			Log.d(TAG, "Updating lat/long. Status: " + response.getStatusLine().getStatusCode());
+			if(Log.isEnabled()) Log.d(TAG, "Updating lat/long. Status: " + response.getStatusLine().getStatusCode());
 
 			if (response.getStatusLine().getStatusCode() != HttpURLConnection.HTTP_OK) {
 				return null;
@@ -146,10 +146,10 @@ public class GoogleMapsGeocoder extends AsyncTask<Address, Void, Address> {
 
 			geoHtml = EntityUtils.toString(response.getEntity());
 
-			Log.d(TAG, "Response: " + Utils.htmlSnippet(geoHtml));
+			if(Log.isEnabled()) Log.d(TAG, "Response: " + Utils.htmlSnippet(geoHtml));
 
 		} catch (Exception e) {
-			Log.e(TAG, "Exception while geocoding address", e);
+			if(Log.isEnabled()) Log.e(TAG, "Exception while geocoding address", e);
 		}
 
 		try {
@@ -257,7 +257,7 @@ public class GoogleMapsGeocoder extends AsyncTask<Address, Void, Address> {
 			}
 
 		} catch (JSONException e) {
-			Log.e(TAG, "Exception while parsing geocoding JSON", e);
+			if(Log.isEnabled()) Log.e(TAG, "Exception while parsing geocoding JSON", e);
 		}
 
 		return null;

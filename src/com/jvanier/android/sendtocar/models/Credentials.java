@@ -53,11 +53,10 @@ public class Credentials {
 			data = new JSONObject(contents);
 			environmentKey = Utils.isDevelopment(context) ? DEVELOPMENT_KEY : PRODUCTION_KEY;
 		} catch (IOException e) {
-			Log.e(TAG, "No credentials JSON file found!");
-			Log.e(TAG, "Add a JSON file with credentials to the build project in folder /assets/" + ASSET_FILENAME);
+			if(Log.isEnabled()) Log.e(TAG, "No credentials JSON file found!\nAdd a JSON file with credentials to the build project in folder /assets/" + ASSET_FILENAME);
 			throw e;
 		} catch (JSONException e) {
-			Log.e(TAG, "Syntax error in credentials JSON file /assets/" + ASSET_FILENAME, e);
+			if(Log.isEnabled()) Log.e(TAG, "Syntax error in credentials JSON file /assets/" + ASSET_FILENAME, e);
 			throw e;
 		}
 	}

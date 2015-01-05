@@ -71,14 +71,14 @@ public class HereComUploader extends BaseUploader {
 
 			String post = destination.toString();
 
-			Log.d(TAG, "Sending to car. Post data: " + post);
+			if(Log.isEnabled()) Log.d(TAG, "Sending to car. Post data: " + post);
 
 			return post;
 		} catch (JSONException e) {
-			Log.e(TAG, "JSON exception while preparing Here.com post data", e);
+			if(Log.isEnabled()) Log.e(TAG, "JSON exception while preparing Here.com post data", e);
 			throw new BackgroundTaskAbort(R.string.errorSendToCar);
 		} catch (ParseException e) {
-			Log.e(TAG, "Latitude/longitude parse exception while preparing Here.com post data", e);
+			if(Log.isEnabled()) Log.e(TAG, "Latitude/longitude parse exception while preparing Here.com post data", e);
 			throw new BackgroundTaskAbort(R.string.errorSendToCar);
 		}
 	}
@@ -86,7 +86,7 @@ public class HereComUploader extends BaseUploader {
 	private void populateHereComCookieAndCSRF() {
 		try {
 			URI mainPage = new URI("https", provider.host, "/", null, null);
-			Log.d(TAG, "Downloading main Here.com page to fill the cookie jar and get the CSRF token");
+			if(Log.isEnabled()) Log.d(TAG, "Downloading main Here.com page to fill the cookie jar and get the CSRF token");
 
 			HttpGet httpGet = new HttpGet();
 			httpGet.setURI(mainPage);
@@ -96,13 +96,13 @@ public class HereComUploader extends BaseUploader {
 
 			HttpResponse response = client.execute(httpGet, httpContext);
 
-			Log.d(TAG, "Downloaded cookie. Status: " + response.getStatusLine().getStatusCode());
+			if(Log.isEnabled()) Log.d(TAG, "Downloaded cookie. Status: " + response.getStatusLine().getStatusCode());
 
 			String body = EntityUtils.toString(response.getEntity());
 			csrfToken = parseCSRF(body);
 
 		} catch (Exception e) {
-			Log.e(TAG, "Error getting Here.com cookie", e);
+			if(Log.isEnabled()) Log.e(TAG, "Error getting Here.com cookie", e);
 			// ignore
 		}
 	}
@@ -111,10 +111,10 @@ public class HereComUploader extends BaseUploader {
 		Pattern pattern = Pattern.compile("csrf: \"([^\"]*)\"");
 		Matcher matcher = pattern.matcher(body);
 		if (matcher.find()) {
-			Log.d(TAG, "CSRF block found");
+			if(Log.isEnabled()) Log.d(TAG, "CSRF block found");
 			return matcher.group(1);
 		} else {
-			Log.d(TAG, "CSRF block not found");
+			if(Log.isEnabled()) Log.d(TAG, "CSRF block not found");
 			return "";
 		}
 	}
@@ -133,7 +133,7 @@ public class HereComUploader extends BaseUploader {
 			httpPost.setHeader("User-Agent", Constants.SENDTOCAR_USERAGENT);
 			httpPost.setEntity(new ByteArrayEntity(post.getBytes()));
 
-			Log.d(TAG, "Uploading to " + postUri.toString());
+			if(Log.isEnabled()) Log.d(TAG, "Uploading to " + postUri.toString());
 
 			if (isCancelled() || httpPost.isAborted())
 				return null;
@@ -142,7 +142,7 @@ public class HereComUploader extends BaseUploader {
 
 			int statusCode = response.getStatusLine().getStatusCode();
 
-			Log.d(TAG, "Uploaded to car. Status: " + statusCode);
+			if(Log.isEnabled()) Log.d(TAG, "Uploaded to car. Status: " + statusCode);
 
 			if (isCancelled())
 				return null;
@@ -157,14 +157,14 @@ public class HereComUploader extends BaseUploader {
 			}
 			
 			String sendToCarHtml = EntityUtils.toString(response.getEntity());
-			Log.d(TAG, "Response: " + Utils.htmlSnippet(sendToCarHtml));
+			if(Log.isEnabled()) Log.d(TAG, "Response: " + Utils.htmlSnippet(sendToCarHtml));
 
 			return sendToCarHtml;
 		} catch (InterruptedIOException e) {
-			Log.w(TAG, "Upload to Here.com aborted");
+			if(Log.isEnabled()) Log.w(TAG, "Upload to Here.com aborted");
 			return null;
 		} catch (IOException|URISyntaxException e) {
-			Log.e(TAG, "Exception while sending to Here.com", e);
+			if(Log.isEnabled()) Log.e(TAG, "Exception while sending to Here.com", e);
 			throw new BackgroundTaskAbort(R.string.errorSendToCar);
 		}
 	}

@@ -64,15 +64,15 @@ public class TlsSniSocketFactory implements LayeredSocketFactory {
 
             // set up SNI before the handshake
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    Log.i(TAG, "Setting SNI hostname");
+                    if(Log.isEnabled()) Log.i(TAG, "Setting SNI hostname");
                     sslSocketFactory.setHostname(ssl, host);
             } else {
-                    Log.d(TAG, "No documented SNI support on Android <4.2, trying with reflection");
+                    if(Log.isEnabled()) Log.d(TAG, "No documented SNI support on Android <4.2, trying with reflection");
                     try {
                          java.lang.reflect.Method setHostnameMethod = ssl.getClass().getMethod("setHostname", String.class);
                          setHostnameMethod.invoke(ssl, host);
                     } catch (Exception e) {
-                            Log.w(TAG, "SNI not useable", e);
+                            if(Log.isEnabled()) Log.w(TAG, "SNI not useable", e);
                     }
             }
 
@@ -81,7 +81,7 @@ public class TlsSniSocketFactory implements LayeredSocketFactory {
             if (!hostnameVerifier.verify(host, session))
                     throw new SSLPeerUnverifiedException("Cannot verify hostname: " + host);
 
-            Log.i(TAG, "Established " + session.getProtocol() + " connection with " + session.getPeerHost() +
+            if(Log.isEnabled()) Log.i(TAG, "Established " + session.getProtocol() + " connection with " + session.getPeerHost() +
                             " using " + session.getCipherSuite());
 
             return ssl;

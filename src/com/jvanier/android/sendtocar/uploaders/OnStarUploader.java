@@ -68,15 +68,15 @@ public class OnStarUploader extends BaseUploader {
 			
 			String post = payload.toString();
 			
-			Log.d(TAG, "Sending to OnStar. Post data <pre>" + post + "</pre>");
+			if(Log.isEnabled()) Log.d(TAG, "Sending to OnStar. Post data <pre>" + post + "</pre>");
 			
 			return post;
 			
 		} catch(UnsupportedEncodingException e) {
-			Log.d(TAG, "<span style=\"color: red;\">Unsupported encoding exception while preparing MapQuest post data: " + e.toString() + "</span>");
+			if(Log.isEnabled()) Log.d(TAG, "<span style=\"color: red;\">Unsupported encoding exception while preparing MapQuest post data: " + e.toString() + "</span>");
 			throw new BackgroundTaskAbort(R.string.errorSendToCar);
 		} catch(NullPointerException e) {
-			Log.d(TAG, "<span style=\"color: red;\">Null pointer exception while preparing MapQuest post data: " + e.toString() + "</span>");
+			if(Log.isEnabled()) Log.d(TAG, "<span style=\"color: red;\">Null pointer exception while preparing MapQuest post data: " + e.toString() + "</span>");
 			throw new BackgroundTaskAbort(R.string.errorSendToCar);
 		}
 	}
