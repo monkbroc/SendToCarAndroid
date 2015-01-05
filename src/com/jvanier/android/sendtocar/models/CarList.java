@@ -8,7 +8,7 @@ import java.util.List;
 
 public class CarList implements Serializable {
 	private static final long serialVersionUID = 5770890347425138359L;
-	
+
 	private HashMap<String, CarProvider> data;
 	private long downloadDate;
 	private String language;

@@ -68,8 +68,7 @@ public class CarListManager {
 		ObjectInputStream objIn = null;
 		boolean success = false;
 
-		if(Log.isEnabled())
-			Log.d(TAG, "Reading car list");
+		if(Log.isEnabled()) Log.d(TAG, "Reading car list");
 
 		final int READ_CACHE = 0;
 		final int READ_DEFAULT = 1;
@@ -100,9 +99,7 @@ public class CarListManager {
 				// file
 				break;
 			} catch(Exception e) {
-				if(Log.isEnabled())
-					Log.d(TAG, "Exception while reading "
-							+ ((state == READ_CACHE) ? "cache" : "default"), e);
+				if(Log.isEnabled()) Log.d(TAG, "Exception while reading " + ((state == READ_CACHE) ? "cache" : "default"), e);
 				success = false;
 			}
 		}
@@ -123,16 +120,14 @@ public class CarListManager {
 
 		@Override
 		protected Boolean doInBackground(Void... ignored) {
-			if(Log.isEnabled())
-				Log.d(TAG, "Starting car download");
+			if(Log.isEnabled()) Log.d(TAG, "Starting car download");
 
 			try {
 				downloadedCarList = new CarList(language);
 
 				String carsJson = downloadCarList();
 
-				if(carsJson.length() == 0)
-					return Boolean.FALSE;
+				if(carsJson.length() == 0) return Boolean.FALSE;
 				parseCarsData(carsJson);
 
 				setCarList(downloadedCarList);
@@ -149,8 +144,7 @@ public class CarListManager {
 			String carsJson = "";
 			try {
 				URI carsUri = new URI(MessageFormat.format(Constants.CARS_URL, language));
-				if(Log.isEnabled())
-					Log.d(TAG, "Downloading car list from URL " + carsUri.toString());
+				if(Log.isEnabled()) Log.d(TAG, "Downloading car list from URL " + carsUri.toString());
 
 				HttpGet httpGet = new HttpGet();
 				httpGet.setURI(carsUri);
@@ -158,8 +152,7 @@ public class CarListManager {
 				DefaultHttpClient client = new SniHttpClient();
 				HttpResponse response = client.execute(httpGet);
 
-				if(Log.isEnabled())
-					Log.d(TAG, "Downloaded cars. Status: " + response.getStatusLine().getStatusCode());
+				if(Log.isEnabled()) Log.d(TAG, "Downloaded cars. Status: " + response.getStatusLine().getStatusCode());
 
 				switch(response.getStatusLine().getStatusCode()) {
 				case HttpURLConnection.HTTP_OK:
@@ -169,12 +162,10 @@ public class CarListManager {
 				}
 
 				carsJson = EntityUtils.toString(response.getEntity());
-				if(Log.isEnabled())
-					Log.d(TAG, "Response: " + carsJson);
+				if(Log.isEnabled()) Log.d(TAG, "Response: " + carsJson);
 
 			} catch(Exception e) {
-				if(Log.isEnabled())
-					Log.e(TAG, "Exception while downloading cars: " + e.toString());
+				if(Log.isEnabled()) Log.e(TAG, "Exception while downloading cars: " + e.toString());
 				throw new BackgroundTaskAbort();
 			}
 
@@ -216,12 +207,10 @@ public class CarListManager {
 					downloadedCarList.addCarProvider(c);
 				}
 
-				if(Log.isEnabled())
-					Log.d(TAG, "Cars JSON parsed OK.");
+				if(Log.isEnabled()) Log.d(TAG, "Cars JSON parsed OK.");
 
 			} catch(JSONException e) {
-				if(Log.isEnabled())
-					Log.e(TAG, "Exception while parsing cars JSON: " + e.toString());
+				if(Log.isEnabled()) Log.e(TAG, "Exception while parsing cars JSON: " + e.toString());
 				throw new BackgroundTaskAbort();
 			}
 		}
@@ -232,8 +221,7 @@ public class CarListManager {
 				ObjectOutputStream out = new ObjectOutputStream(fos);
 				out.writeObject(carList);
 				out.close();
-				if(Log.isEnabled())
-					Log.d(TAG, "Wrote car list with " + carList.size() + " providers to cache");
+				if(Log.isEnabled()) Log.d(TAG, "Wrote car list with " + carList.size() + " providers to cache");
 			} catch(IOException e) {
 				// do nothing
 			}

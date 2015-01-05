@@ -43,8 +43,6 @@ public class RecentVehicleList {
 	}
 
 	public RecentVehicle latestVehicle() {
-		Log.d(TAG, "latestVehicle list="+list);
-
 		if(size() > 0) {
 			return list.get(0);
 		} else {
@@ -92,12 +90,10 @@ public class RecentVehicleList {
 			list = (List<RecentVehicle>) objIn.readObject();
 			objIn.close();
 
-			if(Log.isEnabled())
-				Log.d(TAG, "Read recent vehicles list with " + list.size() + " vehicles");
+			if(Log.isEnabled()) Log.d(TAG, "Read recent vehicles list with " + list.size() + " vehicles");
 		} catch(Exception e) {
-			if(Log.isEnabled())
-				Log.d(TAG, "Recent vehicles list not loaded from cache");
-			
+			if(Log.isEnabled()) Log.d(TAG, "Recent vehicles list not loaded from cache");
+
 			createDefaultList();
 		}
 	}
@@ -108,8 +104,7 @@ public class RecentVehicleList {
 			ObjectOutputStream out = new ObjectOutputStream(fos);
 			out.writeObject(list);
 			out.close();
-			if(Log.isEnabled())
-				Log.d(TAG, "Wrote recent vehicles list with " + list.size() + " vechiles to cache");
+			if(Log.isEnabled()) Log.d(TAG, "Wrote recent vehicles list with " + list.size() + " vechiles to cache");
 		} catch(IOException e) {
 			// do nothing
 		}

@@ -23,11 +23,9 @@ public class OnStarUploader extends BaseUploader {
 
 	@Override
 	protected Boolean doUpload() throws BackgroundTaskAbort {
-		if(isCancelled())
-			return Boolean.FALSE;
+		if(isCancelled()) return Boolean.FALSE;
 		String post = preparePostDataOnStar();
-		if(isCancelled())
-			return Boolean.FALSE;
+		if(isCancelled()) return Boolean.FALSE;
 		sendToCarOnStar(post);
 		return Boolean.TRUE;
 	}
@@ -68,8 +66,7 @@ public class OnStarUploader extends BaseUploader {
 
 			String post = payload.toString();
 
-			if(Log.isEnabled())
-				Log.d(TAG, "Sending to OnStar. Post data <pre>" + post + "</pre>");
+			if(Log.isEnabled()) Log.d(TAG, "Sending to OnStar. Post data: " + post);
 
 			return post;
 

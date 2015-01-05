@@ -2794,14 +2794,15 @@ containing a value of this type.
         public static final int screenshot3=0x7f020174;
         public static final int screenshot4=0x7f020175;
         public static final int screenshot5=0x7f020176;
-        public static final int search_icon=0x7f020177;
-        public static final int vpi__tab_indicator=0x7f020178;
-        public static final int vpi__tab_selected_focused_holo=0x7f020179;
-        public static final int vpi__tab_selected_holo=0x7f02017a;
-        public static final int vpi__tab_selected_pressed_holo=0x7f02017b;
-        public static final int vpi__tab_unselected_focused_holo=0x7f02017c;
-        public static final int vpi__tab_unselected_holo=0x7f02017d;
-        public static final int vpi__tab_unselected_pressed_holo=0x7f02017e;
+        public static final int screenshot6=0x7f020177;
+        public static final int search_icon=0x7f020178;
+        public static final int vpi__tab_indicator=0x7f020179;
+        public static final int vpi__tab_selected_focused_holo=0x7f02017a;
+        public static final int vpi__tab_selected_holo=0x7f02017b;
+        public static final int vpi__tab_selected_pressed_holo=0x7f02017c;
+        public static final int vpi__tab_unselected_focused_holo=0x7f02017d;
+        public static final int vpi__tab_unselected_holo=0x7f02017e;
+        public static final int vpi__tab_unselected_pressed_holo=0x7f02017f;
     }
     public static final class id {
         public static final int accountLabel=0x7f08007b;
@@ -3221,6 +3222,7 @@ containing a value of this type.
         public static final int infoEnter=0x7f06007a;
         public static final int infoHelp=0x7f06007b;
         public static final int infoHowTo=0x7f060076;
+        public static final int infoManual=0x7f06007c;
         public static final int infoSend=0x7f060079;
         public static final int infoShare=0x7f060078;
         public static final int infoStart=0x7f060077;

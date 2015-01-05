@@ -11,7 +11,6 @@ import android.content.Context;
 import com.jvanier.android.sendtocar.common.Log;
 import com.jvanier.android.sendtocar.common.Utils;
 
-
 public class Credentials {
 	private static final String TAG = "Credentials";
 	private static final String ASSET_FILENAME = "credentials.json";
@@ -35,6 +34,7 @@ public class Credentials {
 		// them and place your API key in /assets/credentials.json
 		// (This prevents me receiving events from forked
 		// versions which is somewhat confusing!)
+		// @formatter:off
 		/* Credentials file format:
 		 {
 		   "development": {
@@ -46,23 +46,27 @@ public class Credentials {
 		   "OTHER_KEY": "123abc"
 		 }
 		 */
-		
+		// @formatter:on
+
 		try {
 			InputStream inputStream = context.getAssets().open(ASSET_FILENAME);
 			String contents = Utils.ReadInputStream(inputStream);
 			data = new JSONObject(contents);
 			environmentKey = Utils.isDevelopment(context) ? DEVELOPMENT_KEY : PRODUCTION_KEY;
-		} catch (IOException e) {
-			if(Log.isEnabled()) Log.e(TAG, "No credentials JSON file found!\nAdd a JSON file with credentials to the build project in folder /assets/" + ASSET_FILENAME);
+		} catch(IOException e) {
+			if(Log.isEnabled())
+				Log.e(TAG, "No credentials JSON file found!\nAdd a JSON file with credentials to the build project in folder /assets/"
+						+ ASSET_FILENAME);
 			throw e;
-		} catch (JSONException e) {
+		} catch(JSONException e) {
 			if(Log.isEnabled()) Log.e(TAG, "Syntax error in credentials JSON file /assets/" + ASSET_FILENAME, e);
 			throw e;
 		}
 	}
 
-	// Get the key first from the environment-specific key "development" or "production".
-	// If it doesn't exist, get the key from the general section 
+	// Get the key first from the environment-specific key "development" or
+	// "production".
+	// If it doesn't exist, get the key from the general section
 	public String get(String key) {
 		String value = null;
 		if(data != null) {

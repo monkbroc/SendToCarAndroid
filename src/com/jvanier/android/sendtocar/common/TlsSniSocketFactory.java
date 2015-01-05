@@ -20,70 +20,70 @@ import android.os.Build;
 
 @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
 public class TlsSniSocketFactory implements LayeredSocketFactory {
-    private static final String TAG = "TlsSniSocketFactory";
+	private static final String TAG = "TlsSniSocketFactory";
 
-    final static HostnameVerifier hostnameVerifier = new StrictHostnameVerifier();
+	final static HostnameVerifier hostnameVerifier = new StrictHostnameVerifier();
 
+	// Plain TCP/IP (layer below TLS)
 
-    // Plain TCP/IP (layer below TLS)
+	@Override
+	public Socket connectSocket(Socket s, String host, int port, InetAddress localAddress, int localPort, HttpParams params)
+			throws IOException {
+		return null;
+	}
 
-    @Override
-    public Socket connectSocket(Socket s, String host, int port, InetAddress localAddress, int localPort, HttpParams params) throws IOException {
-            return null;
-    }
+	@Override
+	public Socket createSocket() throws IOException {
+		return null;
+	}
 
-    @Override
-    public Socket createSocket() throws IOException {
-            return null;
-    }
+	@Override
+	public boolean isSecure(Socket s) throws IllegalArgumentException {
+		if(s instanceof SSLSocket) return ((SSLSocket) s).isConnected();
+		return false;
+	}
 
-    @Override
-    public boolean isSecure(Socket s) throws IllegalArgumentException {
-            if (s instanceof SSLSocket)
-                    return ((SSLSocket)s).isConnected();
-            return false;
-    }
+	// TLS layer
 
+	@Override
+	public Socket createSocket(Socket plainSocket, String host, int port, boolean autoClose) throws IOException, UnknownHostException {
+		if(autoClose) {
+			// we don't need the plainSocket
+			plainSocket.close();
+		}
 
-    // TLS layer
+		// create and connect SSL socket, but don't do hostname/certificate
+		// verification yet
+		SSLCertificateSocketFactory sslSocketFactory = (SSLCertificateSocketFactory) SSLCertificateSocketFactory.getDefault(0);
+		SSLSocket ssl = (SSLSocket) sslSocketFactory.createSocket(InetAddress.getByName(host), port);
 
-    @Override
-    public Socket createSocket(Socket plainSocket, String host, int port, boolean autoClose) throws IOException, UnknownHostException {
-            if (autoClose) {
-                    // we don't need the plainSocket
-                    plainSocket.close();
-            }
+		// enable TLSv1.1/1.2 if available
+		// (see https://github.com/rfc2822/davdroid/issues/229)
+		ssl.setEnabledProtocols(ssl.getSupportedProtocols());
 
-            // create and connect SSL socket, but don't do hostname/certificate verification yet
-            SSLCertificateSocketFactory sslSocketFactory = (SSLCertificateSocketFactory) SSLCertificateSocketFactory.getDefault(0);
-            SSLSocket ssl = (SSLSocket)sslSocketFactory.createSocket(InetAddress.getByName(host), port);
+		// set up SNI before the handshake
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+			if(Log.isEnabled()) Log.i(TAG, "Setting SNI hostname");
+			sslSocketFactory.setHostname(ssl, host);
+		} else {
+			if(Log.isEnabled()) Log.d(TAG, "No documented SNI support on Android <4.2, trying with reflection");
+			try {
+				java.lang.reflect.Method setHostnameMethod = ssl.getClass().getMethod("setHostname", String.class);
+				setHostnameMethod.invoke(ssl, host);
+			} catch(Exception e) {
+				if(Log.isEnabled()) Log.w(TAG, "SNI not useable", e);
+			}
+		}
 
-            // enable TLSv1.1/1.2 if available
-            // (see https://github.com/rfc2822/davdroid/issues/229)
-            ssl.setEnabledProtocols(ssl.getSupportedProtocols());
+		// verify hostname and certificate
+		SSLSession session = ssl.getSession();
+		if(!hostnameVerifier.verify(host, session)) throw new SSLPeerUnverifiedException("Cannot verify hostname: " + host);
 
-            // set up SNI before the handshake
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
-                    if(Log.isEnabled()) Log.i(TAG, "Setting SNI hostname");
-                    sslSocketFactory.setHostname(ssl, host);
-            } else {
-                    if(Log.isEnabled()) Log.d(TAG, "No documented SNI support on Android <4.2, trying with reflection");
-                    try {
-                         java.lang.reflect.Method setHostnameMethod = ssl.getClass().getMethod("setHostname", String.class);
-                         setHostnameMethod.invoke(ssl, host);
-                    } catch (Exception e) {
-                            if(Log.isEnabled()) Log.w(TAG, "SNI not useable", e);
-                    }
-            }
+		if(Log.isEnabled())
+			Log.i(TAG,
+					"Established " + session.getProtocol() + " connection with " + session.getPeerHost() + " using "
+							+ session.getCipherSuite());
 
-            // verify hostname and certificate
-            SSLSession session = ssl.getSession();
-            if (!hostnameVerifier.verify(host, session))
-                    throw new SSLPeerUnverifiedException("Cannot verify hostname: " + host);
-
-            if(Log.isEnabled()) Log.i(TAG, "Established " + session.getProtocol() + " connection with " + session.getPeerHost() +
-                            " using " + session.getCipherSuite());
-
-            return ssl;
-    }
+		return ssl;
+	}
 }

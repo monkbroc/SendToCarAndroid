@@ -68,12 +68,10 @@ public final class Log {
 			sb = new StringBuilder();
 			String line;
 			while((line = logFileIn.readLine()) != null) {
-				sb.append(line);
+				sb.append(line).append('\n');
 			}
 
 			return sb.toString();
-		} catch(FileNotFoundException e) {
-			// do nothing
 		} catch(IOException e) {
 			// do nothing
 		} finally {
@@ -108,8 +106,7 @@ public final class Log {
 	/* Delegate to Android Log */
 
 	public static int v(String tag, String msg) {
-		if(!mEnabled)
-			return 0;
+		if(!mEnabled) return 0;
 		if(mLogFileOut != null) {
 			printToFile(tag, msg);
 		}
@@ -117,8 +114,7 @@ public final class Log {
 	}
 
 	public static int v(String tag, String msg, Throwable tr) {
-		if(!mEnabled)
-			return 0;
+		if(!mEnabled) return 0;
 		if(mLogFileOut != null) {
 			printToFile(tag, msg + '\n' + android.util.Log.getStackTraceString(tr));
 		}
@@ -126,8 +122,7 @@ public final class Log {
 	}
 
 	public static int d(String tag, String msg) {
-		if(!mEnabled)
-			return 0;
+		if(!mEnabled) return 0;
 		if(mLogFileOut != null) {
 			printToFile(tag, msg);
 		}
@@ -135,8 +130,7 @@ public final class Log {
 	}
 
 	public static int d(String tag, String msg, Throwable tr) {
-		if(!mEnabled)
-			return 0;
+		if(!mEnabled) return 0;
 		if(mLogFileOut != null) {
 			printToFile(tag, msg + '\n' + android.util.Log.getStackTraceString(tr));
 		}
@@ -144,8 +138,7 @@ public final class Log {
 	}
 
 	public static int i(String tag, String msg) {
-		if(!mEnabled)
-			return 0;
+		if(!mEnabled) return 0;
 		if(mLogFileOut != null) {
 			printToFile(tag, msg);
 		}
@@ -153,8 +146,7 @@ public final class Log {
 	}
 
 	public static int i(String tag, String msg, Throwable tr) {
-		if(!mEnabled)
-			return 0;
+		if(!mEnabled) return 0;
 		if(mLogFileOut != null) {
 			printToFile(tag, msg + '\n' + android.util.Log.getStackTraceString(tr));
 		}
@@ -162,8 +154,7 @@ public final class Log {
 	}
 
 	public static int w(String tag, String msg) {
-		if(!mEnabled)
-			return 0;
+		if(!mEnabled) return 0;
 		if(mLogFileOut != null) {
 			printToFile(tag, msg);
 		}
@@ -171,8 +162,7 @@ public final class Log {
 	}
 
 	public static int w(String tag, String msg, Throwable tr) {
-		if(!mEnabled)
-			return 0;
+		if(!mEnabled) return 0;
 		if(mLogFileOut != null) {
 			printToFile(tag, msg + '\n' + android.util.Log.getStackTraceString(tr));
 		}
@@ -180,8 +170,7 @@ public final class Log {
 	}
 
 	public static int w(String tag, Throwable tr) {
-		if(!mEnabled)
-			return 0;
+		if(!mEnabled) return 0;
 		if(mLogFileOut != null) {
 			printToFile(tag, android.util.Log.getStackTraceString(tr));
 		}
@@ -189,8 +178,7 @@ public final class Log {
 	}
 
 	public static int e(String tag, String msg) {
-		if(!mEnabled)
-			return 0;
+		if(!mEnabled) return 0;
 		if(mLogFileOut != null) {
 			printToFile(tag, msg);
 		}
@@ -198,8 +186,7 @@ public final class Log {
 	}
 
 	public static int e(String tag, String msg, Throwable tr) {
-		if(!mEnabled)
-			return 0;
+		if(!mEnabled) return 0;
 		if(mLogFileOut != null) {
 			printToFile(tag, msg + '\n' + android.util.Log.getStackTraceString(tr));
 		}

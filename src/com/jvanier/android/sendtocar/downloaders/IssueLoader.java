@@ -73,8 +73,7 @@ public class IssueLoader extends AsyncTask<Void, Void, Issue> {
 		String jsonData = "";
 		try {
 			URI issueUri = new URI(MessageFormat.format(Constants.ISSUE_URL, makeId));
-			if(Log.isEnabled())
-				Log.d(TAG, "Downloading issue for " + makeId);
+			if(Log.isEnabled()) Log.d(TAG, "Downloading issue for " + makeId);
 
 			HttpGet httpGet = new HttpGet();
 			httpGet.setURI(issueUri);
@@ -82,8 +81,7 @@ public class IssueLoader extends AsyncTask<Void, Void, Issue> {
 			DefaultHttpClient client = new SniHttpClient();
 			HttpResponse response = client.execute(httpGet);
 
-			if(Log.isEnabled())
-				Log.d(TAG, "Downloaded issue. Status: " + response.getStatusLine().getStatusCode());
+			if(Log.isEnabled()) Log.d(TAG, "Downloaded issue. Status: " + response.getStatusLine().getStatusCode());
 
 			switch(response.getStatusLine().getStatusCode()) {
 			case HttpURLConnection.HTTP_OK:
@@ -93,12 +91,10 @@ public class IssueLoader extends AsyncTask<Void, Void, Issue> {
 			}
 
 			jsonData = EntityUtils.toString(response.getEntity());
-			if(Log.isEnabled())
-				Log.d(TAG, "Response: " + jsonData);
+			if(Log.isEnabled()) Log.d(TAG, "Response: " + jsonData);
 
 		} catch(Exception e) {
-			if(Log.isEnabled())
-				Log.e(TAG, "Exception while downloading issue: " + e.toString());
+			if(Log.isEnabled()) Log.e(TAG, "Exception while downloading issue: " + e.toString());
 			throw new BackgroundTaskAbort();
 		}
 
@@ -113,12 +109,10 @@ public class IssueLoader extends AsyncTask<Void, Void, Issue> {
 			String message = issueRaw.optString("message");
 			issue = new Issue(hasIssue, message);
 
-			if(Log.isEnabled())
-				Log.d(TAG, "Issue JSON parsed OK.");
+			if(Log.isEnabled()) Log.d(TAG, "Issue JSON parsed OK.");
 
 		} catch(JSONException e) {
-			if(Log.isEnabled())
-				Log.e(TAG, "Exception while parsing issue JSON: " + e.toString());
+			if(Log.isEnabled()) Log.e(TAG, "Exception while parsing issue JSON: " + e.toString());
 			throw new BackgroundTaskAbort();
 		}
 	}

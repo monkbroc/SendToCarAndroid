@@ -87,17 +87,13 @@ public class GoogleMapsAddressLoader extends AsyncTask<String, Void, GoogleMapsA
 
 			setupHttp();
 			String url = getUrl(urls);
-			if(isCancelled())
-				return result;
+			if(isCancelled()) return result;
 			String mapHtml = downloadMap(url);
-			if(isCancelled())
-				return result;
+			if(isCancelled()) return result;
 			verifyGoogleMapHost();
-			if(isCancelled())
-				return result;
+			if(isCancelled()) return result;
 			parseAddressData(mapHtml);
-			if(isCancelled())
-				return result;
+			if(isCancelled()) return result;
 
 			result.success = true;
 			return result;
@@ -129,25 +125,21 @@ public class GoogleMapsAddressLoader extends AsyncTask<String, Void, GoogleMapsA
 	private String downloadMap(String url) throws BackgroundTaskAbort {
 		String mapHtml = "";
 		try {
-			if(Log.isEnabled())
-				Log.d(TAG, "Downloading " + url);
+			if(Log.isEnabled()) Log.d(TAG, "Downloading " + url);
 
 			httpGet.setURI(new URI(url));
 			HttpResponse response = client.execute(httpGet, httpContext);
 
-			if(Log.isEnabled())
-				Log.d(TAG, "Downloaded address. Status: " + response.getStatusLine().getStatusCode());
+			if(Log.isEnabled()) Log.d(TAG, "Downloaded address. Status: " + response.getStatusLine().getStatusCode());
 
 			if(response.getStatusLine().getStatusCode() != HttpURLConnection.HTTP_OK) {
-				if(Log.isEnabled())
-					Log.e(TAG, "Bad HTTP code while downloading address: " + response.getStatusLine().getStatusCode());
+				if(Log.isEnabled()) Log.e(TAG, "Bad HTTP code while downloading address: " + response.getStatusLine().getStatusCode());
 				throw new BackgroundTaskAbort(R.string.errorGoogleMapsLongPressBug);
 			}
 
 			mapHtml = EntityUtils.toString(response.getEntity());
 
-			if(Log.isEnabled())
-				Log.d(TAG, "Response: " + Utils.htmlSnippet(mapHtml));
+			if(Log.isEnabled()) Log.d(TAG, "Response: " + Utils.htmlSnippet(mapHtml));
 
 			/*
 			 * Get the name of the Google server that sent the map after any
@@ -159,17 +151,14 @@ public class GoogleMapsAddressLoader extends AsyncTask<String, Void, GoogleMapsA
 			// ExecutionContext.HTTP_REQUEST);
 			// String currentUrl = mapHost.toURI() + currentReq.getURI();
 
-			if(Log.isEnabled())
-				Log.d(TAG, "Google Maps host: " + mapHost.getHostName());
+			if(Log.isEnabled()) Log.d(TAG, "Google Maps host: " + mapHost.getHostName());
 
 		} catch(URISyntaxException e) {
-			if(Log.isEnabled())
-				Log.e(TAG, "Exception while downloading address: " + e.toString());
+			if(Log.isEnabled()) Log.e(TAG, "Exception while downloading address: " + e.toString());
 			throw new BackgroundTaskAbort(R.string.errorDownload);
 
 		} catch(IOException e) {
-			if(Log.isEnabled())
-				Log.d(TAG, "Exception while downloading address: " + e.toString());
+			if(Log.isEnabled()) Log.d(TAG, "Exception while downloading address: " + e.toString());
 			throw new BackgroundTaskAbort(R.string.errorDownload);
 		}
 
@@ -268,21 +257,17 @@ public class GoogleMapsAddressLoader extends AsyncTask<String, Void, GoogleMapsA
 
 					result.address = address;
 
-					if(Log.isEnabled())
-						Log.d(TAG, "Address JSON parsed OK.");
+					if(Log.isEnabled()) Log.d(TAG, "Address JSON parsed OK.");
 				} else {
-					if(Log.isEnabled())
-						Log.e(TAG, "Wrong format while parsing address JSON");
+					if(Log.isEnabled()) Log.e(TAG, "Wrong format while parsing address JSON");
 					throw new BackgroundTaskAbort(R.string.errorDownload);
 				}
 			} catch(JSONException e) {
-				if(Log.isEnabled())
-					Log.e(TAG, "Exception while parsing address JSON: " + e.toString());
+				if(Log.isEnabled()) Log.e(TAG, "Exception while parsing address JSON: " + e.toString());
 				throw new BackgroundTaskAbort(R.string.errorDownload);
 			}
 		} else {
-			if(Log.isEnabled())
-				Log.e(TAG, "Cannot find address JSON");
+			if(Log.isEnabled()) Log.e(TAG, "Cannot find address JSON");
 			throw new BackgroundTaskAbort(R.string.errorGoogleMapsIncompleteAddressBug);
 		}
 	}
@@ -302,14 +287,12 @@ public class GoogleMapsAddressLoader extends AsyncTask<String, Void, GoogleMapsA
 
 		String geoHtml = "";
 		try {
-			if(Log.isEnabled())
-				Log.d(TAG, "Geocoding  " + geoURI);
+			if(Log.isEnabled()) Log.d(TAG, "Geocoding  " + geoURI);
 
 			httpGet.setURI(new URI(geoURI));
 			HttpResponse response = client.execute(httpGet, httpContext);
 
-			if(Log.isEnabled())
-				Log.d(TAG, "Geocoding address. Status: " + response.getStatusLine().getStatusCode());
+			if(Log.isEnabled()) Log.d(TAG, "Geocoding address. Status: " + response.getStatusLine().getStatusCode());
 
 			if(response.getStatusLine().getStatusCode() != HttpURLConnection.HTTP_OK) {
 				return;
@@ -317,12 +300,10 @@ public class GoogleMapsAddressLoader extends AsyncTask<String, Void, GoogleMapsA
 
 			geoHtml = EntityUtils.toString(response.getEntity());
 
-			if(Log.isEnabled())
-				Log.d(TAG, "Response: " + Utils.htmlSnippet(geoHtml));
+			if(Log.isEnabled()) Log.d(TAG, "Response: " + Utils.htmlSnippet(geoHtml));
 
 		} catch(IOException | URISyntaxException e) {
-			if(Log.isEnabled())
-				Log.d(TAG, "Exception while geocoding address: " + e.toString());
+			if(Log.isEnabled()) Log.d(TAG, "Exception while geocoding address: " + e.toString());
 		}
 
 		try {
@@ -362,14 +343,11 @@ public class GoogleMapsAddressLoader extends AsyncTask<String, Void, GoogleMapsA
 			}
 
 		} catch(JSONException e) {
-			if(Log.isEnabled())
-				Log.e(TAG, "Exception while parsing geocoding JSON: " + e.toString());
+			if(Log.isEnabled()) Log.e(TAG, "Exception while parsing geocoding JSON: " + e.toString());
 		} catch(IllegalAccessException e) {
-			if(Log.isEnabled())
-				Log.e(TAG, "Exception while updating address: " + e.toString());
+			if(Log.isEnabled()) Log.e(TAG, "Exception while updating address: " + e.toString());
 		} catch(NoSuchFieldException e) {
-			if(Log.isEnabled())
-				Log.e(TAG, "Exception while updating address: " + e.toString());
+			if(Log.isEnabled()) Log.e(TAG, "Exception while updating address: " + e.toString());
 		}
 	}
 

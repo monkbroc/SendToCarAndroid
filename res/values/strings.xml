@@ -65,5 +65,5 @@
     <string name="infoSend">Select Send To Car</string>
     <string name="infoEnter">Enter your vehicle info and hit Send</string>
     <string name="infoHelp">The account could be your email, user name, VIN or phone number. See the help for more info.</string>
-    
+    <string name="infoManual">You can also type in an andress manually instead of using Google Maps.</string>
 </resources>

@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Locale;
 
 public final class GoogleMapsHosts {
+	// @formatter:off
 	final public static String hosts[] = {
 		"maps.google.com.br",
 		"maps.google.fr",
@@ -233,12 +234,13 @@ public final class GoogleMapsHosts {
 		"va",
 		"me",
 	};
-	
+	// @formatter:on
+
 	public static String getHostByCountry(String country) {
 		country = country.toLowerCase(Locale.US);
 		for(int c = 0; c < countries.length; c++) {
 			if(countries[c].equals(country)) {
-				return hosts[c]; 
+				return hosts[c];
 			}
 		}
 		return null;

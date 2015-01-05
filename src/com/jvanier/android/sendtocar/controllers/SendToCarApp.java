@@ -41,12 +41,13 @@ public class SendToCarApp extends Application {
 		Context context = getApplicationContext();
 		if(Utils.isDevelopment(context)) {
 			Log.enableToLogCat();
-		} else if(UserPreferences.sharedInstance().isDebug()) {
+		}
+
+		if(UserPreferences.sharedInstance().isDebug()) {
 			Log.enableToFile(context);
 		}
 
-		if(Log.isEnabled())
-			Log.d(TAG, "Application started");
+		if(Log.isEnabled()) Log.d(TAG, "Application started");
 	}
 
 	private void loadCredentials() {

@@ -38,14 +38,11 @@ public class GoogleMapsUploader extends BaseUploader {
 
 	@Override
 	protected Boolean doUpload() throws BackgroundTaskAbort {
-		if(isCancelled())
-			return Boolean.FALSE;
+		if(isCancelled()) return Boolean.FALSE;
 		String post = preparePostData();
-		if(isCancelled())
-			return Boolean.FALSE;
+		if(isCancelled()) return Boolean.FALSE;
 		String sendToCarHtml = sendToCar(post);
-		if(isCancelled())
-			return Boolean.FALSE;
+		if(isCancelled()) return Boolean.FALSE;
 		parseSendToCar(sendToCarHtml);
 		return Boolean.TRUE;
 	}
@@ -106,12 +103,10 @@ public class GoogleMapsUploader extends BaseUploader {
 
 			post = TextUtils.join("|", postData);
 
-			if(Log.isEnabled())
-				Log.d(TAG, "Sending to car. Post data: " + post);
+			if(Log.isEnabled()) Log.d(TAG, "Sending to car. Post data: " + post);
 
 		} catch(NullPointerException e) {
-			if(Log.isEnabled())
-				Log.e(TAG, "Null pointer exception while preparing post data", e);
+			if(Log.isEnabled()) Log.e(TAG, "Null pointer exception while preparing post data", e);
 			throw new BackgroundTaskAbort(R.string.errorSendToCar);
 		}
 
@@ -153,8 +148,7 @@ public class GoogleMapsUploader extends BaseUploader {
 			String[] sub = subcookies[i].split("=");
 			if(sub.length >= 2 && sub[0].equals("ID")) {
 				cookie_id = sub[1];
-				if(Log.isEnabled())
-					Log.d(TAG, "Cookie: " + c.toString());
+				if(Log.isEnabled()) Log.d(TAG, "Cookie: " + c.toString());
 				break;
 			}
 		}
@@ -164,16 +158,14 @@ public class GoogleMapsUploader extends BaseUploader {
 	private void donwloadCookie() {
 		try {
 			URI mainPage = new URI("http", provider.host, "/", "output=json", null);
-			if(Log.isEnabled())
-				Log.d(TAG, "Downloading main Google Maps page to fill the cookie jar: " + mainPage.toString());
+			if(Log.isEnabled()) Log.d(TAG, "Downloading main Google Maps page to fill the cookie jar: " + mainPage.toString());
 
 			HttpGet httpGet = new HttpGet();
 			httpGet.setURI(mainPage);
 
 			HttpResponse response = client.execute(httpGet, httpContext);
 
-			if(Log.isEnabled())
-				Log.d(TAG, "Downloaded cookie. Status: " + response.getStatusLine().getStatusCode());
+			if(Log.isEnabled()) Log.d(TAG, "Downloaded cookie. Status: " + response.getStatusLine().getStatusCode());
 		} catch(Exception e) {
 			// ignore
 		}
@@ -188,34 +180,27 @@ public class GoogleMapsUploader extends BaseUploader {
 			httpPost.addHeader("Content-Type", "application/x-www-form-urlencoded");
 			httpPost.setEntity(new ByteArrayEntity(post.getBytes()));
 
-			if(Log.isEnabled())
-				Log.d(TAG, "Uploading to " + postUri.toString());
+			if(Log.isEnabled()) Log.d(TAG, "Uploading to " + postUri.toString());
 
-			if(isCancelled() || httpPost.isAborted())
-				return null;
+			if(isCancelled() || httpPost.isAborted()) return null;
 
 			HttpResponse response = client.execute(httpPost, httpContext);
 
-			if(Log.isEnabled())
-				Log.d(TAG, "Uploaded to car. Status: " + response.getStatusLine().getStatusCode());
+			if(Log.isEnabled()) Log.d(TAG, "Uploaded to car. Status: " + response.getStatusLine().getStatusCode());
 
-			if(isCancelled())
-				return null;
+			if(isCancelled()) return null;
 
 			if(response == null || response.getStatusLine().getStatusCode() != HttpURLConnection.HTTP_OK) {
 				throw new BackgroundTaskAbort(R.string.errorSendToCar);
 			}
 
 			sendToCarHtml = EntityUtils.toString(response.getEntity());
-			if(Log.isEnabled())
-				Log.d(TAG, "Response: " + Utils.htmlSnippet(sendToCarHtml));
+			if(Log.isEnabled()) Log.d(TAG, "Response: " + Utils.htmlSnippet(sendToCarHtml));
 		} catch(InterruptedIOException e) {
-			if(Log.isEnabled())
-				Log.w(TAG, "Upload to car aborted");
+			if(Log.isEnabled()) Log.w(TAG, "Upload to car aborted");
 			return null;
 		} catch(IOException | URISyntaxException e) {
-			if(Log.isEnabled())
-				Log.e(TAG, "Exception while sending to car", e);
+			if(Log.isEnabled()) Log.e(TAG, "Exception while sending to car", e);
 			throw new BackgroundTaskAbort(R.string.errorSendToCar);
 		}
 
@@ -231,13 +216,11 @@ public class GoogleMapsUploader extends BaseUploader {
 
 			JSONObject response = new JSONObject(html);
 
-			if(isCancelled())
-				return;
+			if(isCancelled()) return;
 
 			int status = response.getInt("status");
 
-			if(Log.isEnabled())
-				Log.d(TAG, "Response JSON parsed OK. Status: " + ((status == 1) ? "Success" : "Failed"));
+			if(Log.isEnabled()) Log.d(TAG, "Response JSON parsed OK. Status: " + ((status == 1) ? "Success" : "Failed"));
 
 			if(status == 1) {
 				// success
@@ -284,13 +267,11 @@ public class GoogleMapsUploader extends BaseUploader {
 				break;
 			}
 
-			if(Log.isEnabled())
-				Log.e(TAG, "Error code: " + errorCode + ", String: " + getContext().getString(errorMsg));
+			if(Log.isEnabled()) Log.e(TAG, "Error code: " + errorCode + ", String: " + getContext().getString(errorMsg));
 
 			throw new BackgroundTaskAbort(errorMsg);
 		} catch(JSONException e) {
-			if(Log.isEnabled())
-				Log.e(TAG, "Exception while parsing resposne JSON", e);
+			if(Log.isEnabled()) Log.e(TAG, "Exception while parsing resposne JSON", e);
 			throw new BackgroundTaskAbort(R.string.errorSendToCar);
 		}
 	}
