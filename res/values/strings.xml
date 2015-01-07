@@ -38,15 +38,15 @@
     <string name="done">Done</string>
     <string name="screenshot">Screenshot</string>
     <string name="sendingToCar">Sending to car</string>
-    <string name="errorSendToCar">Could not send the destination. Try again later</string>
-    <string name="updateBMWAssist">Could not send the destination.\n\nYou might be able to fix this by updating BMW Assist in your car.\n\nClick on Show help and follow the instructions provided</string>
+    <string name="errorSendToCar">Could not send the destination.\n\nTry again later</string>
+    <string name="updateBMWAssist">Could not send the destination.\n\nYou might be able to fix this by updating BMW Assist in your car.\n\nClick on Show help and follow the instructions provided.</string>
     <string name="successCar">Destination successfully sent to car</string>
     <string name="successTitle">Success</string>
-    <string name="fordDownload">In your car, press "Sync" and say "Services" to download the destination</string>
+    <string name="fordDownload">In your car, press \"Sync\" and say \"Services\" to download the destination</string>
     <string name="dontShowAgain">Don\'t show again</string>
     <string name="redirect">Follow the instructions on this page to finish sending your destination</string>
-    <string name="statusInvalidAccount">Invalid account. Check that you entered it correctly and try again</string>
-    <string name="statusDestinationNotSent">This destination cannot be sent to your car. Try a different destination</string>
+    <string name="statusInvalidAccount">Invalid account.\n\nCheck that you entered it correctly and try again.</string>
+    <string name="statusDestinationNotSent">This destination cannot be sent to your car.\n\nTry a different destination.</string>
     <string name="helpForVehicle">Help for {0}</string>
     <string name="knownIssueForVehicle">Known issue for {0}</string>
     <string name="recentVehicles">Recent vehicles</string>
@@ -69,6 +69,6 @@
     <string name="infoSend">Select Send To Car</string>
     <string name="infoEnter">Select your vehicle make, enter your account and hit Send</string>
     <string name="infoHelp">The account could be your email, user name, VIN or phone number.\n<small>See the help for more info.</small></string>
-    <string name="infoManual">You can also type in an andress manually instead of using Google Maps.</string>
+    <string name="infoManual">You can also type in an address manually instead of using Google Maps.</string>
     <string name="infoRetrieve">When you get in your car, download the destination and go!\n<small>This step is different for every make.\nSee the help.</small></string>
 </resources>

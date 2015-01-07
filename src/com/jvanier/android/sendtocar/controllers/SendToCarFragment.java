@@ -509,7 +509,7 @@ public class SendToCarFragment extends Fragment {
 				 * difficult to download the destination to the car
 				 */
 				if(uploader.getProvider().provider == CarProvider.PROVIDER_MAPQUEST && !UserPreferences.sharedInstance().hideFordHint()) {
-					msgStr += "\n" + context.getString(R.string.fordDownload);
+					msgStr += "\n\n" + context.getString(R.string.fordDownload);
 
 					AlertDialog.Builder alertbox = new AlertDialog.Builder(getActivity());
 					alertbox.setTitle(R.string.successTitle);
