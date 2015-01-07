@@ -17,7 +17,7 @@
             android:id="@android:id/text1"
             style="@style/cardItem"
             android:layout_marginTop="8dip"
-            android:text="@string/make"
+            android:text="@string/makes"
             android:textAppearance="?android:attr/textAppearanceLarge" />
 
         <TextView

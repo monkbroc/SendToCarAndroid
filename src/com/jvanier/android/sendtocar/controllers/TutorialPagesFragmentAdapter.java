@@ -8,10 +8,10 @@ import com.jvanier.android.sendtocar.R;
 
 class TutorialPagesFragmentAdapter extends FragmentPagerAdapter {
 
-	protected final int screenDrawables[] = { R.drawable.screenshot1, R.drawable.screenshot2, R.drawable.screenshot3,
-			R.drawable.screenshot4, R.drawable.screenshot5, R.drawable.screenshot6 };
-	protected final int screenMessage[] = { R.string.infoStart, R.string.infoShare, R.string.infoSend, R.string.infoEnter,
-			R.string.infoHelp, R.string.infoManual };
+	protected final int screenDrawables[] = { R.drawable.logo, R.drawable.screenshot1, R.drawable.screenshot2, R.drawable.screenshot3,
+			R.drawable.screenshot4, R.drawable.screenshot5, R.drawable.screenshot6, R.drawable.screenshot7 };
+	protected final int screenMessage[] = { R.string.infoWelcome, R.string.infoStart, R.string.infoShare, R.string.infoSend, R.string.infoEnter,
+			R.string.infoHelp, R.string.infoManual, R.string.infoRetrieve };
 
 	private int mCount = screenDrawables.length;
 

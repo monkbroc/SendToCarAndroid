@@ -262,7 +262,7 @@ public final class R {
 		public static final int flag_zm = 0x7f020160;
 		public static final int flag_zw = 0x7f020161;
 		public static final int ic_launcher = 0x7f02016a;
-		public static final int search_icon = 0x7f02017b;
+		public static final int search_icon = 0x7f02017d;
 	}
 	public static final class id {
 		public static final int country_picker_listview = 0x7f080063;

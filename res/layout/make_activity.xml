@@ -35,7 +35,7 @@
         <TextView
             android:id="@+id/makesLabel"
             style="@style/cardHeaderLabel"
-            android:text="@string/make" />
+            android:text="@string/makes" />
 
         <android.support.v7.widget.CardView
             android:id="@+id/makesCard"

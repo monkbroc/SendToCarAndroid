@@ -6,7 +6,7 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
     <string name="vehicle">Vehicle</string>
     <string name="vehicle_lowercase">vehicle</string>
-    <string name="make">Make</string>
+    <string name="makes">Makes</string>
     <string name="account">Account</string>
     <string name="address">Address</string>
     <string name="destination">Destination</string>
@@ -39,7 +39,7 @@
     <string name="screenshot">Screenshot</string>
     <string name="sendingToCar">Sending to car</string>
     <string name="errorSendToCar">Could not send the destination. Try again later</string>
-    <string name="updateBMWAssist">Could not send the destination.\n\nYou might be able to fix this by updating BMW Assist in your car. Click on Help for BMW in the app and follow the instructions provided</string>
+    <string name="updateBMWAssist">Could not send the destination.\n\nYou might be able to fix this by updating BMW Assist in your car.\n\nClick on Show help and follow the instructions provided</string>
     <string name="successCar">Destination successfully sent to car</string>
     <string name="successTitle">Success</string>
     <string name="fordDownload">In your car, press "Sync" and say "Services" to download the destination</string>
@@ -63,10 +63,12 @@
     <string name="listEmailTitle">Contact developer</string>
     <string name="listSendLog">Send debug log</string>
     <string name="infoHowTo">How to Use</string>
-    <string name="infoStart">Start Google Maps, find a place and slide the white address box up</string>
-    <string name="infoShare">Press the Share button or select Share from the 3-dots menu</string>
+    <string name="infoWelcome">Welcome to Send To Car, a quick way to send destinations to your navigation system, even when you are not in your car!</string>
+    <string name="infoStart">First, start Google Maps, find a place and slide up the box at the bottom</string>
+    <string name="infoShare">Select Share from the 3-dots menu or tap the Share button</string>
     <string name="infoSend">Select Send To Car</string>
-    <string name="infoEnter">Enter your vehicle info and hit Send</string>
-    <string name="infoHelp">The account could be your email, user name, VIN or phone number. See the help for more info.</string>
+    <string name="infoEnter">Select your vehicle make, enter your account and hit Send</string>
+    <string name="infoHelp">The account could be your email, user name, VIN or phone number.\n<small>See the help for more info.</small></string>
     <string name="infoManual">You can also type in an andress manually instead of using Google Maps.</string>
+    <string name="infoRetrieve">When you get in your car, download the destination and go!\n<small>This step is different for every make.\nSee the help.</small></string>
 </resources>

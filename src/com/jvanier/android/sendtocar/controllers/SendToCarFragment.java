@@ -202,6 +202,12 @@ public class SendToCarFragment extends Fragment {
 		updateSendButtonEnabled();
 
 		cancelButton = (Button) rootView.findViewById(R.id.cancelButton);
+		cancelButton.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				getActivity().finish();
+			}
+		});
 	}
 
 	private void updateSendButtonEnabled() {
@@ -313,7 +319,12 @@ public class SendToCarFragment extends Fragment {
 				if(finishOnOk) {
 					getActivity().finish();
 				}
-				(new ShowHelp()).perfrom(getActivity());
+				// Show help for make
+				if(selectedMake != null) {
+					new ShowHelpForMake(selectedMake.makeId).perfrom(getActivity());
+				} else {
+					new ShowHelp().perfrom(getActivity());
+				}
 			}
 		});
 
