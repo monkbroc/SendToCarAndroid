@@ -58,8 +58,6 @@ import com.jvanier.android.sendtocar.uploaders.OnStarUploader;
 
 /* TODO:
  *
- * - Grey send button when disabled and green when enabled
- *   http://stackoverflow.com/questions/14042866/state-list-drawable-and-disabled-state
  * - Translation
  * 
  */
