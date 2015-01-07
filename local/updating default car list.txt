@@ -1,4 +1,8 @@
-Update the serialUID for model classes that changed?
+Make sure Proguard isn't stripping the serialVersionUID
+Don't update the serialVersionUID
+	=> New fields will get their default data if class is loaded from
+	old data
+	=> Deleted fields won't be readable by old code (not a problem)
 
 Export the application for production.
 Run on the phone.

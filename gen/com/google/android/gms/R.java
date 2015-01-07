@@ -97,12 +97,12 @@ public final class R {
 		public static final int common_signin_btn_text_normal_light = 0x7f020065;
 		public static final int common_signin_btn_text_pressed_dark = 0x7f020066;
 		public static final int common_signin_btn_text_pressed_light = 0x7f020067;
-		public static final int ic_plusone_medium_off_client = 0x7f02016c;
-		public static final int ic_plusone_small_off_client = 0x7f02016d;
-		public static final int ic_plusone_standard_off_client = 0x7f02016e;
-		public static final int ic_plusone_tall_off_client = 0x7f02016f;
-		public static final int powered_by_google_dark = 0x7f020170;
-		public static final int powered_by_google_light = 0x7f020171;
+		public static final int ic_plusone_medium_off_client = 0x7f02016f;
+		public static final int ic_plusone_small_off_client = 0x7f020170;
+		public static final int ic_plusone_standard_off_client = 0x7f020171;
+		public static final int ic_plusone_tall_off_client = 0x7f020172;
+		public static final int powered_by_google_dark = 0x7f020173;
+		public static final int powered_by_google_light = 0x7f020174;
 	}
 	public static final class id {
 		public static final int book_now = 0x7f080010;

@@ -243,28 +243,32 @@ public class GoogleMapsUploader extends BaseUploader {
 			int errorCode = response.getInt("stcc_status");
 			int errorMsg;
 
-			switch(errorCode) {
-			case 430:
-			case 440:
-				errorMsg = R.string.statusInvalidAccount;
-				break;
-
-			case 470:
-				errorMsg = R.string.statusDestinationNotSent;
-				break;
-
-			case 500:
-			default:
-				errorMsg = R.string.errorSendToCar;
-
-				// retry with lat/long only
-				if(!latLongOnly) {
-					latLongOnly = true;
-					if(doUpload().booleanValue()) {
-						return;
+			if(getProvider().makeId.equals("car_bmw")) {
+				errorMsg = R.string.updateBMWAssist;
+			} else {
+					switch(errorCode) {
+				case 430:
+				case 440:
+					errorMsg = R.string.statusInvalidAccount;
+					break;
+	
+				case 470:
+					errorMsg = R.string.statusDestinationNotSent;
+					break;
+	
+				case 500:
+				default:
+					errorMsg = R.string.errorSendToCar;
+	
+					// retry with lat/long only
+					if(!latLongOnly) {
+						latLongOnly = true;
+						if(doUpload().booleanValue()) {
+							return;
+						}
 					}
+					break;
 				}
-				break;
 			}
 
 			if(Log.isEnabled()) Log.e(TAG, "Error code: " + errorCode + ", String: " + getContext().getString(errorMsg));

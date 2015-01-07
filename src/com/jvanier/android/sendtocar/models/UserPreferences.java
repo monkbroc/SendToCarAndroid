@@ -10,6 +10,7 @@ public class UserPreferences {
 	private boolean debug;
 	private boolean tutorialShown;
 	private String country;
+	private boolean hideFordHint;
 
 	public boolean isDebug() {
 		return debug;
@@ -42,11 +43,21 @@ public class UserPreferences {
 		return this;
 	}
 
+	public boolean hideFordHint() {
+		return hideFordHint;
+	}
+
+	public UserPreferences setHideFordHint(boolean hideFordHint) {
+		this.hideFordHint = hideFordHint;
+		return this;
+	}
+
 	private static final UserPreferences INSTANCE = new UserPreferences();
 
 	private static final String KEY_DEBUG = "debug";
 	private static final String KEY_TUTORIAL_SHOWN = "tutorialShown";
 	private static final String KEY_COUNTRY = "country";
+	private static final String KEY_HIDE_FORD_HINT = "hideFordHint";
 
 	public static UserPreferences sharedInstance() {
 		return INSTANCE;
@@ -61,6 +72,7 @@ public class UserPreferences {
 		debug = settings.getBoolean(KEY_DEBUG, false);
 		tutorialShown = settings.getBoolean(KEY_TUTORIAL_SHOWN, false);
 		country = settings.getString(KEY_COUNTRY, null);
+		hideFordHint = settings.getBoolean(KEY_HIDE_FORD_HINT, false);
 	}
 
 	public void save(Context context) {
@@ -70,6 +82,7 @@ public class UserPreferences {
 		if(country != null) {
 			settingsEditor.putString(KEY_COUNTRY, country);
 		}
+		settingsEditor.putBoolean(KEY_HIDE_FORD_HINT, hideFordHint);
 		settingsEditor.commit();
 	}
 

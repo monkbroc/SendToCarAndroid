@@ -155,7 +155,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
-            android:drawableLeft="@drawable/ic_action_send_now"
+            android:drawableLeft="@drawable/send_icon"
+            android:textColor="@drawable/send_text_color"
             android:textAllCaps="true"
             android:text="@string/send" />
     </LinearLayout>

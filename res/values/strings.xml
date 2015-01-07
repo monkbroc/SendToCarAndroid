@@ -39,8 +39,11 @@
     <string name="screenshot">Screenshot</string>
     <string name="sendingToCar">Sending to car</string>
     <string name="errorSendToCar">Could not send the destination. Try again later</string>
+    <string name="updateBMWAssist">Could not send the destination.\n\nYou might be able to fix this by updating BMW Assist in your car. Click on Help for BMW in the app and follow the instructions provided</string>
     <string name="successCar">Destination successfully sent to car</string>
+    <string name="successTitle">Success</string>
     <string name="fordDownload">In your car, press "Sync" and say "Services" to download the destination</string>
+    <string name="dontShowAgain">Don\'t show again</string>
     <string name="redirect">Follow the instructions on this page to finish sending your destination</string>
     <string name="statusInvalidAccount">Invalid account. Check that you entered it correctly and try again</string>
     <string name="statusDestinationNotSent">This destination cannot be sent to your car. Try a different destination</string>

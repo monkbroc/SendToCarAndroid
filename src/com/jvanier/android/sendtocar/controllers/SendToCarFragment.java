@@ -58,7 +58,6 @@ import com.jvanier.android.sendtocar.uploaders.OnStarUploader;
 
 /* TODO:
  *
- * - Popup for updating BMW Assist
  * - Grey send button when disabled and green when enabled
  *   http://stackoverflow.com/questions/14042866/state-list-drawable-and-disabled-state
  * - Translation
@@ -242,7 +241,7 @@ public class SendToCarFragment extends Fragment {
 				updateUIWithAddress(result.address);
 			} else {
 				String message = getString(result.messageId);
-				showMessageBoxAndFinish(message);
+				showMessageBoxAndFinish(message, true);
 			}
 		}
 	}
@@ -284,10 +283,6 @@ public class SendToCarFragment extends Fragment {
 			// not started from Google Maps, just allow the user to manually
 			// enter the address
 		}
-	}
-
-	private void showMessageBoxAndFinish(String message) {
-		showMessageBoxAndFinish(message, true);
 	}
 
 	private void showMessageBoxAndFinish(String message, final boolean finishOnOk) {
@@ -502,24 +497,43 @@ public class SendToCarFragment extends Fragment {
 				 * Show additional message for Ford since users seem to find it
 				 * difficult to download the destination to the car
 				 */
-				if(uploader.getProvider().provider == CarProvider.PROVIDER_MAPQUEST) {
+				if(uploader.getProvider().provider == CarProvider.PROVIDER_MAPQUEST && !UserPreferences.sharedInstance().hideFordHint()) {
 					msgStr += "\n" + context.getString(R.string.fordDownload);
-				}
-				Toast toast = Toast.makeText(context, msgStr, Toast.LENGTH_LONG);
-				toast.show();
 
-				// Close activity after successfully sending the destination
-				getActivity().finish();
+					AlertDialog.Builder alertbox = new AlertDialog.Builder(getActivity());
+					alertbox.setTitle(R.string.successTitle);
+					alertbox.setMessage(msgStr);
+					AlertDialog.OnClickListener buttonListener = new AlertDialog.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							if(which == AlertDialog.BUTTON_NEGATIVE) {
+								UserPreferences.sharedInstance().setHideFordHint(true).save(getActivity());
+							}
+							// Close activity after successfully sending the
+							// destination
+							getActivity().finish();
+						}
+					};
+					alertbox.setPositiveButton(R.string.ok, buttonListener);
+					alertbox.setNegativeButton(R.string.dontShowAgain, buttonListener);
+					alertbox.show();
+
+				} else {
+					Toast toast = Toast.makeText(context, msgStr, Toast.LENGTH_LONG);
+					toast.show();
+
+					// Close activity after successfully sending the destination
+					getActivity().finish();
+				}
 			} else {
 				message = uploader.getErrorMessage();
 				if(message == null) {
 					message = getString(uploader.getErrorStringId());
 				}
-				Toast toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
-				toast.show();
 
 				// Don't close activity if upload fails in case the user wants
 				// to retry
+				showMessageBoxAndFinish(message, false);
 			}
 
 			JSONObject props = new JSONObject();

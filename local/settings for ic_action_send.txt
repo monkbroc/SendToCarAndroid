@@ -1,0 +1,8 @@
+Programming/Android Design - Icons 20131120/Core_Icons/unstyled/unscaled/ic_action_send.png
+
+Trim
+Size: 20dip
+Padding: 6dip
+
+Color: primary, primaryDark, disabled
+

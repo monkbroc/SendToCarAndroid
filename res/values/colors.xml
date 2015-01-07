@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="icon_grey">#99000000</color>
-    <color name="green">#0D0</color>
     <color name="navigation_primary">#9A1E1E1E</color>
     <color name="circle_indicator_fill">@color/primary</color>
     <color name="circle_indicator_stroke">@color/primaryDark</color>
-    
+	<color name="disabled">#BBBBBB</color>
+
 </resources>
