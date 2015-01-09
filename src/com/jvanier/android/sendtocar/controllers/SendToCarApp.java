@@ -72,6 +72,7 @@ public class SendToCarApp extends Application {
 		}
 
 		mixpanel.registerSuperProperties(props);
+		mixpanel.track("App open", null);
 	}
 
 	private void updateCarList() {
