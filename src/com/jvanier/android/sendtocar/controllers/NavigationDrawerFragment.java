@@ -28,6 +28,7 @@ import com.jvanier.android.sendtocar.controllers.commands.SendDebugLogToDevelope
 import com.jvanier.android.sendtocar.controllers.commands.ShowAppInGooglePlay;
 import com.jvanier.android.sendtocar.controllers.commands.ShowHelp;
 import com.jvanier.android.sendtocar.controllers.commands.ShowTutorial;
+import com.jvanier.android.sendtocar.controllers.commands.ToggleDebugMode;
 import com.jvanier.android.sendtocar.controllers.commands.WriteEmailToDeveloper;
 
 /**
@@ -43,11 +44,19 @@ public class NavigationDrawerFragment extends Fragment {
 		public final int stringId;
 		public final int drawableId;
 		public final Command handler;
+		public final Command longPressHandler;
 
 		public NavigationItem(int stringId, int drawableId, Command handler) {
 			this.stringId = stringId;
 			this.drawableId = drawableId;
 			this.handler = handler;
+			this.longPressHandler = null;
+		}
+		public NavigationItem(int stringId, int drawableId, Command handler, Command longPressHandler) {
+			this.stringId = stringId;
+			this.drawableId = drawableId;
+			this.handler = handler;
+			this.longPressHandler = longPressHandler;
 		}
 	}
 
@@ -71,14 +80,27 @@ public class NavigationDrawerFragment extends Fragment {
 
 	private ArrayList<NavigationItem> itemsList;
 
+	private ArrayAdapter<NavigationItem> mAdapter;
+
 	public NavigationDrawerFragment() {
+	}
+	
+	private void setupItems() {
+		itemsList = new ArrayList<>();
+
+		itemsList.add(new NavigationItem(R.string.listTutorialTitle, R.drawable.ic_navigation_lightbulb, new ShowTutorial()));
+		itemsList.add(new NavigationItem(R.string.listHelpTitle, R.drawable.ic_navigation_help, new ShowHelp()));
+		itemsList.add(new NavigationItem(R.string.listRateTitle, R.drawable.ic_navigation_star, new ShowAppInGooglePlay()));
+		itemsList.add(new NavigationItem(R.string.listEmailTitle, R.drawable.ic_navigation_email, new WriteEmailToDeveloper(), new ToggleDebugMode()));
+
+		if(Log.hasLogFile()) {
+			itemsList.add(new NavigationItem(R.string.listSendLog, R.drawable.ic_navigation_email, new SendDebugLogToDeveloper(), new ToggleDebugMode()));
+		}
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
-		setupItems();
 
 		// Read in the flag indicating whether or not the user has demonstrated
 		// awareness of the
@@ -88,19 +110,6 @@ public class NavigationDrawerFragment extends Fragment {
 
 		if(savedInstanceState != null) {
 			mFromSavedInstanceState = true;
-		}
-	}
-
-	private void setupItems() {
-		itemsList = new ArrayList<>();
-
-		itemsList.add(new NavigationItem(R.string.listTutorialTitle, R.drawable.ic_navigation_lightbulb, new ShowTutorial()));
-		itemsList.add(new NavigationItem(R.string.listHelpTitle, R.drawable.ic_navigation_help, new ShowHelp()));
-		itemsList.add(new NavigationItem(R.string.listRateTitle, R.drawable.ic_navigation_star, new ShowAppInGooglePlay()));
-		itemsList.add(new NavigationItem(R.string.listEmailTitle, R.drawable.ic_navigation_email, new WriteEmailToDeveloper()));
-
-		if(Log.hasLogFile()) {
-			itemsList.add(new NavigationItem(R.string.listSendLog, R.drawable.ic_navigation_email, new SendDebugLogToDeveloper()));
 		}
 	}
 
@@ -121,9 +130,17 @@ public class NavigationDrawerFragment extends Fragment {
 				selectItem(position);
 			}
 		});
+		mDrawerListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+			@Override
+			public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+				return longPressItem(position);
+			}
+		});
 
-		mDrawerListView.setAdapter(new ArrayAdapter<NavigationItem>(getActionBar().getThemedContext(), R.layout.navigation_item,
-				android.R.id.text1, (NavigationItem[]) itemsList.toArray(new NavigationItem[itemsList.size()])) {
+		setupItems();
+
+		mAdapter = new ArrayAdapter<NavigationItem>(getActionBar().getThemedContext(), R.layout.navigation_item,
+				android.R.id.text1, itemsList) {
 
 			@Override
 			public View getView(int position, View convertView, ViewGroup parent) {
@@ -136,9 +153,19 @@ public class NavigationDrawerFragment extends Fragment {
 
 				return v;
 			}
-		});
+		};
+		
+		mDrawerListView.setAdapter(mAdapter);
 
 		return mDrawerListView;
+	}
+	
+	private void updateAdapter() {
+		mAdapter.clear();
+		for(NavigationItem item : itemsList) {
+			mAdapter.add(item);
+		}
+		mAdapter.notifyDataSetChanged();
 	}
 
 	public boolean isDrawerOpen() {
@@ -234,13 +261,28 @@ public class NavigationDrawerFragment extends Fragment {
 		}
 	}
 
-	private void selectItem(int position) {
+	protected void selectItem(int position) {
 		if(mDrawerLayout != null) {
 			mDrawerLayout.closeDrawer(mFragmentContainerView);
 		}
 		Command handler = itemsList.get(position).handler;
 		if(handler != null) {
 			handler.perfrom(getActivity());
+		}
+	}
+
+	protected boolean longPressItem(int position) {
+		Command handler = itemsList.get(position).longPressHandler;
+		if(handler != null) {
+			handler.perfrom(getActivity());
+			
+			// Hack to refresh the menu. We know that it might change in a handler
+			setupItems();
+			updateAdapter();
+			
+			return true;
+		} else {
+			return false;
 		}
 	}
 }

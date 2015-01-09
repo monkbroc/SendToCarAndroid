@@ -142,7 +142,7 @@ public class HereComUploader extends BaseUploader {
 
 			if(isCancelled()) return Boolean.FALSE;
 
-			if(statusCode != HttpURLConnection.HTTP_OK) {
+			if(statusCode != 201) {
 				switch(statusCode) {
 				case 409:
 					throw new BackgroundTaskAbort(R.string.statusInvalidAccount);

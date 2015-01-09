@@ -99,6 +99,7 @@ public final class Log {
 			} catch(IOException e) {
 				// do nothing
 			}
+			mLogFileOut = null;
 		}
 		context.deleteFile(LOG_FILENAME);
 	}

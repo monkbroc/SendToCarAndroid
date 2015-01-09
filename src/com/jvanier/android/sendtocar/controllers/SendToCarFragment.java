@@ -2,7 +2,6 @@ package com.jvanier.android.sendtocar.controllers;
 
 import java.text.MessageFormat;
 import java.util.List;
-import java.util.Locale;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -63,10 +62,6 @@ import com.jvanier.android.sendtocar.uploaders.OnStarUploader;
  */
 public class SendToCarFragment extends Fragment {
 	private static final String TAG = "SendToCarFragment";
-
-	private static final String DEBUG_ON1 = "debug";
-	private static final String DEBUG_ON2 = "debug on";
-	private static final String DEBUG_OFF = "debug off";
 
 	private static final String ADDRESS_ENTERED_MANUALLY = "AddressEnteredManually";
 	private static final String ADDRESS_FROM_GOOGLE_MAPS = "AddressFromGoogleMaps";
@@ -387,48 +382,10 @@ public class SendToCarFragment extends Fragment {
 	}
 
 	private void sendDestination() {
-		// Parse the account field for a special keyword to turn debug on/off
-		if(updateDebugState()) {
+		if(!checkNetworkReachabilityAndAlert(R.string.noInternetSendingDestination)) {
 			return;
 		}
 
-		if(checkNetworkReachabilityAndAlert(R.string.noInternetSendingDestination)) {
-			updateAddressFromUIAndSend();
-		}
-	}
-
-	private boolean updateDebugState() {
-		String txt = accountText.getText().toString().toLowerCase(Locale.US);
-
-		boolean showAlertAndAbortSend = false;
-		boolean debug = false;
-		if(txt.equals(DEBUG_ON1) || txt.equals(DEBUG_ON2)) {
-			showAlertAndAbortSend = true;
-			debug = true;
-		} else if(txt.equals(DEBUG_OFF)) {
-			showAlertAndAbortSend = true;
-			debug = false;
-		}
-
-		if(showAlertAndAbortSend) {
-			UserPreferences.sharedInstance().setDebug(debug).save(getActivity());
-			if(debug) {
-				Log.enableToFile(getActivity());
-			} else {
-				Log.disableAndDeleteFile(getActivity());
-			}
-
-			AlertDialog.Builder alertbox = new AlertDialog.Builder(getActivity());
-			alertbox.setTitle(R.string.debugMode);
-			alertbox.setMessage(debug ? R.string.debugOn : R.string.debugOff);
-			alertbox.setPositiveButton(R.string.ok, null);
-			alertbox.show();
-		}
-
-		return showAlertAndAbortSend;
-	}
-
-	private void updateAddressFromUIAndSend() {
 		saveProviderToRecentVehicleList();
 		hideKeyboard();
 
