@@ -72,7 +72,7 @@ public class MapquestUploader extends BaseUploader {
 				}
 			}
 
-			if(address.latitude.length() > 0 && address.longitude.length() > 0) {
+			if(address.latitude != null && address.latitude.length() > 0 && address.longitude != null && address.longitude.length() > 0) {
 				JSONObject latLng = new JSONObject();
 				latLng.put("lat", address.latitude);
 				latLng.put("lng", address.longitude);

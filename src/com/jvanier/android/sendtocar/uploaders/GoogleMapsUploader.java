@@ -43,8 +43,7 @@ public class GoogleMapsUploader extends BaseUploader {
 		if(isCancelled()) return Boolean.FALSE;
 		String sendToCarHtml = sendToCar(post);
 		if(isCancelled()) return Boolean.FALSE;
-		parseSendToCar(sendToCarHtml);
-		return Boolean.TRUE;
+		return parseSendToCar(sendToCarHtml);
 	}
 
 	private String preparePostData() throws BackgroundTaskAbort {
@@ -207,7 +206,7 @@ public class GoogleMapsUploader extends BaseUploader {
 		return sendToCarHtml;
 	}
 
-	private void parseSendToCar(String sendToCarHtml) throws BackgroundTaskAbort {
+	private Boolean parseSendToCar(String sendToCarHtml) throws BackgroundTaskAbort {
 		try {
 			// replace ASCII character escapes \xAB with Unicode escapes \u00AB
 			// since those are converted
@@ -216,7 +215,7 @@ public class GoogleMapsUploader extends BaseUploader {
 
 			JSONObject response = new JSONObject(html);
 
-			if(isCancelled()) return;
+			if(isCancelled()) return Boolean.FALSE;
 
 			int status = response.getInt("status");
 
@@ -224,7 +223,7 @@ public class GoogleMapsUploader extends BaseUploader {
 
 			if(status == 1) {
 				// success
-				return;
+				return Boolean.TRUE;
 			}
 
 			/*
@@ -236,44 +235,47 @@ public class GoogleMapsUploader extends BaseUploader {
 				if(url.length() > 0) {
 					// Open a URL to finish the upload
 					new OpenURL(url).perfrom(getContext());
-					throw new BackgroundTaskAbort(R.string.redirect);
+					// Show a hint in a toast about the redirect
+					setMessageStringId(R.string.redirect);
+					return Boolean.TRUE;
 				}
 			}
 
 			int errorCode = response.getInt("stcc_status");
-			int errorMsg;
+			int errorMsgId;
 
 			if(getProvider().makeId.equals("car_bmw")) {
-				errorMsg = R.string.updateBMWAssist;
+				errorMsgId = R.string.updateBMWAssist;
 			} else {
-					switch(errorCode) {
+				switch(errorCode) {
 				case 430:
 				case 440:
-					errorMsg = R.string.statusInvalidAccount;
+					errorMsgId = R.string.statusInvalidAccount;
 					break;
-	
+
 				case 470:
-					errorMsg = R.string.statusDestinationNotSent;
+					errorMsgId = R.string.statusDestinationNotSent;
 					break;
-	
+
 				case 500:
 				default:
-					errorMsg = R.string.errorSendToCar;
-	
+					errorMsgId = R.string.errorSendToCar;
+
 					// retry with lat/long only
 					if(!latLongOnly) {
 						latLongOnly = true;
 						if(doUpload().booleanValue()) {
-							return;
+							// success on the second try
+							return Boolean.TRUE;
 						}
 					}
 					break;
 				}
 			}
 
-			if(Log.isEnabled()) Log.e(TAG, "Error code: " + errorCode + ", String: " + getContext().getString(errorMsg));
+			if(Log.isEnabled()) Log.e(TAG, "Error code: " + errorCode + ", String: " + getContext().getString(errorMsgId));
 
-			throw new BackgroundTaskAbort(errorMsg);
+			throw new BackgroundTaskAbort(errorMsgId);
 		} catch(JSONException e) {
 			if(Log.isEnabled()) Log.e(TAG, "Exception while parsing resposne JSON", e);
 			throw new BackgroundTaskAbort(R.string.errorSendToCar);

@@ -42,8 +42,7 @@ public class HereComUploader extends BaseUploader {
 		if(isCancelled()) return Boolean.FALSE;
 		String post = preparePostData();
 		if(isCancelled()) return Boolean.FALSE;
-		sendToCar(post);
-		return Boolean.TRUE;
+		return sendToCar(post);
 	}
 
 	private String preparePostData() throws BackgroundTaskAbort {
@@ -117,7 +116,7 @@ public class HereComUploader extends BaseUploader {
 		}
 	}
 
-	private String sendToCar(String post) throws BackgroundTaskAbort {
+	private Boolean sendToCar(String post) throws BackgroundTaskAbort {
 		try {
 			populateHereComCookieAndCSRF();
 
@@ -133,7 +132,7 @@ public class HereComUploader extends BaseUploader {
 
 			if(Log.isEnabled()) Log.d(TAG, "Uploading to " + postUri.toString());
 
-			if(isCancelled() || httpPost.isAborted()) return null;
+			if(isCancelled() || httpPost.isAborted()) return Boolean.FALSE;
 
 			HttpResponse response = client.execute(httpPost, httpContext);
 
@@ -141,7 +140,7 @@ public class HereComUploader extends BaseUploader {
 
 			if(Log.isEnabled()) Log.d(TAG, "Uploaded to car. Status: " + statusCode);
 
-			if(isCancelled()) return null;
+			if(isCancelled()) return Boolean.FALSE;
 
 			if(statusCode != HttpURLConnection.HTTP_OK) {
 				switch(statusCode) {
@@ -155,10 +154,10 @@ public class HereComUploader extends BaseUploader {
 			String sendToCarHtml = EntityUtils.toString(response.getEntity());
 			if(Log.isEnabled()) Log.d(TAG, "Response: " + Utils.htmlSnippet(sendToCarHtml));
 
-			return sendToCarHtml;
+			return Boolean.TRUE;
 		} catch(InterruptedIOException e) {
 			if(Log.isEnabled()) Log.w(TAG, "Upload to Here.com aborted");
-			return null;
+			return Boolean.FALSE;
 		} catch(IOException | URISyntaxException e) {
 			if(Log.isEnabled()) Log.e(TAG, "Exception while sending to Here.com", e);
 			throw new BackgroundTaskAbort(R.string.errorSendToCar);

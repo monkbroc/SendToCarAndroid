@@ -14,4 +14,16 @@ public class Mixpanel {
 	public static MixpanelAPI sharedInstance() {
 		return MIXPANEL_API_INSTANCE;
 	}
+
+	// Anonymize emails, usernames and phone numbers
+	// foo@bar.com will become aaa@aaa.aaa
+	// MYNAME will become AAAAAA
+	// 88812345678 will become 1111111111
+	// @formatter:off
+	public static String anonymizeAccount(String account) {
+		return account.replaceAll("[a-z]", "a")
+				.replaceAll("[A-Z]", "A")
+				.replaceAll("[0-9]", "1");
+	}
+	// @formatter:on
 }

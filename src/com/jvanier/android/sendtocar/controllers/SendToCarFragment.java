@@ -99,6 +99,9 @@ public class SendToCarFragment extends Fragment {
 
 	private TextWatcher textWatcher;
 
+	public SendToCarFragment() {
+	}
+
 	public SendToCarFragment(Intent intent) {
 		this.intent = intent;
 	}
@@ -252,41 +255,44 @@ public class SendToCarFragment extends Fragment {
 
 	private void loadMapFromIntent() {
 		addressOrigin = ADDRESS_ENTERED_MANUALLY;
+		
+		if(intent != null) {
 
-		String action = intent.getAction();
-		String text = intent.hasExtra(Intent.EXTRA_TEXT) ? intent.getExtras().getCharSequence(Intent.EXTRA_TEXT).toString() : null;
+			String action = intent.getAction();
+			String text = intent.hasExtra(Intent.EXTRA_TEXT) ? intent.getExtras().getCharSequence(Intent.EXTRA_TEXT).toString() : null;
 
-		if(Log.isEnabled()) Log.d(TAG, "Intent. Action: " + action + ", Text: " + text);
+			if(Log.isEnabled()) Log.d(TAG, "Intent. Action: " + action + ", Text: " + text);
 
-		if(action.equals(Intent.ACTION_SEND)) {
-			List<String> urls = Utils.findURLs(intent.getExtras().getCharSequence(Intent.EXTRA_TEXT).toString());
+			if(action.equals(Intent.ACTION_SEND)) {
+				List<String> urls = Utils.findURLs(intent.getExtras().getCharSequence(Intent.EXTRA_TEXT).toString());
 
-			// Show the cancel button when loading an address from Google
-			// Maps to go back to the Maps app
-			showCancelButton(true);
+				// Show the cancel button when loading an address from Google
+				// Maps to go back to the Maps app
+				showCancelButton(true);
 
-			String url = (urls.size() > 0) ? urls.get(urls.size() - 1) : null;
+				String url = (urls.size() > 0) ? urls.get(urls.size() - 1) : null;
 
-			if(Log.isEnabled()) Log.d(TAG, "URL: " + url);
+				if(Log.isEnabled()) Log.d(TAG, "URL: " + url);
 
-			if(url == null) {
-				// Share -> Send To Car was selected from another app than
-				// Google Maps
-				showMessageBoxAndFinish(getString(R.string.errorIntent), false);
-			} else {
-				if(checkNetworkReachabilityAndAlert(R.string.noInternetLoadingAddress)) {
-					// Download address details from Google Maps
-					addressOrigin = ADDRESS_FROM_GOOGLE_MAPS;
-					new GoogleMapsAddressLoader(new GoogleMapsAddressLoaderUIHandler()).execute(new String[] { url });
+				if(url == null) {
+					// Share -> Send To Car was selected from another app than
+					// Google Maps
+					showMessageBoxAndFinish(getString(R.string.errorIntent), false);
 				} else {
-					// No internet, give up
-					getActivity().finish();
+					if(checkNetworkReachabilityAndAlert(R.string.noInternetLoadingAddress)) {
+						// Download address details from Google Maps
+						addressOrigin = ADDRESS_FROM_GOOGLE_MAPS;
+						new GoogleMapsAddressLoader(new GoogleMapsAddressLoaderUIHandler()).execute(new String[] { url });
+					} else {
+						// No internet, give up
+						getActivity().finish();
+					}
 				}
 			}
-		} else {
-			// not started from Google Maps, just allow the user to manually
-			// enter the address
 		}
+
+		// if not started from Google Maps, just allow the user to manually
+		// enter the address
 	}
 
 	private void showMessageBoxAndFinish(String message, final boolean finishOnOk) {
@@ -446,14 +452,6 @@ public class SendToCarFragment extends Fragment {
 			}
 		}
 
-		JSONObject props = new JSONObject();
-		try {
-			props.put("AddressOrigin", addressOrigin);
-			props.put("Make", selectedMake.makeId);
-		} catch(JSONException e) {
-		}
-		Mixpanel.sharedInstance().track("Sending address", props);
-
 		doAddressSend();
 	}
 
@@ -498,20 +496,26 @@ public class SendToCarFragment extends Fragment {
 			}
 
 			Context context = getActivity();
-			String message = "";
+			String message = uploader.getMessage();
+			if(message == null && uploader.getMessageStringId() != 0) {
+				message = getString(uploader.getMessageStringId());
+			}
+
 			if(success) {
-				String msgStr = context.getString(R.string.successCar);
+				if(message == null) {
+					message = context.getString(R.string.successCar);
+				}
 
 				/*
 				 * Show additional message for Ford since users seem to find it
 				 * difficult to download the destination to the car
 				 */
 				if(uploader.getProvider().provider == CarProvider.PROVIDER_MAPQUEST && !UserPreferences.sharedInstance().hideFordHint()) {
-					msgStr += "\n\n" + context.getString(R.string.fordDownload);
+					message += "\n\n" + context.getString(R.string.fordDownload);
 
 					AlertDialog.Builder alertbox = new AlertDialog.Builder(getActivity());
 					alertbox.setTitle(R.string.successTitle);
-					alertbox.setMessage(msgStr);
+					alertbox.setMessage(message);
 					AlertDialog.OnClickListener buttonListener = new AlertDialog.OnClickListener() {
 						@Override
 						public void onClick(DialogInterface dialog, int which) {
@@ -528,17 +532,13 @@ public class SendToCarFragment extends Fragment {
 					alertbox.show();
 
 				} else {
-					Toast toast = Toast.makeText(context, msgStr, Toast.LENGTH_LONG);
+					Toast toast = Toast.makeText(context, message, Toast.LENGTH_LONG);
 					toast.show();
 
 					// Close activity after successfully sending the destination
 					getActivity().finish();
 				}
 			} else {
-				message = uploader.getErrorMessage();
-				if(message == null) {
-					message = getString(uploader.getErrorStringId());
-				}
 
 				// Don't close activity if upload fails in case the user wants
 				// to retry
@@ -549,6 +549,7 @@ public class SendToCarFragment extends Fragment {
 			try {
 				props.put("AddressOrigin", addressOrigin);
 				props.put("Make", uploader.getProvider().makeId);
+				props.put("AnonymizedAccount", Mixpanel.anonymizeAccount(uploader.getAccount()));
 				if(!success) {
 					props.put("Message", message);
 				}
@@ -585,6 +586,15 @@ public class SendToCarFragment extends Fragment {
 		String language = CarListManager.sharedInstance().getCarList().getLanguage();
 		String notes = selectedMake.showNotes ? notesText.getText().toString() : "";
 		uploader.sendDestination(loadedAddress, account, selectedMake, language, notes);
+		
+		JSONObject props = new JSONObject();
+		try {
+			props.put("AddressOrigin", addressOrigin);
+			props.put("Make", selectedMake.makeId);
+			props.put("AnonymizedAccount", Mixpanel.anonymizeAccount(account));
+		} catch(JSONException e) {
+		}
+		Mixpanel.sharedInstance().track("Sending address", props);
 	}
 
 	private void saveProviderToRecentVehicleList() {

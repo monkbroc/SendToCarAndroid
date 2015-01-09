@@ -26,8 +26,7 @@ public class OnStarUploader extends BaseUploader {
 		if(isCancelled()) return Boolean.FALSE;
 		String post = preparePostDataOnStar();
 		if(isCancelled()) return Boolean.FALSE;
-		sendToCarOnStar(post);
-		return Boolean.TRUE;
+		return sendToCarOnStar(post);
 	}
 
 	private String preparePostDataOnStar() throws BackgroundTaskAbort {
@@ -83,10 +82,9 @@ public class OnStarUploader extends BaseUploader {
 		}
 	}
 
-	private void sendToCarOnStar(String post) throws BackgroundTaskAbort {
+	private Boolean sendToCarOnStar(String post) throws BackgroundTaskAbort {
 		new OpenURL(ONSTAR_BASE_URL + post).perfrom(getContext());
-
-		// FIXME? How to close activity from here?
-		throw new BackgroundTaskAbort(R.string.redirect);
+		setMessageStringId(R.string.redirect);
+		return Boolean.TRUE;
 	}
 }

@@ -10,6 +10,7 @@ import org.apache.http.protocol.BasicHttpContext;
 import android.content.Context;
 import android.os.AsyncTask;
 
+import com.jvanier.android.sendtocar.R;
 import com.jvanier.android.sendtocar.common.BackgroundTaskAbort;
 import com.jvanier.android.sendtocar.common.SniHttpClient;
 import com.jvanier.android.sendtocar.downloaders.GoogleMapsGeocoder;
@@ -27,8 +28,8 @@ public abstract class BaseUploader extends AsyncTask<Void, Void, Boolean> {
 
 	private Context context;
 	private BaseUploaderHandler handler;
-	private String errorMessage;
-	private int errorStringId;
+	private String message;
+	private int messageStringId;
 
 	protected Address address;
 	protected String account;
@@ -53,12 +54,20 @@ public abstract class BaseUploader extends AsyncTask<Void, Void, Boolean> {
 		return context;
 	}
 
-	public String getErrorMessage() {
-		return errorMessage;
+	public String getMessage() {
+		return message;
 	}
 
-	public int getErrorStringId() {
-		return errorStringId;
+	protected void setMessage(String message) {
+		this.message = message;
+	}
+
+	public int getMessageStringId() {
+		return messageStringId;
+	}
+
+	protected void setMessageStringId(int messageStringId) {
+		this.messageStringId = messageStringId;
 	}
 
 	public Address getAddress() {
@@ -132,11 +141,13 @@ public abstract class BaseUploader extends AsyncTask<Void, Void, Boolean> {
 		public void onPostExecute(GoogleMapsGeocoder self, Address geocodedAddress) {
 			if(geocodedAddress != null) {
 				address = geocodedAddress;
+				// Upload after geocoding
+				execute((Void) null);
+			} else {
+				// report a geocoding error
+				setMessageStringId(R.string.errorGeocoding);
+				BaseUploader.this.onPostExecute(Boolean.FALSE);
 			}
-			geocoder = null;
-
-			// Upload after geocoding, regardless of error
-			execute((Void) null);
 		}
 	}
 
@@ -146,8 +157,8 @@ public abstract class BaseUploader extends AsyncTask<Void, Void, Boolean> {
 			setupHttp();
 			return doUpload();
 		} catch(BackgroundTaskAbort e) {
-			errorStringId = e.messageId;
-			errorMessage = e.getMessage();
+			setMessageStringId(e.messageId);
+			setMessage(e.getMessage());
 			return Boolean.FALSE;
 		}
 	}
