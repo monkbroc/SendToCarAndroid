@@ -104,7 +104,7 @@ public class RecentVehicleList {
 			ObjectOutputStream out = new ObjectOutputStream(fos);
 			out.writeObject(list);
 			out.close();
-			if(Log.isEnabled()) Log.d(TAG, "Wrote recent vehicles list with " + list.size() + " vechiles to cache");
+			if(Log.isEnabled()) Log.d(TAG, "Wrote recent vehicles list with " + list.size() + " vehicles to cache");
 		} catch(IOException e) {
 			// do nothing
 		}

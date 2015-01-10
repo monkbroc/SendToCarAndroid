@@ -590,16 +590,30 @@ public class SendToCarFragment extends Fragment {
 
 	private void loadMake(CarProvider provider) {
 		if(provider != null) {
-			if(Log.isEnabled()) Log.d(TAG, "Selected make " + provider.make);
+			if(Log.isEnabled()) Log.d(TAG, "Select make " + provider.make);
+			JSONObject props = new JSONObject();
+			try {
+				props.put("Make", provider.makeId);
+			} catch(JSONException e) {
+			}
+			Mixpanel.sharedInstance().track("Select make",props);
+			
 			updateMake(provider, "");
 		}
 	}
 
 	private void loadRecentVehicle(RecentVehicle vehicle) {
 		if(vehicle != null) {
-			if(Log.isEnabled()) Log.d(TAG, "Selected recent vehicle " + vehicle.toString());
+			if(Log.isEnabled()) Log.d(TAG, "Select recent vehicle " + vehicle.toString());
 			CarProvider provider = CarListManager.sharedInstance().getCarList().get(vehicle.makeId);
 			if(provider != null) {
+				JSONObject props = new JSONObject();
+				try {
+					props.put("Make", provider.makeId);
+				} catch(JSONException e) {
+				}
+				Mixpanel.sharedInstance().track("Select recent vehicle",props);
+
 				updateMake(provider, vehicle.account);
 			}
 		}

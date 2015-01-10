@@ -28,6 +28,10 @@ import com.jvanier.android.sendtocar.common.Utils;
 public class MapquestUploader extends BaseUploader {
 
 	private static final String TAG = "MapquestUploader";
+	private static final String ERROR_COULD_NOT_CONNECT = "Could not connect to Ford Sync service.";
+	private static final int MAX_RETRIES = 2;
+	
+	private int retries = 0;
 
 	public MapquestUploader(Context context, BaseUploaderHandler handler) {
 		super(context, handler);
@@ -41,8 +45,7 @@ public class MapquestUploader extends BaseUploader {
 		if(isCancelled()) return Boolean.FALSE;
 		String sendToCarHtml = sendToCar(post);
 		if(isCancelled()) return Boolean.FALSE;
-		parseSendToCar(sendToCarHtml);
-		return Boolean.TRUE;
+		return parseSendToCar(sendToCarHtml);
 	}
 
 	private String preparePostData() throws BackgroundTaskAbort {
@@ -198,7 +201,7 @@ public class MapquestUploader extends BaseUploader {
 		return sendToCarHtml;
 	}
 
-	private void parseSendToCar(String sendToCarHtml) throws BackgroundTaskAbort {
+	private Boolean parseSendToCar(String sendToCarHtml) throws BackgroundTaskAbort {
 		JSONObject response;
 
 		try {
@@ -209,7 +212,7 @@ public class MapquestUploader extends BaseUploader {
 
 			response = new JSONObject(html);
 
-			if(isCancelled()) return;
+			if(isCancelled()) return Boolean.FALSE;
 
 			String result = response.getString("result");
 
@@ -217,17 +220,28 @@ public class MapquestUploader extends BaseUploader {
 
 			if(result.equals("OK")) {
 				// success
-				return;
+				return Boolean.TRUE;
+			} else {
+				String errorMsg = response.optString("message");
+				if(Log.isEnabled()) Log.e(TAG, "Could not send to Mapquest. Error: " + errorMsg);
+				
+				if(errorMsg.equals(ERROR_COULD_NOT_CONNECT)) {
+					if(retries < MAX_RETRIES) {
+						retries++;
+						return doUpload();
+					} else {
+						setMessageStringId(R.string.errorConnectToFord);
+						return Boolean.FALSE;
+					}
+				} else {
+					setMessage(errorMsg);
+					return Boolean.FALSE;
+				}
 			}
 
 		} catch(JSONException e) {
 			if(Log.isEnabled()) Log.e(TAG, "Exception while parsing Mapquest resposne JSON", e);
 			throw new BackgroundTaskAbort(R.string.errorSendToCar);
 		}
-
-		String errorMsg = response.optString("message");
-		if(Log.isEnabled()) Log.e(TAG, "Could not send to Mapquest. Error: " + errorMsg);
-		throw new BackgroundTaskAbort(errorMsg);
-
 	}
 }

@@ -2,7 +2,6 @@ package com.jvanier.android.sendtocar.uploaders;
 
 import java.io.IOException;
 import java.io.InterruptedIOException;
-import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.DecimalFormat;

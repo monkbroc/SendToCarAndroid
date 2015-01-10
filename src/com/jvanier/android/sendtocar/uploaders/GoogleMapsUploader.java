@@ -64,14 +64,18 @@ public class GoogleMapsUploader extends BaseUploader {
 			postData.add("name");
 			postData.add(address.title);
 
+			// Google Maps freaks out when the latitude or longitude has more than 9 characters
+			String latitude = Utils.left(address.latitude, 9);
+			String longitude = Utils.left(address.longitude, 9);
+
 			// full address data
 			final String[] codesFull = { "lat", "lng", "street", "streetnum", "city", "province", "postalcode", "country", "phone", "notes" };
-			final String[] valuesFull = { address.latitude, address.longitude, address.street, address.number, address.city,
+			final String[] valuesFull = { latitude, longitude, address.street, address.number, address.city,
 					address.province, address.postalCode, address.country,
 					provider.internationalPhone ? address.internationalPhone : address.phone, notes };
 			// using only latitude/longitude
 			final String[] codesLL = { "lat", "lng" };
-			final String[] valuesLL = { address.latitude, address.longitude };
+			final String[] valuesLL = { latitude, longitude };
 
 			final String[] codes;
 			final String[] values;

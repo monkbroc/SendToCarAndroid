@@ -2,8 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.jvanier.android.sendtocar"
-    android:versionCode="29"
-    android:versionName="4.0" >
+    android:versionCode="30"
+    android:versionName="4.1" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -48,11 +48,11 @@
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize"
             android:label="@string/chooseVehicle" >
         </activity>
-    </application>
 
-    <!-- Manage our own app open event, with all our super-properties -->
-    <meta-data
-        android:name="com.mixpanel.android.MPConfig.DisableAppOpenEvent"
-        android:value="true" />
+        <!-- Manage our own app open event, with all our super-properties -->
+        <meta-data
+            android:name="com.mixpanel.android.MPConfig.DisableAppOpenEvent"
+            android:value="true" />
+    </application>
 
 </manifest>

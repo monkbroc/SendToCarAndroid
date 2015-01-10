@@ -119,4 +119,11 @@ public class Utils {
 		return urls;
 	}
 
+	public static String left(String string, int len) {
+		if(string != null) {
+			return string.substring(0, Math.min(len, string.length()));
+		} else {
+			return null;
+		}
+	}
 }

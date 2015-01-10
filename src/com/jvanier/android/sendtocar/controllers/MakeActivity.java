@@ -4,6 +4,9 @@ import java.text.MessageFormat;
 import java.util.List;
 import java.util.Locale;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -18,6 +21,7 @@ import android.widget.TextView;
 import com.countrypicker.CountryPicker;
 import com.countrypicker.CountryPickerListener;
 import com.jvanier.android.sendtocar.R;
+import com.jvanier.android.sendtocar.common.Mixpanel;
 import com.jvanier.android.sendtocar.controllers.commands.ShowOtherMakes;
 import com.jvanier.android.sendtocar.downloaders.CarListManager;
 import com.jvanier.android.sendtocar.models.CarList;
@@ -25,6 +29,7 @@ import com.jvanier.android.sendtocar.models.CarProvider;
 import com.jvanier.android.sendtocar.models.RecentVehicle;
 import com.jvanier.android.sendtocar.models.RecentVehicleList;
 import com.jvanier.android.sendtocar.models.UserPreferences;
+import com.mixpanel.android.mpmetrics.MixpanelAPI;
 
 public class MakeActivity extends ActionBarActivity {
 	public static final String EXTRA_TYPE = "type";
@@ -183,9 +188,28 @@ public class MakeActivity extends ActionBarActivity {
 					@Override
 					public void onSelectCountry(String name, String code) {
 						picker.dismiss();
-						UserPreferences.sharedInstance().setCountry(code.toLowerCase(Locale.US)).save(MakeActivity.this);
+
+						UserPreferences prefs = UserPreferences.sharedInstance();
+						String oldCountry = prefs.getCountry();
+						prefs.setCountry(code.toLowerCase(Locale.US)).save(MakeActivity.this);
 						setupMakes();
 						updateMakesCountryLabel();
+						
+						// Update super-properties right away
+						MixpanelAPI mixpanel = Mixpanel.sharedInstance();
+						JSONObject superProps = new JSONObject();
+						try {
+							superProps.put("OS Country", prefs.getCountry());
+						} catch(JSONException e) {
+						}
+						mixpanel.registerSuperProperties(superProps);
+						JSONObject props = new JSONObject();
+						try {
+							props.put("Old Country", oldCountry);
+							props.put("New Country", prefs.getCountry());
+						} catch(JSONException e) {
+						}
+						mixpanel.track("Change country",props);
 					}
 				});
 			}
