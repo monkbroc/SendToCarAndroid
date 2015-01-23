@@ -507,12 +507,13 @@ public class SendToCarFragment extends Fragment {
 				props.put("AddressOrigin", addressOrigin);
 				props.put("Make", uploader.getProvider().makeId);
 				props.put("AnonymizedAccount", Mixpanel.anonymizeAccount(uploader.getAccount()));
+				props.put("Result", success ? "Success" : "Failed");
 				if(!success) {
 					props.put("Message", message);
 				}
 			} catch(JSONException e) {
 			}
-			Mixpanel.sharedInstance().track(success ? "Sending successful" : "Sending failed", props);
+			Mixpanel.sharedInstance().track("Sending address", props);
 		}
 
 	}
@@ -543,15 +544,6 @@ public class SendToCarFragment extends Fragment {
 		String language = CarListManager.sharedInstance().getCarList().getLanguage();
 		String notes = selectedMake.showNotes ? notesText.getText().toString() : "";
 		uploader.sendDestination(loadedAddress, account, selectedMake, language, notes);
-		
-		JSONObject props = new JSONObject();
-		try {
-			props.put("AddressOrigin", addressOrigin);
-			props.put("Make", selectedMake.makeId);
-			props.put("AnonymizedAccount", Mixpanel.anonymizeAccount(account));
-		} catch(JSONException e) {
-		}
-		Mixpanel.sharedInstance().track("Sending address", props);
 	}
 
 	private void saveProviderToRecentVehicleList() {
