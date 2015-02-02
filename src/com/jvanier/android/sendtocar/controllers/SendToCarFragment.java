@@ -51,7 +51,6 @@ import com.jvanier.android.sendtocar.models.UserPreferences;
 import com.jvanier.android.sendtocar.uploaders.BaseUploader;
 import com.jvanier.android.sendtocar.uploaders.BaseUploader.BaseUploaderHandler;
 import com.jvanier.android.sendtocar.uploaders.GoogleMapsUploader;
-import com.jvanier.android.sendtocar.uploaders.HereComUploader;
 import com.jvanier.android.sendtocar.uploaders.MapquestUploader;
 import com.jvanier.android.sendtocar.uploaders.OnStarUploader;
 
@@ -507,7 +506,7 @@ public class SendToCarFragment extends Fragment {
 				props.put("AddressOrigin", addressOrigin);
 				props.put("Make", uploader.getProvider().makeId);
 				props.put("AnonymizedAccount", Mixpanel.anonymizeAccount(uploader.getAccount()));
-				props.put("Result", success ? "Success" : "Failed");
+				props.put("Success", success ? "Y" : "N");
 				if(!success) {
 					props.put("Message", message);
 				}
@@ -533,10 +532,6 @@ public class SendToCarFragment extends Fragment {
 		case CarProvider.PROVIDER_ONSTAR:
 			if(Log.isEnabled()) Log.d(TAG, "Sending address to OnStar");
 			uploader = new OnStarUploader(getActivity(), handler);
-			break;
-		case CarProvider.PROVIDER_HERE_COM:
-			if(Log.isEnabled()) Log.d(TAG, "Sending address to Here.com");
-			uploader = new HereComUploader(getActivity(), handler);
 			break;
 		}
 

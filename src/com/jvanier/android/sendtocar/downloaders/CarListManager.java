@@ -165,7 +165,7 @@ public class CarListManager {
 				if(Log.isEnabled()) Log.d(TAG, "Response: " + carsJson);
 
 			} catch(Exception e) {
-				if(Log.isEnabled()) Log.e(TAG, "Exception while downloading cars: " + e.toString());
+				if(Log.isEnabled()) Log.e(TAG, "Exception while downloading cars", e);
 				throw new BackgroundTaskAbort();
 			}
 
@@ -210,7 +210,7 @@ public class CarListManager {
 				if(Log.isEnabled()) Log.d(TAG, "Cars JSON parsed OK.");
 
 			} catch(JSONException e) {
-				if(Log.isEnabled()) Log.e(TAG, "Exception while parsing cars JSON: " + e.toString());
+				if(Log.isEnabled()) Log.e(TAG, "Exception while parsing cars JSON", e);
 				throw new BackgroundTaskAbort();
 			}
 		}

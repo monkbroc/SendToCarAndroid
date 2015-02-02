@@ -11,6 +11,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 
 import com.jvanier.android.sendtocar.R;
+import com.jvanier.android.sendtocar.common.AbortHttpRequest;
 import com.jvanier.android.sendtocar.common.BackgroundTaskAbort;
 import com.jvanier.android.sendtocar.common.SniHttpClient;
 import com.jvanier.android.sendtocar.downloaders.GoogleMapsGeocoder;
@@ -92,12 +93,7 @@ public abstract class BaseUploader extends AsyncTask<Void, Void, Boolean> {
 
 	public void cancelUpload() {
 		cancel(false);
-		if(httpPost != null) {
-			httpPost.abort();
-		}
-		if(httpGet != null) {
-			httpGet.abort();
-		}
+		AbortHttpRequest.abortRequests(httpPost, httpGet);
 
 		if(geocoder != null) {
 			geocoder.cancelGeocode();

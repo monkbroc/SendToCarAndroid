@@ -94,7 +94,7 @@ public class IssueLoader extends AsyncTask<Void, Void, Issue> {
 			if(Log.isEnabled()) Log.d(TAG, "Response: " + jsonData);
 
 		} catch(Exception e) {
-			if(Log.isEnabled()) Log.e(TAG, "Exception while downloading issue: " + e.toString());
+			if(Log.isEnabled()) Log.e(TAG, "Exception while downloading issue", e);
 			throw new BackgroundTaskAbort();
 		}
 
@@ -112,7 +112,7 @@ public class IssueLoader extends AsyncTask<Void, Void, Issue> {
 			if(Log.isEnabled()) Log.d(TAG, "Issue JSON parsed OK.");
 
 		} catch(JSONException e) {
-			if(Log.isEnabled()) Log.e(TAG, "Exception while parsing issue JSON: " + e.toString());
+			if(Log.isEnabled()) Log.e(TAG, "Exception while parsing issue JSON", e);
 			throw new BackgroundTaskAbort();
 		}
 	}

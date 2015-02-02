@@ -24,6 +24,7 @@ import org.json.JSONObject;
 import android.os.AsyncTask;
 
 import com.jvanier.android.sendtocar.R;
+import com.jvanier.android.sendtocar.common.AbortHttpRequest;
 import com.jvanier.android.sendtocar.common.BackgroundTaskAbort;
 import com.jvanier.android.sendtocar.common.Log;
 import com.jvanier.android.sendtocar.common.SniHttpClient;
@@ -77,7 +78,7 @@ public class GoogleMapsAddressLoader extends AsyncTask<String, Void, GoogleMapsA
 
 	public void cancelDownload() {
 		cancel(false);
-		httpGet.abort();
+		AbortHttpRequest.abortRequests(httpGet);
 	}
 
 	@Override
@@ -154,11 +155,11 @@ public class GoogleMapsAddressLoader extends AsyncTask<String, Void, GoogleMapsA
 			if(Log.isEnabled()) Log.d(TAG, "Google Maps host: " + mapHost.getHostName());
 
 		} catch(URISyntaxException e) {
-			if(Log.isEnabled()) Log.e(TAG, "Exception while downloading address: " + e.toString());
+			if(Log.isEnabled()) Log.e(TAG, "Exception while downloading address", e);
 			throw new BackgroundTaskAbort(R.string.errorDownload);
 
 		} catch(IOException e) {
-			if(Log.isEnabled()) Log.d(TAG, "Exception while downloading address: " + e.toString());
+			if(Log.isEnabled()) Log.d(TAG, "Exception while downloading address", e);
 			throw new BackgroundTaskAbort(R.string.errorDownload);
 		}
 
@@ -263,7 +264,7 @@ public class GoogleMapsAddressLoader extends AsyncTask<String, Void, GoogleMapsA
 					throw new BackgroundTaskAbort(R.string.errorDownload);
 				}
 			} catch(JSONException e) {
-				if(Log.isEnabled()) Log.e(TAG, "Exception while parsing address JSON: " + e.toString());
+				if(Log.isEnabled()) Log.e(TAG, "Exception while parsing address JSON", e);
 				throw new BackgroundTaskAbort(R.string.errorDownload);
 			}
 		} else {
@@ -303,7 +304,7 @@ public class GoogleMapsAddressLoader extends AsyncTask<String, Void, GoogleMapsA
 			if(Log.isEnabled()) Log.d(TAG, "Response: " + Utils.htmlSnippet(geoHtml));
 
 		} catch(IOException | URISyntaxException e) {
-			if(Log.isEnabled()) Log.d(TAG, "Exception while geocoding address: " + e.toString());
+			if(Log.isEnabled()) Log.d(TAG, "Exception while geocoding address", e);
 		}
 
 		try {
@@ -343,11 +344,11 @@ public class GoogleMapsAddressLoader extends AsyncTask<String, Void, GoogleMapsA
 			}
 
 		} catch(JSONException e) {
-			if(Log.isEnabled()) Log.e(TAG, "Exception while parsing geocoding JSON: " + e.toString());
+			if(Log.isEnabled()) Log.e(TAG, "Exception while parsing geocoding JSON", e);
 		} catch(IllegalAccessException e) {
-			if(Log.isEnabled()) Log.e(TAG, "Exception while updating address: " + e.toString());
+			if(Log.isEnabled()) Log.e(TAG, "Exception while updating address", e);
 		} catch(NoSuchFieldException e) {
-			if(Log.isEnabled()) Log.e(TAG, "Exception while updating address: " + e.toString());
+			if(Log.isEnabled()) Log.e(TAG, "Exception while updating address", e);
 		}
 	}
 

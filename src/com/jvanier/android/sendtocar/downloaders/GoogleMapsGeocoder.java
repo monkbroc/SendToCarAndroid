@@ -16,6 +16,7 @@ import org.json.JSONObject;
 
 import android.os.AsyncTask;
 
+import com.jvanier.android.sendtocar.common.AbortHttpRequest;
 import com.jvanier.android.sendtocar.common.BackgroundTaskAbort;
 import com.jvanier.android.sendtocar.common.Log;
 import com.jvanier.android.sendtocar.common.SniHttpClient;
@@ -48,7 +49,7 @@ public class GoogleMapsGeocoder extends AsyncTask<Address, Void, Address> {
 
 	public void cancelGeocode() {
 		cancel(false);
-		httpGet.abort();
+		AbortHttpRequest.abortRequests(httpGet);
 	}
 
 	@Override
