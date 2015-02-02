@@ -7859,11 +7859,10 @@ com.jvanier.android.sendtocar.models.UserPreferences:
     private static final java.lang.String KEY_COUNTRY
     private static final java.lang.String KEY_HIDE_FORD_HINT
 com.jvanier.android.sendtocar.uploaders.BaseUploader:
+    75:75:public com.jvanier.android.sendtocar.models.Address getAddress()
     87:87:public java.lang.String getLanguage()
     91:91:public java.lang.String getNotes()
 com.jvanier.android.sendtocar.uploaders.GoogleMapsUploader:
-    private static final java.lang.String TAG
-com.jvanier.android.sendtocar.uploaders.HereComUploader:
     private static final java.lang.String TAG
 com.jvanier.android.sendtocar.uploaders.MapquestUploader:
     private static final java.lang.String TAG

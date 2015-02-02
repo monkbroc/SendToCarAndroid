@@ -358,8 +358,8 @@ public class GoogleMapsAddressLoader extends AsyncTask<String, Void, GoogleMapsA
 		public URI getLocationURI(HttpResponse response, HttpContext context) throws ProtocolException {
 			URI defaultRedir = super.getLocationURI(response, context);
 			String query = defaultRedir.getQuery();
-			if(query != null) {
-				query = query + "&output=json";
+			if(query != null && query.indexOf("output=json") == -1) {
+				query = query + "&ie=UTF8&hq=&hnear=&output=json";
 			}
 
 			try {

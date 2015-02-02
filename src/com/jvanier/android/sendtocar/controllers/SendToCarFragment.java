@@ -514,7 +514,6 @@ public class SendToCarFragment extends Fragment {
 			}
 			Mixpanel.sharedInstance().track("Sending address", props);
 		}
-
 	}
 
 	private void doAddressSend() {

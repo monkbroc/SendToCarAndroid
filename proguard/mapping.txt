@@ -15287,16 +15287,15 @@ com.jvanier.android.sendtocar.uploaders.BaseUploader -> com.jvanier.android.send
     void setMessage(java.lang.String) -> a
     int getMessageStringId() -> c
     void setMessageStringId(int) -> a
-    com.jvanier.android.sendtocar.models.Address getAddress() -> d
-    java.lang.String getAccount() -> e
-    com.jvanier.android.sendtocar.models.CarProvider getProvider() -> f
-    void cancelUpload() -> g
+    java.lang.String getAccount() -> d
+    com.jvanier.android.sendtocar.models.CarProvider getProvider() -> e
+    void cancelUpload() -> f
     void sendDestination(com.jvanier.android.sendtocar.models.Address,java.lang.String,com.jvanier.android.sendtocar.models.CarProvider,java.lang.String,java.lang.String) -> a
     java.lang.Boolean doInBackground(java.lang.Void[]) -> a
-    java.lang.Boolean doUpload() -> h
+    java.lang.Boolean doUpload() -> g
     void onPreExecute() -> onPreExecute
     void onPostExecute(java.lang.Boolean) -> a
-    void setupHttp() -> i
+    void setupHttp() -> h
     void onPostExecute(java.lang.Object) -> onPostExecute
     java.lang.Object doInBackground(java.lang.Object[]) -> doInBackground
 com.jvanier.android.sendtocar.uploaders.BaseUploader$BaseUploaderHandler -> com.jvanier.android.sendtocar.b.b:
@@ -15308,32 +15307,25 @@ com.jvanier.android.sendtocar.uploaders.BaseUploader$GoogleMapsGeocoderUploaderH
     void onPostExecute(com.jvanier.android.sendtocar.downloaders.GoogleMapsGeocoder,com.jvanier.android.sendtocar.models.Address) -> a
 com.jvanier.android.sendtocar.uploaders.GoogleMapsUploader -> com.jvanier.android.sendtocar.b.d:
     boolean latLongOnly -> k
-    java.lang.Boolean doUpload() -> h
-    java.lang.String preparePostData() -> i
-    java.lang.String getCookieId() -> j
+    java.lang.Boolean doUpload() -> g
+    java.lang.String preparePostData() -> h
+    java.lang.String getCookieId() -> i
     java.lang.String parseCookie(org.apache.http.cookie.Cookie) -> a
-    void donwloadCookie() -> k
+    void donwloadCookie() -> j
     java.lang.String sendToCar(java.lang.String) -> b
     java.lang.Boolean parseSendToCar(java.lang.String) -> c
-com.jvanier.android.sendtocar.uploaders.HereComUploader -> com.jvanier.android.sendtocar.b.e:
-    java.lang.String csrfToken -> k
-    java.lang.Boolean doUpload() -> h
-    java.lang.String preparePostData() -> i
-    void populateHereComCookieAndCSRF() -> j
-    java.lang.String parseCSRF(java.lang.String) -> b
-    java.lang.Boolean sendToCar(java.lang.String) -> c
-com.jvanier.android.sendtocar.uploaders.MapquestUploader -> com.jvanier.android.sendtocar.b.f:
+com.jvanier.android.sendtocar.uploaders.MapquestUploader -> com.jvanier.android.sendtocar.b.e:
     int retries -> k
-    java.lang.Boolean doUpload() -> h
-    java.lang.String preparePostData() -> i
+    java.lang.Boolean doUpload() -> g
+    java.lang.String preparePostData() -> h
     java.lang.String sendToCar(java.lang.String) -> b
     java.lang.String sendToCarTrustAll(java.lang.String) -> c
     java.lang.String sendToCarNoSSL(java.lang.String) -> d
     java.lang.String sendToCarCore(java.lang.String,boolean,boolean) -> a
     java.lang.Boolean parseSendToCar(java.lang.String) -> e
-com.jvanier.android.sendtocar.uploaders.OnStarUploader -> com.jvanier.android.sendtocar.b.g:
-    java.lang.Boolean doUpload() -> h
-    java.lang.String preparePostDataOnStar() -> i
+com.jvanier.android.sendtocar.uploaders.OnStarUploader -> com.jvanier.android.sendtocar.b.f:
+    java.lang.Boolean doUpload() -> g
+    java.lang.String preparePostDataOnStar() -> h
     java.lang.Boolean sendToCarOnStar(java.lang.String) -> b
 com.mixpanel.android.R -> com.mixpanel.android.a:
 com.mixpanel.android.R$anim -> com.mixpanel.android.b:
