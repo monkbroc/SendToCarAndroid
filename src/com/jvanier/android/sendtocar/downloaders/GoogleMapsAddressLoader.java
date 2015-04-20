@@ -21,7 +21,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Debug;
 
 import com.jvanier.android.sendtocar.R;
 import com.jvanier.android.sendtocar.common.AbortHttpRequest;
@@ -357,16 +359,26 @@ public class GoogleMapsAddressLoader extends AsyncTask<String, Void, GoogleMapsA
 		@Override
 		public URI getLocationURI(HttpResponse response, HttpContext context) throws ProtocolException {
 			URI defaultRedir = super.getLocationURI(response, context);
-			String query = defaultRedir.getQuery();
-			if(query != null && query.indexOf("output=json") == -1) {
-				query = query + "&ie=UTF8&hq=&hnear=&output=json";
-			}
+			
+			Uri defaultRedirUri = Uri.parse(defaultRedir.toString());
+			if(!"json".equals(defaultRedirUri.getQueryParameter("output"))) {
+				String search = defaultRedirUri.getQueryParameter("q");
+				if(search == null) {
+					search = "";
+				}
+				Uri targetUri = defaultRedirUri.buildUpon()
+					.appendQueryParameter("ie", "UTF8")
+					.appendQueryParameter("hq", "")
+					.appendQueryParameter("hnear", search)
+					.appendQueryParameter("output", "json")
+					.build();
 
-			try {
-				URI redir = new URI(defaultRedir.getScheme(), defaultRedir.getAuthority(), defaultRedir.getPath(), query,
-						defaultRedir.getFragment());
-				return redir;
-			} catch(URISyntaxException e) {
+				try {
+					return new URI(targetUri.toString());
+				} catch(URISyntaxException e) {
+					return defaultRedir;
+				}
+			} else {
 				return defaultRedir;
 			}
 		}
